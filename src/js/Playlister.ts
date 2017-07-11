@@ -2,6 +2,7 @@ import { Playlist } from './Playlist';
 
 var btnAdd:HTMLElement = document.getElementById('btn-url-add');
 var urlInput:HTMLElement = document.getElementById('url-input-container');
+const prefix = 'https://www.youtube.com/playlist?list=';
 
 //list of all the tabs for displaying
 var playlists = [];
@@ -25,8 +26,9 @@ btnAdd.addEventListener('click', () => {
 function addPlaylist() {
 	let url:string = (<HTMLInputElement>document.getElementById('url-text')).value;
 	
-	if(url.startsWith('https://www.youtube.com/playlist?list=')) {
-		playlists.push(new Playlist(url));
+	if(url.startsWith(prefix)) {
+		let id = url.split('=')[1];
+		playlists.push(new Playlist(id));
 		playlists[0].display();
 	}
 }

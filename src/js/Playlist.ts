@@ -1,9 +1,9 @@
 export class Playlist {
-	url:string;
+	id:string;
 	name:string;
 
-	constructor(url:string) {
-		this.url = url;
+	constructor(id:string) {
+		this.id = id;
 		this.setName();
 	}
 
@@ -12,6 +12,6 @@ export class Playlist {
 	}
 
 	public display() {
-		console.log('displaying ' + this.url);
+		console.log('displaying ' + this.id);
 	}
 }
