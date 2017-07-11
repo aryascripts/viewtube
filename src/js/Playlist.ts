@@ -4,6 +4,11 @@ export class Playlist {
 
 	constructor(url:string) {
 		this.url = url;
+		this.setName();
+	}
+
+	private setName() {
+		//Set the name of this playlist based on YouTube API
 	}
 
 	public display() {

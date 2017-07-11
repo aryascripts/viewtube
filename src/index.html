@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Photon</title>
+    <title>Youtube Playlister</title>
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/photon.css">
@@ -13,32 +13,31 @@
 
       <!-- .toolbar-header sits at the top of your app -->
       <header class="toolbar toolbar-header">
-        <h1 class="title">Git Graph</h1>
+        <h1 class="title">YouTube Playlister</h1>
         
         <div class="toolbar-actions">
+          <div id="btn-back" class="btn btn-default">
+            <span id="btn-url-span" class="icon icon-left-open"></span>
+          </div>
+
           <div id="btn-url-add" class="btn btn-default">
             <span id="btn-url-span" class="icon icon-plus-circled"></span>
           </div>
           <span id="url-input-container">
           </span>
+
+          <button class="btn btn-default pull-right">
+                <span class="icon icon-search"></span>&nbsp; Search
+          </button>
         </div>
       </header>
 
       <!-- Your app's content goes inside .window-content -->
-      <div id="tabs" class="tab-group">
-        <div class="tab-item active">
-          <span class="icon icon-cancel icon-close-tab"></span>
-          Repository 2
-        </div>
+      <div class="window-content">
+        
       </div>
 
-      <div id="content" class="content">
-        Stuff in here for the tab
-      </div>
-  
-      <footer class="toolbar toolbar-footer">
-        <h1 class="title">repository name - url</h1>
-      </footer>
+
     </div>
   
     <script>

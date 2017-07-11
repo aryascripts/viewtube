@@ -23,10 +23,12 @@ btnAdd.addEventListener('click', () => {
 });
 
 function addPlaylist() {
-	let url = (<HTMLInputElement>document.getElementById('url-text')).value;
-	playlists.push(new Playlist(url));
-	playlists[0].display();
+	let url:string = (<HTMLInputElement>document.getElementById('url-text')).value;
 	
+	if(url.startsWith('https://www.youtube.com/playlist?list=')) {
+		playlists.push(new Playlist(url));
+		playlists[0].display();
+	}
 }
 
 //Method for displaying and removing the
@@ -36,6 +38,12 @@ function toggleAddForm() {
 	btnSpan.classList.toggle('icon-plus-circled');
 	btnSpan.classList.toggle('icon-minus-circled');
 
-	let formElements:string = '<input id="url-text" style="width: 50%;" class="text-input" type="text" placeholder="https://github.com/.../..."><div id="btn-check" class="btn btn-default"><span class="icon icon-check"></span></div>';
+	let formElements:string = '<input id="url-text" style="width: 50%;" class="text-input" type="text" placeholder=" https://www.youtube.com/playlist?list=..."><div id="btn-check" class="btn btn-default"><span class="icon icon-check"></span></div>';
 	urlInput.innerHTML = urlInput.innerHTML.trim() == '' ? formElements : '';
+}
+
+function toggleBackButton() {
+	let backButton:HTMLElement = document.getElementById('btn-back');
+	backButton.classList.toggle('hidden');
+	console.log('hiding')
 }
