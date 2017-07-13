@@ -1,13 +1,17 @@
 import { Playlist } from './Playlist';
 import { HttpRequest } from './HttpRequest';
-import { api_key } from './Auth'
+import { api_key } from './APIAuth';
 
 var btnAdd:HTMLElement = document.getElementById('btn-url-add');
 var urlInput:HTMLElement = document.getElementById('url-input-container');
+
+var wrapper:HTMLElement = document.getElementById('main-wrapper');
+var template = (<HTMLTemplateElement>document.getElementById('playlist-template'));
+
 const prefix:string = 'https://www.youtube.com/playlist?list=';
 
 //list of all the tabs for displaying
-var playlists: Array<Playlist> = [];
+var playlists = [];
 var request = new HttpRequest();
 
 //shows and hides the add button
@@ -35,26 +39,38 @@ function addPlaylist() {
 	//Check of the user inserted a valid url for a playlist
 	if(url.startsWith(prefix)) {
 		let plist;
-
 		let id = url.split('=')[1];
-
 		getPlaylistInfo(id).then(info => {
 			plist = new Playlist(info);
 			getVideos(id).then(videos => {
 				plist.addVideos(videos);
+				displayPlaylist(plist);
 			});
 			playlists.push(plist);
 		});
-
-		console.log(playlists);
 	}
 
 	//Not a valid url for playlist
 	else {
-		console.log('Please enter a valid playlist URL. For example: ' + prefix + '...')
+		console.log('Please enter a valid playlist URL. For example: ' + prefix + '...');
 	}
+
+	
 }
 
+function displayPlaylist(plist:Playlist) {
+	var temp:HTMLElement = <HTMLElement>template.content.cloneNode(true);
+	temp.querySelector('#plist-title').innerHTML = plist.getTitle();
+	temp.querySelector('#channel-name').innerHTML = plist.getChannel();
+	temp.querySelector('#video-count').innerHTML = plist.getLastVideoNumber().toString() + ' / ' + plist.getTotalVideos().toString();
+
+	let thumbUrl = plist.getThumbnailUrl();
+	temp.querySelector('#thumbnail').innerHTML = '<img src="' + thumbUrl + '" width="120px"/>';
+	temp.querySelector('#description').innerHTML = plist.getDescription();
+	wrapper.appendChild(temp);
+}
+
+//Goes to the Google server (with HttpRequest) and retreives the playlist information
 function getPlaylistInfo(id:string) {
 	var info;
 	let location = 'https://www.googleapis.com/youtube/v3/playlists';
@@ -73,6 +89,7 @@ function getPlaylistInfo(id:string) {
 		});
 }
 
+//Goes to the Google server (with HttpRequest) and retreives the videos inside a playlist id
 function getVideos(id:string) {
 	let location = 'https://www.googleapis.com/youtube/v3/playlistItems';
 	let headers = {

@@ -11,7 +11,6 @@ export class Video {
 		if(video['length'] < 1) {
 			return;
 		}
-		this.videos = [];
 		this.obj = video;
 
 		let vid 			= video['snippet'];

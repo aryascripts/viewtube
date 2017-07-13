@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Youtube Playlister</title>
+    <title>ViewTube</title>
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/photon.css">
@@ -13,7 +13,7 @@
 
       <!-- .toolbar-header sits at the top of your app -->
       <header class="toolbar toolbar-header">
-        <h1 class="title">YouTube Playlister</h1>
+        <h1 class="title">ViewTube</h1>
         
         <div class="toolbar-actions">
           <div id="btn-back" class="btn btn-default">
@@ -33,8 +33,24 @@
       </header>
 
       <!-- Your app's content goes inside .window-content -->
-      <div class="window-content">
+      <div id="main-wrapper" class="window-content">
         
+        <template id="playlist-template">
+          <div class="playlist">
+            <div class="heading-container">
+              <span style="width:55%" id="plist-title" class="bold heading-container-item playlist-title">Title of Playlist Trying some really long title or something idk</span>
+              <span style="width:15%" id="channel-name" class="heading-container-item">by Channel Name</span>
+              <span style="width:10%" id="video-count" class="text-right heading-container-item">31 / 50</span>
+            </div>
+            <div class="playlist-content">
+              <div id="thumbnail" class="left-padding-4 thumbnail playlist-content-item"></div>
+              <div id="description" class="left-padding-2 description playlist-content-item text-left">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum obcaecati mollitia repellendus aliquam nulla explicabo delectus nemo, magni expedita ex eius ut ipsam quidem accusantium nobis, aliquid earum eum. Quisquam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis suscipit beatae totam, natus ratione, dolores quae tempora dignissimos amet, maxime accusantium, quia molestias laboriosam itaque ipsum? Obcaecati similique ducimus neque.
+              </div>
+            </div>
+          </div>
+        </template>
+
       </div>
 
 
