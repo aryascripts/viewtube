@@ -1,10 +1,10 @@
 import { Playlist } from './Playlist';
 import { HttpRequest } from './HttpRequest';
 import { api_key } from './APIAuth';
+const storage = require('electron-json-storage');
 
 var btnAdd:HTMLElement = document.getElementById('btn-url-add');
 var urlInput:HTMLElement = document.getElementById('url-input-container');
-
 var wrapper:HTMLElement = document.getElementById('main-wrapper');
 var template = (<HTMLTemplateElement>document.getElementById('playlist-template'));
 
@@ -13,6 +13,8 @@ const prefix:string = 'https://www.youtube.com/playlist?list=';
 //list of all the tabs for displaying
 var playlists = [];
 var request = new HttpRequest();
+loadData();
+
 
 //shows and hides the add button
 //first you toggle the add form, then if the check button is pressed,
@@ -24,7 +26,14 @@ btnAdd.addEventListener('click', () => {
 
 	if(urlInput.innerHTML.trim() !== '') {
 		checkButton.addEventListener('click', () => {
-			addPlaylist();
+			let url:string = (<HTMLInputElement>document.getElementById('url-text')).value;
+			if(url.startsWith(prefix)) {
+				addPlaylist(url.split('=')[1], 0);
+			}
+			//Not a valid url for playlist
+			else {
+				console.log('Please enter a valid playlist URL. For example: ' + prefix + '...');
+			}
 			toggleAddForm();
 		});
 	}
@@ -33,46 +42,37 @@ btnAdd.addEventListener('click', () => {
 //Creates a new Playlist object based on the url in the form.
 //Pushes object to the array of all playlists currently tracking
 //Called on checkmark button press
-function addPlaylist() {
-	let url:string = (<HTMLInputElement>document.getElementById('url-text')).value;
+function addPlaylist(id, watchCount) {
 
-	//Check of the user inserted a valid url for a playlist
-	if(url.startsWith(prefix)) {
-		let plist;
-		let id = url.split('=')[1];
-		getPlaylistInfo(id).then(info => {
-			plist = new Playlist(info);
-			getVideos(id).then(videos => {
-				plist.addVideos(videos);
-				displayPlaylist(plist);
-			});
+	getPlaylistInfo(id).then(info => {
+		let plist = new Playlist(info);
+		plist.setWatchCount(watchCount);
+		getVideos(id).then(videos => {
+			plist.addVideos(videos);
 			playlists.push(plist);
+			displayPlaylist(plist);
+			saveData();
 		});
-	}
-
-	//Not a valid url for playlist
-	else {
-		console.log('Please enter a valid playlist URL. For example: ' + prefix + '...');
-	}
-
-	
+	});
 }
 
 function displayPlaylist(plist:Playlist) {
-	var temp:HTMLElement = <HTMLElement>template.content.cloneNode(true);
+	let temp:HTMLElement = <HTMLElement>template.content.cloneNode(true);
+	let thumbUrl = plist.getThumbnailUrl();
+	let desc = (plist.getDescription() !== '') ? plist.getDescription() : 'There is no description available for this playlist.';
+
+
 	temp.querySelector('#plist-title').innerHTML = plist.getTitle();
 	temp.querySelector('#channel-name').innerHTML = plist.getChannel();
-	temp.querySelector('#video-count').innerHTML = plist.getLastVideoNumber().toString() + ' / ' + plist.getTotalVideos().toString();
-
-	let thumbUrl = plist.getThumbnailUrl();
+	temp.querySelector('#video-count').innerHTML = plist.getLastVideoNumber().toString() + ' / ' + plist.getTotalVideos().toString();	
 	temp.querySelector('#thumbnail').innerHTML = '<img src="' + thumbUrl + '" width="120px"/>';
-	temp.querySelector('#description').innerHTML = plist.getDescription();
+	temp.querySelector('#description').innerHTML = desc;
 	wrapper.appendChild(temp);
 }
 
 //Goes to the Google server (with HttpRequest) and retreives the playlist information
 function getPlaylistInfo(id:string) {
-	var info;
+	let info;
 	let location = 'https://www.googleapis.com/youtube/v3/playlists';
 	let headers = {
 		'id': id,
@@ -82,7 +82,7 @@ function getPlaylistInfo(id:string) {
 
 	return request.getResponse(location, headers)
 		.then(data => {
-			return data['items'];
+			return data;
 		})
 		.catch(error => {
 			console.log(error);
@@ -100,7 +100,7 @@ function getVideos(id:string) {
 
 	return request.getResponse(location, headers)
 		.then(data => {
-			return data['items'];
+			return data;
 		})
 		.catch(error => {
 			console.log(error);
@@ -122,3 +122,38 @@ function toggleBackButton() {
 	let backButton:HTMLElement = document.getElementById('btn-back');
 	backButton.classList.toggle('hidden');
 }
+
+
+/////////////// PLAYGROUND /////////////////
+
+function saveData() {
+
+	var data = { 'playlists': [] }
+
+	for(let i = 0; i < playlists.length; i++) {
+		data.playlists.push({
+			'id': playlists[i].getId(),
+			'lastVideo': playlists[i].getLastVideoNumber()
+		});
+	}
+	storage.set('playlists', data, error => {
+		if(error) throw error;
+	});
+}
+
+function loadData() {
+
+	
+	storage.get('playlists', (error, data) => {
+		if(error) { throw error; }
+
+		if(data.playlists) {
+			for(let i = 0; i < data.playlists.length; i++) {
+				addPlaylist(data.playlists[i].id, data.playlists[i].lastVideo);
+			}
+		}
+	});
+
+}
+
+

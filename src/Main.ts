@@ -20,10 +20,10 @@ export default class Main {
         // onReady fires.
         Main.mainWindow = new Main.BrowserWindow({
             show: false,
-            width: 600,
-            height: 300,
-            'minWidth': 500,
-            'minHeight': 200,
+            width: 750,
+            height: 530,
+            'minWidth': 600,
+            'minHeight': 350,
             'acceptFirstMouse': true,
             'titleBarStyle': 'hidden'
         });

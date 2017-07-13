@@ -7,7 +7,7 @@ export class Video {
 	description:string;
 	date:string;
 
-	constructor(video:object) {
+	constructor(video:any) {
 		if(video['length'] < 1) {
 			return;
 		}
