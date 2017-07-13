@@ -1,3 +1,6 @@
+* {
+	-webkit-user-select: none;
+}
 body {
 	-webkit-user-select: text;
 }
@@ -47,6 +50,7 @@ footer {
 	background-color: #F7F3F3;
 	background: -webkit-linear-gradient(top, #f7f3f3 0%,#ededed 99%);
 	margin: 0 0 20px 0;
+	cursor: pointer;
 }
 
 .heading-container {
@@ -61,6 +65,7 @@ footer {
 }
 
 .heading-container-item {
+	-webkit-user-select: text;
 	flex-grow: 1;
 	margin: 0 0 0 2%;
 	padding: 0 2% 0 2%;
