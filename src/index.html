@@ -21,13 +21,18 @@
               <span id="btn-url-span" class="icon icon-left-open"></span>
             </button>
 
-            <button class="btn btn-default">
-                <span class="icon icon-home"></span>
+            <a href="#!/">
+              <button class="btn btn-default">
+                  <span class="icon icon-home"></span>
               </button>
+            </a>
 
-            <button class="btn btn-default">
-                <span class="icon icon-cog"></span>
+            <a href="#!settings">
+              <button class="btn btn-default">
+                  <span class="icon icon-cog"></span>
               </button>
+            </a>
+            
           </div>
 
           <button id="btn-url-add" class="btn btn-default">
@@ -44,10 +49,11 @@
       </header>
 
       <!-- Your app's content goes inside .window-content -->
-      <div ng-view id="main-wrapper" class="window-content">
-
-        <!-- Angular components/pages are inserted here -->
-
+      <div id="main-wrapper" class="window-content">
+      
+        <ng-view>
+          <!-- Angular components/pages are inserted here -->  
+        </ng-view>
       </div>
     </div>
   
@@ -55,6 +61,7 @@
       require('./js/Playlister');
       require('./js/controllers/router');
       require('./js/controllers/homeController');
+      require('./js/controllers/settingsController');
     </script>
 
   </body>

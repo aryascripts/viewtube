@@ -2,6 +2,7 @@ import { Playlist } from './Playlist';
 import { HttpRequest } from './helpers/HttpRequest';
 import { api_key } from './APIAuth';
 import { Storage } from './helpers/Storage';
+
 var btnAdd:HTMLElement = document.getElementById('btn-url-add');
 var urlInput:HTMLElement = document.getElementById('url-input-container');
 var wrapper:HTMLElement = document.getElementById('main-wrapper');
