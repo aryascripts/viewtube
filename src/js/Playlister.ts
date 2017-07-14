@@ -1,8 +1,7 @@
 import { Playlist } from './Playlist';
 import { HttpRequest } from './HttpRequest';
 import { api_key } from './APIAuth';
-const storage = require('electron-json-storage');
-
+import { Storage } from './Storage';
 var btnAdd:HTMLElement = document.getElementById('btn-url-add');
 var urlInput:HTMLElement = document.getElementById('url-input-container');
 var wrapper:HTMLElement = document.getElementById('main-wrapper');
@@ -13,8 +12,9 @@ const prefix:string = 'https://www.youtube.com/playlist?list=';
 //list of all the tabs for displaying
 var playlists = [];
 var request = new HttpRequest();
-loadData();
+var storage = new Storage();
 
+loadPlaylists();
 
 //shows and hides the add button
 //first you toggle the add form, then if the check button is pressed,
@@ -51,7 +51,7 @@ function addPlaylist(id, watchCount) {
 			plist.addVideos(videos);
 			playlists.push(plist);
 			displayPlaylist(plist);
-			saveData();
+			storage.savePlaylists(playlists);
 		});
 	});
 }
@@ -123,37 +123,17 @@ function toggleBackButton() {
 	backButton.classList.toggle('hidden');
 }
 
-
-/////////////// PLAYGROUND /////////////////
-
-function saveData() {
-
-	var data = { 'playlists': [] }
-
-	for(let i = 0; i < playlists.length; i++) {
-		data.playlists.push({
-			'id': playlists[i].getId(),
-			'lastVideo': playlists[i].getLastVideoNumber()
-		});
-	}
-	storage.set('playlists', data, error => {
-		if(error) throw error;
-	});
-}
-
-function loadData() {
-
-	
-	storage.get('playlists', (error, data) => {
-		if(error) { throw error; }
-
-		if(data.playlists) {
-			for(let i = 0; i < data.playlists.length; i++) {
-				addPlaylist(data.playlists[i].id, data.playlists[i].lastVideo);
+function loadPlaylists() {
+	let data = storage.getPlaylists()
+		.then(data => {
+			if(data['playlists']) {
+				for(let i = 0; i < data['playlists'].length; i++) {
+					addPlaylist(data['playlists'][i].id, data['playlists'][i].lastVideo);
+				}
 			}
-		}
-	});
-
+		})
+		.catch(error => {
+			console.log(error);
+		})
 }
-
 
