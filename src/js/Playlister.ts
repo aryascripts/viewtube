@@ -14,7 +14,7 @@ var playlists = [];
 var request = new HttpRequest();
 var storage = new Storage();
 
-loadPlaylists();
+// loadPlaylists();
 
 //shows and hides the add button
 //first you toggle the add form, then if the check button is pressed,
@@ -60,13 +60,21 @@ function displayPlaylist(plist:Playlist) {
 	let temp:HTMLElement = <HTMLElement>template.content.cloneNode(true);
 	let thumbUrl = plist.getThumbnailUrl();
 	let desc = (plist.getDescription() !== '') ? plist.getDescription() : 'There is no description available for this playlist.';
+	let container = temp.querySelector('.playlist');
+	// temp.addEventListener('click', function() {
+	// 	console.log('clicked');
+	// });
+	container.id = plist.getId();
+	temp.querySelector('.plist-title').innerHTML = plist.getTitle();
+	temp.querySelector('.channel-name').innerHTML = plist.getChannel();
+	temp.querySelector('.video-count').innerHTML = plist.getLastVideoNumber().toString() + ' / ' + plist.getTotalVideos().toString();	
+	temp.querySelector('.thumbnail').innerHTML = '<img src="' + thumbUrl + '" width="120px"/>';
+	temp.querySelector('.description').innerHTML = desc;
 
+	container.addEventListener('click', () => {
+		console.log(plist);
+	});
 
-	temp.querySelector('#plist-title').innerHTML = plist.getTitle();
-	temp.querySelector('#channel-name').innerHTML = plist.getChannel();
-	temp.querySelector('#video-count').innerHTML = plist.getLastVideoNumber().toString() + ' / ' + plist.getTotalVideos().toString();	
-	temp.querySelector('#thumbnail').innerHTML = '<img src="' + thumbUrl + '" width="120px"/>';
-	temp.querySelector('#description').innerHTML = desc;
 	wrapper.appendChild(temp);
 }
 
@@ -82,6 +90,7 @@ function getPlaylistInfo(id:string) {
 
 	return request.getResponse(location, headers)
 		.then(data => {
+			console.log('quering google... (playlist)');
 			return data;
 		})
 		.catch(error => {
@@ -100,6 +109,7 @@ function getVideos(id:string) {
 
 	return request.getResponse(location, headers)
 		.then(data => {
+			console.log('quering google... (video)');
 			return data;
 		})
 		.catch(error => {

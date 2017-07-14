@@ -24,8 +24,8 @@ footer {
 .hidden {display: none;}
 
 .window {
-	-webkit-user-select: all;
-	user-select: all;
+	/*-webkit-user-select: all;*/
+	/*user-select: all;*/
 	background-color: #e3e3e3;
 }
 
@@ -72,6 +72,7 @@ footer {
 	color: #F7F3F3;
 	font-size: 14px;
 	font-family: 'Helvetica', 'Arial', sans-serif;
+	cursor: pointer;
 }
 
 .playlist-content {
@@ -83,4 +84,9 @@ footer {
 	flex-grow: 1;
 	padding: 3px 0 3px 0;
 
+}
+
+.playlist-content-item {
+	-webkit-user-select: text;
+	cursor: text;
 }
