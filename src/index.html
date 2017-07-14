@@ -1,28 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="viewTube">
   <head>
     <title>ViewTube</title>
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/photon.css">
     <link rel="stylesheet" href="css/style.css">
-
   </head>
-  <body>
-    <div class="window">
+  <body ng-controller="homeController">
 
+    <div class="window">
       <!-- .toolbar-header sits at the top of your app -->
       <header class="toolbar toolbar-header">
         <h1 class="title">ViewTube</h1>
         
         <div class="toolbar-actions">
-          <div id="btn-back" class="btn btn-default">
-            <span id="btn-url-span" class="icon icon-left-open"></span>
+
+          <div class="btn-group">
+            <button id="btn-back" class="btn btn-default">
+              <span id="btn-url-span" class="icon icon-left-open"></span>
+            </button>
+
+            <button class="btn btn-default">
+                <span class="icon icon-home"></span>
+              </button>
+
+            <button class="btn btn-default">
+                <span class="icon icon-cog"></span>
+              </button>
           </div>
 
-          <div id="btn-url-add" class="btn btn-default">
+          <button id="btn-url-add" class="btn btn-default">
             <span id="btn-url-span" class="icon icon-plus-circled"></span>
-          </div>
+          </button>
           <span id="url-input-container">
           </span>
 
@@ -30,33 +40,21 @@
                 <span class="icon icon-search"></span>&nbsp; Search
           </button>
         </div>
+
       </header>
 
       <!-- Your app's content goes inside .window-content -->
-      <div id="main-wrapper" class="window-content">
+      <div ng-view id="main-wrapper" class="window-content">
 
-        <template id="playlist-template">
-          <div class="playlist">
-            <div class="heading-container">
-              <span style="width:55%" class="bold plist-title heading-container-item playlist-title">Title of Playlist Trying some really long title or something idk</span>
-              <span style="width:15%" class="channel-name heading-container-item">by Channel Name</span>
-              <span style="width:10%" class="video-count text-right heading-container-item">31 / 50</span>
-            </div>
-            <div class="playlist-content">
-              <div class="left-padding-4 thumbnail playlist-content-item"></div>
-              <div class="left-padding-2 description playlist-content-item text-left">
-              </div>
-            </div>
-          </div>
-        </template>
+        <!-- Angular components/pages are inserted here -->
 
       </div>
-
-
     </div>
   
     <script>
       require('./js/Playlister');
+      require('./js/controllers/router');
+      require('./js/controllers/homeController');
     </script>
 
   </body>

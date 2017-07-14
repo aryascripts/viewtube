@@ -1,7 +1,7 @@
 import { Playlist } from './Playlist';
-import { HttpRequest } from './HttpRequest';
+import { HttpRequest } from './helpers/HttpRequest';
 import { api_key } from './APIAuth';
-import { Storage } from './Storage';
+import { Storage } from './helpers/Storage';
 var btnAdd:HTMLElement = document.getElementById('btn-url-add');
 var urlInput:HTMLElement = document.getElementById('url-input-container');
 var wrapper:HTMLElement = document.getElementById('main-wrapper');
@@ -9,7 +9,6 @@ var template = (<HTMLTemplateElement>document.getElementById('playlist-template'
 
 const prefix:string = 'https://www.youtube.com/playlist?list=';
 
-//list of all the tabs for displaying
 var playlists = [];
 var request = new HttpRequest();
 var storage = new Storage();
@@ -124,7 +123,7 @@ function toggleAddForm() {
 	btnSpan.classList.toggle('icon-plus-circled');
 	btnSpan.classList.toggle('icon-minus-circled');
 
-	let formElements:string = '<input id="url-text" style="width: 50%;" class="text-input" type="text" placeholder=" https://www.youtube.com/playlist?list=..."><div id="btn-check" class="btn btn-default"><span class="icon icon-check"></span></div>';
+	let formElements:string = '<input id="url-text" style="width: 50%;" class="text-input" type="text" placeholder=" https://www.youtube.com/playlist?list=..."><button id="btn-check" class="btn btn-default"><span class="icon icon-check"></span></button>';
 	urlInput.innerHTML = urlInput.innerHTML.trim() == '' ? formElements : '';
 }
 
@@ -139,6 +138,7 @@ function loadPlaylists() {
 			if(data['playlists']) {
 				for(let i = 0; i < data['playlists'].length; i++) {
 					addPlaylist(data['playlists'][i].id, data['playlists'][i].lastVideo);
+					// console.log(data['playlists'][i].id);
 				}
 			}
 		})
@@ -146,4 +146,3 @@ function loadPlaylists() {
 			console.log(error);
 		})
 }
-
