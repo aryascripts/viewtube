@@ -10,7 +10,6 @@ function homeController($scope, shared) {
 	var updatePlaylists = () => {
 		$scope.plists = shared.getPlaylists();
 		$scope.$apply();
-		console.log($scope.plists);
 	}
 
 	shared.registerObserver(updatePlaylists);

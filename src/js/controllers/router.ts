@@ -24,7 +24,6 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 	var notify = () => {
 		if(observers.length > 0) {
 			angular.forEach(observers, function(callback) {
-				console.log('performing callbacks...');
 				callback();
 			});
 		}
@@ -37,7 +36,6 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 		},
 		registerObserver: (callback) => {
 			observers.push(callback);
-			console.log('registered observer');
 		},
 
 		getPlaylists: 	() => playlists,
