@@ -3,7 +3,7 @@ import { Storage } from './../helpers/Storage';
 
 
 const angular = require('angular');
-angular.module('viewTube', [require('angular-route')])
+angular.module('viewTube', [require('angular-route'), require('angular-animate')])
 
 .service('shared', function() {
 	
@@ -13,22 +13,42 @@ angular.module('viewTube', [require('angular-route')])
 	var template = (<HTMLTemplateElement>document.getElementById('playlist-template'));
 
 	var playlists = [];
+	var current
 
 	var request = new HttpRequest();
 	var storage = new Storage();
 	const prefix:string = 'https://www.youtube.com/playlist?list=';
 
+	var observers = [];
+
+	var notify = () => {
+		if(observers.length > 0) {
+			angular.forEach(observers, function(callback) {
+				console.log('performing callbacks...');
+				callback();
+			});
+		}
+	}
+
 	return {
-		playlists: () => playlists,
+		setPlaylists: (value) => {
+			playlists = value;
+			notify();
+		},
+		registerObserver: (callback) => {
+			observers.push(callback);
+			console.log('registered observer');
+		},
 
-		btnAdd: () => btnAdd,
-		urlInput: () => urlInput,
-		wrapper: () => wrapper,
+		getPlaylists: 	() => playlists,
+		btnAdd: 		() => btnAdd,
+		urlInput: 		() => urlInput,
+		wrapper: 		() => wrapper,
 
-		request: () => request,
-		storage: () => storage,
-		prefix: () => prefix
-
+		request: 		() => request,
+		storage: 		() => storage,
+		prefix: 		() => prefix,
+		setCurrent:		(value) => current = value
 	}
 })
 

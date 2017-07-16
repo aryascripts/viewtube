@@ -41,9 +41,15 @@ function uiController($scope, shared) {
 			plist.setWatchCount(watchCount);
 			getVideos(id).then(videos => {
 				plist.addVideos(videos);
-				shared.playlists().push(plist);
-				console.log(shared.playlists());
-				shared.storage().savePlaylists(shared.playlists());
+
+				let temp = shared.getPlaylists();
+				temp.push(plist);
+
+				shared.storage().savePlaylists(temp)
+				.then(list => {
+					shared.setPlaylists(list);
+				});
+				
 			});
 		});
 	}
@@ -60,7 +66,6 @@ function uiController($scope, shared) {
 
 		return shared.request().getResponse(location, headers)
 			.then(data => {
-				console.log('quering google... (playlist)');
 				return data;
 			})
 			.catch(error => {
@@ -79,7 +84,6 @@ function uiController($scope, shared) {
 
 		return shared.request().getResponse(location, headers)
 			.then(data => {
-				console.log('quering google... (video)');
 				return data;
 			})
 			.catch(error => {
@@ -94,7 +98,7 @@ function uiController($scope, shared) {
 		btnSpan.classList.toggle('icon-plus-circled');
 		btnSpan.classList.toggle('icon-minus-circled');
 
-		let formElements:string = '<input id="url-text" style="width: 50%;" class="text-input" type="text" placeholder=" https://www.youtube.com/playlist?list=..."><button id="btn-check" class="btn btn-default"><span class="icon icon-check"></span></button>';
+		let formElements:string = '<input id="url-text" style="width: 50%;" class="text-input" type="text" placeholder=" https://www.youtube.com/playlist?list=..."><button id="btn-check" ng-click="update()" class="btn btn-default"><span class="icon icon-check"></span></button>';
 		shared.urlInput().innerHTML = shared.urlInput().innerHTML.trim() == '' ? formElements : '';
 	}
 

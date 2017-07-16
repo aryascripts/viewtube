@@ -1,20 +1,19 @@
-  <div ng-repeat="p in list" class="playlist">
+  <div ng-repeat="p in plists" class="playlist">
     <div class="heading-container">
       <span style="width:55%" class="bold plist-title heading-container-item playlist-title">
-      	{{ p.getTitle() }}
+      	{{ p.getTitle(); }}
       </span>
-      <span style="width:15%" class="channel-name heading-container-item">
-      	by {{ p.getChannel() }} 
+      <span style="width:25%" class="channel-name heading-container-item">
+      	by {{ p.getChannel(); }} 
       </span>
       <span style="width:10%" class="video-count text-right heading-container-item">
-      	 {{ p.getTotalVideos() }}
+      	 {{ p.getLastVideoNumber(); }} / {{ p.getTotalVideos(); }}
       </span>
     </div>
     <div class="playlist-content">
-      <div class="left-padding-4 thumbnail playlist-content-item"></div>
+      <div class="left-padding-4 thumbnail playlist-content-item"> <img ng-src="{{ p.getThumbnailUrl(); }}" width="120px" /> </div>
       <div class="left-padding-2 description playlist-content-item text-left">
+        {{ p.getDescription(); }}
       </div>
     </div>
   </div>
-
-{{ message }}

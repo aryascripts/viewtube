@@ -46,10 +46,10 @@ footer {
 }
 
 .playlist {
-	width: 100%;
+	width: 100vw;
 	background-color: #F7F3F3;
 	background: -webkit-linear-gradient(top, #f7f3f3 0%,#ededed 99%);
-	margin: 0 0 20px 0;
+	margin: 0 0 12px 0;
 	cursor: pointer;
 }
 
@@ -79,8 +79,6 @@ footer {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
-	/*justify-content: space-between;*/
-	/*align-items: flex-start;*/
 	flex-grow: 1;
 	padding: 3px 0 3px 0;
 
@@ -89,4 +87,22 @@ footer {
 .playlist-content-item {
 	-webkit-user-select: text;
 	cursor: text;
+}
+
+@keyframes fadeIn {
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+
+@keyframes fadeOut {
+	from { opacity: 1; }
+	to   { opacity: 0; }
+}
+
+/*.ng-leave {
+	animation: fadeOut 0.2s both ease-in; z-index: 9999;
+}*/
+
+.ng-enter {
+	animation: fadeIn 0.3s both ease-in; z-index: 9999;
 }

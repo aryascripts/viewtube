@@ -37,7 +37,7 @@ export class Playlist {
 		this.id 			= info['items']['0']['id'];
 		this.title 			= plist['title'];
 		this.channelName 	= plist['channelTitle'];
-		this.description 	= plist['description'];
+		this.description 	= plist['description'] || this.channelName + ' has not set a description for this playlist. Go bug them about it, not me!';
 		this.thumbnails 	= plist['thumbnails'];
 	}
 
