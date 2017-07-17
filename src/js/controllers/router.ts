@@ -13,14 +13,14 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 	var template = (<HTMLTemplateElement>document.getElementById('playlist-template'));
 
 	var playlists = [];
-	var current
 
 	var request = new HttpRequest();
 	var storage = new Storage();
 	const prefix:string = 'https://www.youtube.com/playlist?list=';
 
 	var observers = [];
-
+	var noPlaylists;
+	
 	var notify = () => {
 		if(observers.length > 0) {
 			angular.forEach(observers, function(callback) {
@@ -46,7 +46,6 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 		request: 		() => request,
 		storage: 		() => storage,
 		prefix: 		() => prefix,
-		setCurrent:		(value) => current = value
 	}
 })
 

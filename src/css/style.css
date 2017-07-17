@@ -22,6 +22,9 @@ footer {
 .left-padding-4 	{ padding: 0 0 0 4%; }
 .left-padding-2 	{ padding: 0 0 0 2%; }
 .hidden 			{ display: none; }
+.windowWidth		{ width: 100vw; }
+.bottom-margin-px  	{ margin-bottom: 2px; }
+.opacity			{ opacity: 0.4; }
 
 .window {
 	/*-webkit-user-select: all;*/
@@ -60,20 +63,28 @@ footer {
 	justify-content: space-between;
 	align-items: flex-start;
 	padding: 3px 0 3px 0;
-	background: -webkit-linear-gradient(top, #b50505 0%,#8e0000 100%);
-	background-color: #B50505;
 }
+
+.gradient {
+	background: -webkit-linear-gradient(top, #b50505 0%,#8e0000 100%);
+	background-color: #b50505;
+}
+
+.flat { background-color: #b50505; }
 
 .heading-container-item {
 	-webkit-user-select: text;
 	flex-grow: 1;
 	margin: 0 0 0 2%;
 	padding: 0 2% 0 2%;
-	color: #F7F3F3;
+	
 	font-size: 14px;
 	font-family: 'Helvetica', 'Arial', sans-serif;
 	cursor: pointer;
+	text-align: left;
 }
+
+.white { color: #F7F3F3; }
 
 .playlist-content {
 	display: flex;
@@ -99,10 +110,6 @@ footer {
 	to   { opacity: 0; }
 }
 
-/*.ng-leave {
-	animation: fadeOut 0.2s both ease-in; z-index: 9999;
-}*/
-
 .ng-enter {
 	animation: fadeIn 0.3s both ease-in; z-index: 9999;
 }
@@ -110,8 +117,7 @@ footer {
 .no-playlists {
 	width: 100vw;
 	text-align: center;
-	margin-top: 8%;
-
+	margin-top: 3%;
 	font-family: 'Monaco','Arial',monospace;
 	font-size: 12pt;
 }

@@ -40,19 +40,12 @@ function uiController($scope, shared) {
 			let plist = new Playlist(info);
 			plist.setWatchCount(watchCount);
 
-			let max = info['items'][0]['contentDetails']['itemCount'];
-			getVideos(id, max).then(videos => {
-				plist.addVideos(videos);
-				console.log(plist);
+			let temp = shared.getPlaylists();
+			temp.push(plist);
 
-				let temp = shared.getPlaylists();
-				temp.push(plist);
-
-				shared.storage().savePlaylists(temp)
-				.then(list => {
-					shared.setPlaylists(list);
-				});
-				
+			shared.storage().savePlaylists(temp)
+			.then(list => {
+				shared.setPlaylists(list);
 			});
 		});
 	}
@@ -65,25 +58,6 @@ function uiController($scope, shared) {
 			'id': id,
 			'part':'snippet,contentDetails',
 			'key': api_key,
-		}
-
-		return shared.request().getResponse(location, headers)
-			.then(data => {
-				return data;
-			})
-			.catch(error => {
-				console.log(error);
-			});
-	}
-
-	//Goes to the Google server (with HttpRequest) and retreives the videos inside a playlist id
-	function getVideos(id:string, max) {
-		let location = 'https://www.googleapis.com/youtube/v3/playlistItems';
-		let headers = {
-			'playlistId': id,
-			'part':'snippet',
-			'key': api_key,
-			'maxResults': max
 		}
 
 		return shared.request().getResponse(location, headers)

@@ -2,16 +2,18 @@ require('angular').module('viewTube')
 .controller('homeController', homeController);
 
 function homeController($scope, shared) {
-	
-	var msgBox = document.querySelector('.no-playlists');
-	console.log(msgBox);
-
 	$scope.plists = shared.getPlaylists();
+
+	$scope.displayMsg = true;
 
 	var updatePlaylists = () => {
 		$scope.plists = shared.getPlaylists();
-		if($scope.plists.length > 0) {
-			msgBox.classList.add('hidden');
+		if($scope.plists.length > 0 ) {
+			$scope.displayMsg = false;
+			shared.noPlaylists = false;
+		} else {
+			$scope.displayMsg = true;
+			shared.noPlaylists = true;
 		}
 
 		$scope.$apply();
