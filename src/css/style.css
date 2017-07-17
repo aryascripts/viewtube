@@ -1,9 +1,18 @@
-* {
-	-webkit-user-select: none;
-}
-body {
-	-webkit-user-select: text;
-}
+* { -webkit-user-select: none; }
+body { -webkit-user-select: text; }
+.text-left 			{ text-align: left; }
+.text-right 		{ text-align: right; }
+.bold 				{ font-weight: bold; }
+.left-padding-4 	{ padding: 0 0 0 4%; }
+.left-padding-2 	{ padding: 0 0 0 2%; }
+.hidden 			{ display: none; }
+.windowWidth		{ width: 100vw; }
+.bottom-margin-px  	{ margin-bottom: 2px; }
+.opacity			{ opacity: 0.4; }
+.unwatched 			{ background-color: #b50505; }
+.watched 			{ background-color: #6B6969; }
+.no-margin 			{ margin: 0; }
+.margin-b-12		{ margin-bottom: 12px; }
 
 header {
 	-webkit-app-region: drag;
@@ -16,15 +25,6 @@ footer {
 	left: 0;
 	bottom:0;
 }
-.text-left 			{ text-align: left; }
-.text-right 		{ text-align: right; }
-.bold 				{ font-weight: bold; }
-.left-padding-4 	{ padding: 0 0 0 4%; }
-.left-padding-2 	{ padding: 0 0 0 2%; }
-.hidden 			{ display: none; }
-.windowWidth		{ width: 100vw; }
-.bottom-margin-px  	{ margin-bottom: 2px; }
-.opacity			{ opacity: 0.4; }
 
 .window {
 	/*-webkit-user-select: all;*/
@@ -52,7 +52,6 @@ footer {
 	width: 100vw;
 	background-color: #F7F3F3;
 	background: -webkit-linear-gradient(top, #f7f3f3 0%,#ededed 99%);
-	margin: 0 0 12px 0;
 	cursor: pointer;
 }
 
@@ -70,8 +69,6 @@ footer {
 	background-color: #b50505;
 }
 
-.flat { background-color: #b50505; }
-
 .heading-container-item {
 	-webkit-user-select: text;
 	flex-grow: 1;
@@ -85,6 +82,7 @@ footer {
 }
 
 .white { color: #F7F3F3; }
+.note-bg { background-color: #494949; }
 
 .playlist-content {
 	display: flex;
@@ -114,10 +112,43 @@ footer {
 	animation: fadeIn 0.3s both ease-in; z-index: 9999;
 }
 
-.no-playlists {
+.note {
 	width: 100vw;
 	text-align: center;
 	margin-top: 3%;
 	font-family: 'Monaco','Arial',monospace;
 	font-size: 12pt;
 }
+
+.buttons-container {
+	width: 100vw;
+	display: flex;
+	min-height: 10px;
+	justify-content: center;
+}
+
+.button {
+	width: 12%;
+	color: #f2f2f2;
+	font-family: 'Monaco', monospace;
+	font-size: 12pt;
+	text-align: center;
+	margin: 0 1% 0 1%;
+	cursor: pointer;
+}
+
+.video-page {
+	-webkit-app-region: drag;
+	-webkit-user-select: none;
+	padding: 0;
+}
+
+#player {
+	width: 100vw;
+	height: 100vh;
+	background-color: #000;
+}
+
+.green-bg { background-color: #008E09; }
+.red-bg { background-color: #FF0303; }
+.yellow-bg { background-color: #FFBF00; }

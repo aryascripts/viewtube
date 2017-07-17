@@ -16,6 +16,7 @@
     "angular": "^1.6.5",
     "angular-animate": "^1.6.5",
     "angular-route": "^1.6.5",
-    "electron-json-storage": "^3.0.6"
+    "electron-json-storage": "^3.0.6",
+    "youtube-player": "^5.4.0"
   }
 }

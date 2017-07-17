@@ -8,7 +8,7 @@ function homeController($scope, shared) {
 
 	var updatePlaylists = () => {
 		$scope.plists = shared.getPlaylists();
-		if($scope.plists.length > 0 ) {
+		if($scope.plists !== undefined && $scope.plists.length > 0) {
 			$scope.displayMsg = false;
 			shared.noPlaylists = false;
 		} else {

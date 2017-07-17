@@ -1,4 +1,4 @@
-  <div ng-repeat="p in plists" class="playlist">
+  <div ng-repeat="p in plists" class="playlist margin-b-12">
     <a href="#!playlist/{{$index}}">
       <div class="heading-container gradient">
         <span style="width:55%" class="bold plist-title heading-container-item playlist-title white">
@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <div class="{{displayMsg ? '' : 'hidden' }} no-playlists">
+  <div class="{{displayMsg ? '' : 'hidden' }} note">
     Press  <button id="btn-url-add" class="btn btn-default">
             <span id="btn-url-span" class="icon icon-plus-circled"></span>
           </button> to add a playlist!

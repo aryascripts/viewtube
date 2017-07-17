@@ -1,9 +1,42 @@
-<div class="playlist-info">
-	
+<div class="no-margin playlist">
+
+    <div class="heading-container gradient">
+      <span style="width:55%" class="bold plist-title heading-container-item playlist-title white">
+      	{{ plist.getTitle(); }}
+      </span>
+      <span style="width:25%" class="channel-name heading-container-item white">
+      	by {{ plist.getChannel(); }} 
+      </span>
+      <span style="width:10%" class="video-count text-right heading-container-item white">
+      	 {{ plist.getLastVideoNumber(); }} / {{ plist.getTotalVideos(); }}
+      </span>
+    </div>
+  <div class="playlist-content">
+    <div class="left-padding-4 thumbnail playlist-content-item"> <img ng-src="{{ plist.getThumbnailUrl(); }}" width="120px" /> </div>
+    <div class="left-padding-2 description playlist-content-item text-left">
+      {{ plist.getDescription(); }}
+    </div>
+  </div>
+</div>
+<div class="buttons-container">
+	<div ng-click="previous()" class="red-bg button">
+		< Previous
+	</div>
+	<div ng-click="current()" class="yellow-bg button">
+		Current
+	</div>
+	<div ng-click="next()" class="green-bg button">
+		Next >
+	</div>
 </div>
 
-<div  ng-repeat="video in videos" class="flat bottom-margin-px windowWidth heading-container">
+<div class="white note-bg note">
+	Click a video to start watching (marks all previous videos as watched).
+</div>
+
+<div  ng-repeat="video in videos" ng-click="loadVideo($index)" class="{{ ($index <= watchCount) ? 'watched' : 'unwatched' }} flat bottom-margin-px windowWidth heading-container">
 	<span style="width: 5%;" class="white heading-container-item"> {{ $index+1 }} </span>
 	<span style="width: 70%;" class="white heading-container-item"> {{ video.getTitle(); }} </span>
 	<span style="width: 25%;"class="white heading-container-item"> {{  }} </span>
 </div>
+

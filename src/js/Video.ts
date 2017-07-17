@@ -12,6 +12,7 @@ export class Video {
 	getChannel = () => this.channelName;
 	getDescription = () => this.description;
 	getDate = () => this.date;
+	getId = () => this.id;
 
 	constructor(video:any) {
 		if(video['length'] < 1) {
