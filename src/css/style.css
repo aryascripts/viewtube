@@ -16,12 +16,12 @@ footer {
 	left: 0;
 	bottom:0;
 }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
-.bold { font-weight: bold; }
-.left-padding-4 { padding: 0 0 0 4%; }
-.left-padding-2 {padding: 0 0 0 2%;}
-.hidden {display: none;}
+.text-left 			{ text-align: left; }
+.text-right 		{ text-align: right; }
+.bold 				{ font-weight: bold; }
+.left-padding-4 	{ padding: 0 0 0 4%; }
+.left-padding-2 	{ padding: 0 0 0 2%; }
+.hidden 			{ display: none; }
 
 .window {
 	/*-webkit-user-select: all;*/
@@ -105,4 +105,13 @@ footer {
 
 .ng-enter {
 	animation: fadeIn 0.3s both ease-in; z-index: 9999;
+}
+
+.no-playlists {
+	width: 100vw;
+	text-align: center;
+	margin-top: 8%;
+
+	font-family: 'Monaco','Arial',monospace;
+	font-size: 12pt;
 }
