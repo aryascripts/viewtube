@@ -3,7 +3,7 @@ import { Storage } from './../helpers/Storage';
 
 
 const angular = require('angular');
-angular.module('viewTube', [require('angular-route'), require('angular-animate')])
+angular.module('viewTube', [require('angular-route'), require('angular-animate'), require('angular-route')])
 
 .service('shared', function() {
 	
@@ -13,18 +13,17 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 	var template = (<HTMLTemplateElement>document.getElementById('playlist-template'));
 
 	var playlists = [];
-	var current
 
 	var request = new HttpRequest();
 	var storage = new Storage();
 	const prefix:string = 'https://www.youtube.com/playlist?list=';
 
 	var observers = [];
-
+	var noPlaylists;
+	
 	var notify = () => {
 		if(observers.length > 0) {
 			angular.forEach(observers, function(callback) {
-				console.log('performing callbacks...');
 				callback();
 			});
 		}
@@ -37,7 +36,6 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 		},
 		registerObserver: (callback) => {
 			observers.push(callback);
-			console.log('registered observer');
 		},
 
 		getPlaylists: 	() => playlists,
@@ -48,7 +46,6 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 		request: 		() => request,
 		storage: 		() => storage,
 		prefix: 		() => prefix,
-		setCurrent:		(value) => current = value
 	}
 })
 
@@ -61,7 +58,7 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 		})
 
 	//playlist page displays videos in a single playlist
-		.when('/playlist', {
+		.when('/playlist/:id', {
 			templateUrl : 'components/playlist.html',
 			controller : 'playlistController'
 		})

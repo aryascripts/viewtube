@@ -6,6 +6,13 @@ export class Video {
 	thumbnails:object;
 	description:string;
 	date:string;
+	duration:string;
+
+	getTitle = () => this.title;
+	getChannel = () => this.channelName;
+	getDescription = () => this.description;
+	getDate = () => this.date;
+	getId = () => this.id;
 
 	constructor(video:any) {
 		if(video['length'] < 1) {

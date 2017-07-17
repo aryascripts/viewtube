@@ -6,14 +6,12 @@ export class Storage {
 			(resolve, reject) => {
 				var data = { 'playlists': [] }
 
-				console.log('saving playlists...');
 				for(let i = 0; i < arr.length; i++) {
 					data.playlists.push({
 						'id': arr[i].getId(),
 						'lastVideo': arr[i].getLastVideoNumber()
 					});
 				}
-				console.log(data);
 				this.storage.set('playlists', data, error => {
 					if(error) { reject(error);	} 
 					resolve(arr);
@@ -28,7 +26,6 @@ export class Storage {
 			(resolve, reject) => {
 				this.storage.get('playlists', (error, data) => {
 					if(error) { reject(error); }
-					console.log(data);
 					resolve(data);
 				});
 			});

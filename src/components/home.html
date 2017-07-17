@@ -1,19 +1,27 @@
-  <div ng-repeat="p in plists" class="playlist">
-    <div class="heading-container">
-      <span style="width:55%" class="bold plist-title heading-container-item playlist-title">
-      	{{ p.getTitle(); }}
-      </span>
-      <span style="width:25%" class="channel-name heading-container-item">
-      	by {{ p.getChannel(); }} 
-      </span>
-      <span style="width:10%" class="video-count text-right heading-container-item">
-      	 {{ p.getLastVideoNumber(); }} / {{ p.getTotalVideos(); }}
-      </span>
-    </div>
+  <div ng-repeat="p in plists" class="playlist margin-b-12">
+    <a href="#!playlist/{{$index}}">
+      <div class="heading-container gradient">
+        <span style="width:55%" class="bold plist-title heading-container-item playlist-title white">
+        	{{ p.getTitle(); }}
+        </span>
+        <span style="width:25%" class="channel-name heading-container-item white">
+        	by {{ p.getChannel(); }} 
+        </span>
+        <span style="width:10%" class="video-count text-right heading-container-item white">
+        	 {{ p.getLastVideoNumber(); }} / {{ p.getTotalVideos(); }}
+        </span>
+      </div>
+    </a>
     <div class="playlist-content">
       <div class="left-padding-4 thumbnail playlist-content-item"> <img ng-src="{{ p.getThumbnailUrl(); }}" width="120px" /> </div>
       <div class="left-padding-2 description playlist-content-item text-left">
         {{ p.getDescription(); }}
       </div>
     </div>
+  </div>
+
+  <div class="{{displayMsg ? '' : 'hidden' }} note">
+    Press  <button id="btn-url-add" class="btn btn-default">
+            <span id="btn-url-span" class="icon icon-plus-circled"></span>
+          </button> to add a playlist!
   </div>

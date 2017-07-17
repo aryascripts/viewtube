@@ -28,10 +28,10 @@ export class Playlist {
 		if(info['length'] < 1) {
 			return;
 		}
-		this.lastVideo = 0;
+		this.lastVideo = -1;
 		this.videos 		= [];
 		this.obj 			= info;
-		this.totalVideos = 4;
+		this.totalVideos 	= info['items'][0]['contentDetails']['itemCount'];
 
 		let plist 			= info['items'][0]['snippet'];
 		this.id 			= info['items']['0']['id'];
@@ -47,7 +47,6 @@ export class Playlist {
 		for(let i = 0; i < list.length; i++) {
 			this.videos.push(new Video(list[i]));
 		}
-		this.totalVideos = videos['pageInfo']['totalResults']
 	}
 
 }

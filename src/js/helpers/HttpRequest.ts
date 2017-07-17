@@ -19,6 +19,7 @@ export class HttpRequest {
 				}
 
 				http.onerror = () => reject(http.statusText);
+				console.log('querying google...');
 				http.send();
 		});
 	}
@@ -30,9 +31,10 @@ export class HttpRequest {
 			if(headers.hasOwnProperty(prop)) {
 				let name = prop;
 				let val = headers[prop];
-				url += prop + '=' + val + '&';
+				url += prop + '=' + encodeURIComponent(val) + '&';
 			}
 		}
-		return url.slice(0, -1);
+		url = url.slice(0, -1);	
+		return url;
 	}
 }
