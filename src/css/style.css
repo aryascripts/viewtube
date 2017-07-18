@@ -9,7 +9,7 @@ body { -webkit-user-select: text; }
 .windowWidth		{ width: 100vw; }
 .bottom-margin-px  	{ margin-bottom: 2px; }
 .opacity			{ opacity: 0.4; }
-.unwatched 			{ background-color: #b50505; }
+.unwatched 			{ background: -webkit-linear-gradient(left, #6b6969 0%,#6b6969 51%,#b50505 51%); }
 .watched 			{ background-color: #6B6969; }
 .no-margin 			{ margin: 0; }
 .margin-b-12		{ margin-bottom: 12px; }
