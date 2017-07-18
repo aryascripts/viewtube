@@ -98,17 +98,20 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		});
 	}
 
-	function checkEnoughWatched(time) {
-
-
-	}
-
-	ipcRenderer.on('load-next', (event, args) => {
+	$scope.loadNext = function() {
 		if($scope.watchCount < playlists[thisIndex].totalVideos) {
 			$scope.loadVideo(++$scope.watchCount);
 		} else {
 			Main.closeVideoWindow();
 		}
+	}
+
+	function checkEnoughWatched(time) {
+		
+	}
+
+	ipcRenderer.on('load-next', (event, args) => {
+		$scope.loadNext();
 	});
 
 }

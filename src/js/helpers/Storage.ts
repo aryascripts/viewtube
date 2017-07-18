@@ -17,17 +17,38 @@ export class Storage {
 					resolve(arr);
 				});
 			}
-		);
-		
+		);	
 	}
 
-	public getPlaylists() {
+	public saveConfig(values) {
 		return new Promise(
 			(resolve, reject) => {
-				this.storage.get('playlists', (error, data) => {
+				this.storage.set('config', values, error => {
+					if(error) { reject(error); }
+					resolve(values);
+				});
+			}
+		);
+	}
+
+	public get(obj) {
+		return new Promise(
+			(resolve, reject) => {
+				this.storage.get(obj, (error, data) => {
 					if(error) { reject(error); }
 					resolve(data);
 				});
-			});
+			}
+		);
+	}
+	public set(str, obj) {
+		return new Promise(
+			(resolve, reject) => {
+				this.storage.set(str, obj, error => {
+					if(error) { reject(error); }
+					resolve(str);
+				});
+			}
+		);
 	}
 }

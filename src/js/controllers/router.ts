@@ -11,16 +11,17 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 	var urlInput:HTMLElement = document.getElementById('url-input-container');
 	var wrapper:HTMLElement = document.getElementById('main-wrapper');
 	var template = (<HTMLTemplateElement>document.getElementById('playlist-template'));
-
-	var playlists = [];
+	const prefix:string = 'https://www.youtube.com/playlist?list=';
 
 	var request = new HttpRequest();
 	var storage = new Storage();
-	const prefix:string = 'https://www.youtube.com/playlist?list=';
-
 	var observers = [];
 	var noPlaylists;
-	
+
+	var config = [];
+
+	var playlists = [];
+
 	var notify = () => {
 		if(observers.length > 0) {
 			angular.forEach(observers, function(callback) {
@@ -37,7 +38,12 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 		registerObserver: (callback) => {
 			observers.push(callback);
 		},
+		setConfig: (value) => {
+			config = value;
+			storage.set('config', value);
+		},
 
+		config: 		() => config,
 		getPlaylists: 	() => playlists,
 		btnAdd: 		() => btnAdd,
 		urlInput: 		() => urlInput,

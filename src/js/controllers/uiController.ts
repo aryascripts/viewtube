@@ -6,6 +6,7 @@ require('angular').module('viewTube')
 
 function uiController($scope, shared) {
 
+	loadConfig();
 	loadPlaylists();
 
 	//shows and hides the add button
@@ -20,7 +21,7 @@ function uiController($scope, shared) {
 			checkButton.addEventListener('click', () => {
 				let url:string = (<HTMLInputElement>document.getElementById('url-text')).value;
 				if(url.startsWith(shared.prefix())) {
-					addPlaylist(url.split('=')[1], 0);
+					addPlaylist(url.split('=')[1], -1);
 				}
 				//Not a valid url for playlist
 				else {
@@ -86,7 +87,7 @@ function uiController($scope, shared) {
 	}
 
 	function loadPlaylists() {
-		let data = shared.storage().getPlaylists()
+		let data = shared.storage().get('playlists')
 			.then(data => {
 				if(data['playlists']) {
 					for(let i = 0; i < data['playlists'].length; i++) {
@@ -97,6 +98,29 @@ function uiController($scope, shared) {
 			.catch(error => {
 				console.log(error);
 			})
+	}
+
+	function loadConfig() {
+		let config;
+		shared.storage().get('config').then(data => {
+			if(isEmpty(data)) {
+				config = {
+					'dark':false,
+					'autoplay':false,
+					'iframe':true,
+					'alwaysontop':false,
+					'default': 'sequential'
+				}
+			} else {
+				config = data;
+			}
+			shared.setConfig(config);
+			console.log(shared.config());
+		});
+	}
+
+	function isEmpty(obj){
+		return Object.keys(obj).length === 0;
 	}
 
 }
