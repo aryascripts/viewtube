@@ -1,7 +1,10 @@
 import {BrowserWindow} from 'electron';
+const {ipcMain} = require('electron');
 
 export default class Main {
     static mainWindow: Electron.BrowserWindow;
+    static videoWindow: Electron.BrowserWindow;
+
     static application: Electron.App;
     static BrowserWindow;
     static onWindowAllClosed() {
@@ -28,18 +31,58 @@ export default class Main {
             'titleBarStyle': 'hidden'
         });
 
+        console.log('registering event listener');
+
         Main.mainWindow.loadURL('file://' + __dirname + '/index.html');
         Main.mainWindow.on('closed', Main.onClose);
         Main.mainWindow.once('ready-to-show', () => {
             Main.mainWindow.show();
+
         });
     }
-    static main(app: Electron.App,browserWindow: typeof BrowserWindow){
+    static main(app: Electron.App, browserWindow: typeof BrowserWindow){
         Main.BrowserWindow = browserWindow;
         Main.application = app;
         Main.application.on('window-all-closed',Main.onWindowAllClosed);
         Main.application.on('ready', Main.onReady);
     }
+
+    static createVideoWindow(videoId) {
+
+        console.log('video id: ' + videoId);
+        Main.videoWindow = new BrowserWindow({
+            show: false,
+            width: 750,
+            height: 530,
+            'minWidth': 600,
+            'minHeight': 350,
+            'acceptFirstMouse': true,
+            'titleBarStyle': 'hidden'
+        });
+
+        Main.videoWindow.once('ready-to-show', () => {
+            Main.videoWindow.show();
+        });
+
+        Main.videoWindow.on('closed', () => {
+            Main.videoWindow = null;
+        });
+
+        Main.changeVideoId(videoId);
+    }
+
+    static closeVideoWindow() {
+        Main.videoWindow.close();
+    }
+
+    static changeVideoId(videoId) {
+        if(!Main.videoWindow) {
+            Main.createVideoWindow(videoId);
+        }
+        Main.videoWindow.loadURL('file://' + __dirname + '/components/video.html?id=' + videoId);
+    }
 }
+
+
 
 

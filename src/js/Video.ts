@@ -15,6 +15,7 @@ export class Video {
 	getId = () => this.id;
 
 	constructor(video:any) {
+		console.log(video);
 		if(video['length'] < 1) {
 			return;
 		}

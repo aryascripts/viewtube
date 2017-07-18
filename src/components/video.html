@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="../css/style.css">
-    <script type="text/javascript" src='youtube.js'></script>
+    
     <style>
     	body {
     		margin: 0;
@@ -17,17 +17,6 @@
     <div id="player">
     	
     </div>
-
-    <script>
-    var id = window.location.search.substring(1).split('=')[1];
-    
-    var player = YouTubePlayer('player', {videoId: id});
-
-    player
-    	.playVideo()
-    	.then(() => {
-    		console.log('playing video...')
-    	})
-    </script>
+    <script type="text/javascript" src='youtube.js'></script>
 </body>
 </html>

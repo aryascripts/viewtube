@@ -1,7 +1,14 @@
 import { api_key } from './../APIAuth';
+
 const { BrowserWindow } = require('electron').remote;
+const remote = require('electron').remote;
+const {ipcRenderer} = require('electron');
+
+import Main from './../../Main';
 
 var max = 50;
+
+var videoWindow = null;;
 
 require('angular').module('viewTube')
 .controller('playlistController', playlistController);
@@ -59,7 +66,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		let location = 'https://www.googleapis.com/youtube/v3/playlistItems';
 		let headers = {
 			'playlistId': id,
-			'part':'snippet',
+			'part':'snippet,contentDetails',
 			'key': api_key,
 			'maxResults': max
 		};
@@ -84,28 +91,26 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 			$scope.watchCount = n;
 			shared.setPlaylists(playlists);
 			shared.storage().savePlaylists(playlists);
+
+
+			console.log('sending event...');
+			ipcRenderer.send('create-window', $scope.videos[n].getId());
 		});
-		createVideoWindow($scope.videos[n].getId());
 	}
 
-	function createVideoWindow(videoId) {
-		console.log('video id: ' + videoId);
-		var vidWin = new BrowserWindow({
-			show: false,
-		    width: 750,
-		    height: 530,
-		    'minWidth': 600,
-		    'minHeight': 350,
-		    'acceptFirstMouse': true,
-		    'titleBarStyle': 'hidden'
-		});
-		vidWin.once('ready-to-show', () => {
-            vidWin.show();
-        });
-		vidWin.on('closed', () => {
-			vidWin = null;
-		});
-		vidWin.loadURL('file://' + __dirname + '/../../components/video.html?id=' + videoId);
+	function checkEnoughWatched(time) {
+
+
 	}
+
+	ipcRenderer.on('load-next', (event, args) => {
+		if($scope.watchCount < playlists[thisIndex].totalVideos) {
+			$scope.loadVideo(++$scope.watchCount);
+		} else {
+			Main.closeVideoWindow();
+		}
+	});
+
 }
+
 
