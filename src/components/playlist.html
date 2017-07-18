@@ -31,6 +31,6 @@
 <div ng-repeat="video in videos" ng-click="loadVideo($index)" class="{{ ($index <= watchCount) ? 'watched' : 'unwatched' }} bottom-margin-px windowWidth heading-container">
 	<span style="width: 5%;" class="white heading-container-item"> {{ $index+1 }} </span>
 	<span style="width: 70%;" class="white heading-container-item"> {{ video.getTitle(); }} </span>
-	<span style="width: 25%;"class="white heading-container-item"> {{  }} </span>
+	<span style="width: 25%;"class="white heading-container-item"> {{ video.getDuration(); }} </span>
 </div>
 

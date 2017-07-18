@@ -1,5 +1,7 @@
 export class HttpRequest {
 	constructor() {}
+	
+	getRes = (url, head) => this.getResponse(url, head);
 
 	public getResponse(url, headers) {
 		return new Promise(
@@ -23,6 +25,8 @@ export class HttpRequest {
 				http.send();
 		});
 	}
+
+
 
 	private addHeaders(url, headers) {
 		url += '?';

@@ -41,6 +41,8 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 								.then(() => {
 
 								});
+						} else {
+							getMoreInfo();
 						}
 					});
 			});
@@ -50,16 +52,36 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 			.then(moreVideos => {
 				$timeout(function() {
 					$scope.plist.addVideos(moreVideos);
-					// $scope.$apply();
+					$scope.videos = $scope.plist.videos;
 				});
 				
 				if(moreVideos['nextPageToken'] !== undefined) {
 					nextPage($scope.plist.id, moreVideos['nextPageToken']);
+				} else {
+					getMoreInfo();
 				}
 
 			});
 	}
 
+	function getMoreInfo() {
+		let info = [];
+		let url = 'https://www.googleapis.com/youtube/v3/videos';
+
+		for(let i = 0; i < $scope.videos.length; i++) {
+			let headers = {
+				'id': $scope.videos[i].getId(),
+				'key':api_key,
+				'part':'contentDetails,snippet'
+			};	
+			shared.request().getResponse(url, headers)
+			.then(data => {
+				$scope.videos[i].setData(data);
+				$scope.plist.videos[i] = $scope.videos[i];
+				$scope.$apply();
+			});	
+		}
+	}
 
 	//Goes to the Google server (with HttpRequest) and retreives the videos inside a playlist id
 	function getVideos(id:string, page:string) {
