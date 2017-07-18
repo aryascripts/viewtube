@@ -1,2 +1,2 @@
-# youtube-playlister
-A YouTube playlist-listing application to manage your playlists.
+# ViewTube
+A YouTube playlist application to manage and watch playlists on YouTube.
