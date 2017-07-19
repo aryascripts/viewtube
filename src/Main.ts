@@ -47,9 +47,9 @@ export default class Main {
         Main.application.on('ready', Main.onReady);
     }
 
-    static createVideoWindow(videoId) {
+    static createVideoWindow(video) {
 
-        console.log('video id: ' + videoId);
+        console.log('video id: ' + video.id );
         Main.videoWindow = new BrowserWindow({
             show: false,
             width: 750,
@@ -68,18 +68,24 @@ export default class Main {
             Main.videoWindow = null;
         });
 
-        Main.changeVideoId(videoId);
+        Main.changeVideoId(video);
     }
 
     static closeVideoWindow() {
         Main.videoWindow.close();
     }
 
-    static changeVideoId(videoId) {
+    static changeVideoId(video) {
         if(!Main.videoWindow) {
-            Main.createVideoWindow(videoId);
+            Main.createVideoWindow(video);
         }
-        Main.videoWindow.loadURL('file://' + __dirname + '/components/video.html?id=' + videoId);
+        console.log('file://' + __dirname
+            + '/components/video.html?id=' + video.id
+            + '&time='+ video.time);
+
+        Main.videoWindow.loadURL('file://' + __dirname
+            + '/components/video.html?id=' + video.id
+            + '&time='+ video.time);
     }
 }
 

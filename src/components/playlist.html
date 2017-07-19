@@ -8,7 +8,7 @@
       	by {{ plist.getChannel(); }} 
       </span>
       <span style="width:10%" class="video-count text-right heading-container-item white">
-      	 {{ plist.getLastVideoNumber(); }} / {{ plist.getTotalVideos(); }}
+      	 {{ plist.getLastVideoNumber() + 1; }} / {{ plist.getTotalVideos(); }}
       </span>
     </div>
   <div class="playlist-content">
@@ -20,17 +20,21 @@
 </div>
 <div class="buttons-container">
 	<div ng-click="loadNext()" class="green-bg button">
-		Play
+		Resume Watching
 	</div>
 </div>
 
 <div class="white note-bg note">
-	Click a video to start watching (marks all previous videos as watched).
+	*Clicking a video marks all previous as watched*
 </div>
 
-<div ng-repeat="video in videos" ng-click="loadVideo($index)" class="{{ ($index <= watchCount) ? 'watched' : 'unwatched' }} bottom-margin-px windowWidth heading-container">
+
+
+<div ng-repeat="video in videos" ng-click="loadVideo($index)" class="{{ ($index <= watchCount) ? 'watched' : 'unwatched' }} bottom-margin-px windowWidth heading-container" ng-attr-style="{{ ($index == currentVideo) ? currentBg : '' }}">
+
 	<span style="width: 5%;" class="white heading-container-item"> {{ $index+1 }} </span>
 	<span style="width: 70%;" class="white heading-container-item"> {{ video.getTitle(); }} </span>
 	<span style="width: 25%;"class="white heading-container-item"> {{ video.getDuration(); }} </span>
+
 </div>
 

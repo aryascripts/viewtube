@@ -1,18 +1,28 @@
 const YouTubePlayer = require('youtube-player');
 const {ipcRenderer} = require('electron');
 
-console.log('running message line next ');
+var args = window.location.search.substring(1).split('&');
+var id = args[0].split('=')[1];
+var t = args[1].split('=')[1];
+var time = (t) ? t : 0;
 
-var id = window.location.search.substring(1).split('=')[1];
+console.log(time);
 
 
-var player = YouTubePlayer('player', {videoId: id});
+var player = YouTubePlayer('player',
+	{
+		videoId: id,
+		playerVars: {
+			start: time
+		}
+	}
+	);
 
 
 player
 	.playVideo()
 	.then(() => {
-		console.log('playing video...')
+
 	});
 
 player.on('stateChange', (event) => {

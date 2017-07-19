@@ -9,7 +9,11 @@ export class Playlist {
 	thumbnails:object;
 	description:string;
 	lastVideo:number;
+	
 	totalVideos:number;
+
+	currentVideoWatchTime:number;
+	currentVideo:number;
 
 	getVideos = () => this.videos;
 	getId = () => this.id;
@@ -20,7 +24,7 @@ export class Playlist {
 	getTitle = () => this.title;
 	getTotalVideos = () => this.totalVideos;
 
-	setWatchCount = (index) => {
+	setLastVideo = (index) => {
 		this.lastVideo = index;
 	}
 
@@ -39,6 +43,9 @@ export class Playlist {
 		this.channelName 	= plist['channelTitle'];
 		this.description 	= plist['description'] || this.channelName + ' has not set a description for this playlist. Go bug them about it, not me!';
 		this.thumbnails 	= plist['thumbnails'];
+
+		this.currentVideo = -1;
+		this.currentVideoWatchTime = -1;
 	}
 
 //// REMINDER: This is only adding 5 videos! Pagination or re-query is needed.

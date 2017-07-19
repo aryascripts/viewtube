@@ -1,20 +1,25 @@
 export class Storage {
 	storage = require('electron-json-storage');
 
-	public savePlaylists(arr) {
+	public savePlaylists(plists) {
+		console.log('saving playlists...')
 		return new Promise(
 			(resolve, reject) => {
 				var data = { 'playlists': [] }
 
-				for(let i = 0; i < arr.length; i++) {
+				for(let i = 0; i < plists.length; i++) {
 					data.playlists.push({
-						'id': arr[i].getId(),
-						'lastVideo': arr[i].getLastVideoNumber()
+						'id': plists[i].getId(),
+						'lastVideo': plists[i].getLastVideoNumber(),
+						'currentVideo': plists[i].currentVideo,
+						'currentVideoWatchTime': plists[i].currentVideoWatchTime 
 					});
 				}
+				//if resolved, it sends back the same playlists that came in
+				//for reuse.
 				this.storage.set('playlists', data, error => {
 					if(error) { reject(error);	} 
-					resolve(arr);
+					resolve(plists);
 				});
 			}
 		);	
@@ -32,16 +37,19 @@ export class Storage {
 	}
 
 	public get(obj) {
+		console.log('loading object...' + obj);
 		return new Promise(
 			(resolve, reject) => {
 				this.storage.get(obj, (error, data) => {
 					if(error) { reject(error); }
+					console.log(data);
 					resolve(data);
 				});
 			}
 		);
 	}
 	public set(str, obj) {
+		console.log('setting object...' + obj);
 		return new Promise(
 			(resolve, reject) => {
 				this.storage.set(str, obj, error => {

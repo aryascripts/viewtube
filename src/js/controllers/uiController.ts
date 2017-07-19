@@ -21,7 +21,9 @@ function uiController($scope, shared) {
 			checkButton.addEventListener('click', () => {
 				let url:string = (<HTMLInputElement>document.getElementById('url-text')).value;
 				if(url.startsWith(shared.prefix())) {
-					addPlaylist(url.split('=')[1], -1);
+					//when adding a new playlist from the form,
+					//no need to set any parameters for current/last video.
+					addPlaylist(url.split('=')[1], -1, -1, -1);
 				}
 				//Not a valid url for playlist
 				else {
@@ -35,19 +37,19 @@ function uiController($scope, shared) {
 	//Creates a new Playlist object based on the url in the form.
 	//Pushes object to the array of all playlists currently tracking
 	//Called on checkmark button press
-	function addPlaylist(id, watchCount) {
+	function addPlaylist(id, lastVideo, current, currentTime) {
 
+		//used to add playlist from ANYWHERE.
 		getPlaylistInfo(id).then(info => {
 			let plist = new Playlist(info);
-			plist.setWatchCount(watchCount);
+			plist.setLastVideo(lastVideo);
+			plist.currentVideo = current;
+			plist.currentVideoWatchTime = currentTime;
 
 			let temp = shared.getPlaylists();
 			temp.push(plist);
 
-			shared.storage().savePlaylists(temp)
-			.then(list => {
-				shared.setPlaylists(list);
-			});
+			shared.setPlaylists(temp);
 		});
 	}
 
@@ -86,18 +88,43 @@ function uiController($scope, shared) {
 		backButton.classList.toggle('hidden');
 	}
 
-	function loadPlaylists() {
-		let data = shared.storage().get('playlists')
-			.then(data => {
-				if(data['playlists']) {
-					for(let i = 0; i < data['playlists'].length; i++) {
-						addPlaylist(data['playlists'][i].id, data['playlists'][i].lastVideo);
+	//this method is for loading ALL playlists from the storage file.
+	//can also be used in the future for loading playlists from a backup.
+	function loadPlaylists(obj) {
+
+		//if nothing was passed in here, load from the storage
+		//if there is nothing in storage, a new storage file is created next time.
+		if(!obj) {
+			shared.storage().get('playlists')
+				.then(data => {
+					if(data['playlists']) {
+						for(let i = 0; i < data['playlists'].length; i++) {
+
+							//adding playlists fro the storage
+							//sets all parameters in the currently adding playlist.
+							//go see addPlaylist() definition above.
+							addPlaylist(data['playlists'][i].id,
+								data['playlists'][i].lastVideo,
+								data['playlists'][i].currentVideo,
+								data['playlists'][i].currentVideoWatchTime);
+							
+						}
 					}
-				}
-			})
-			.catch(error => {
-				console.log(error);
-			})
+					console.log('playlists loaded and added..');
+					console.log(shared.getPlaylists());
+				})
+				.catch(error => {
+					console.log(error);
+				});
+
+		}
+		
+		//else an object was provided, load the playlists from there
+		//storage object will be overridden.
+		else {
+			//to be implemented in the future.
+		}
+
 	}
 
 	function loadConfig() {
@@ -109,7 +136,8 @@ function uiController($scope, shared) {
 					'autoplay':false,
 					'iframe':true,
 					'alwaysontop':false,
-					'default': 'sequential'
+					'default': 'sequential',
+					'watchTimeThresh': 0.90
 				}
 			} else {
 				config = data;

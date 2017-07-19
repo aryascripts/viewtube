@@ -11,6 +11,8 @@ export class Video {
 	date:string;
 	duration:string;
 	durationSec:number;
+	isCurrent:boolean;
+	percentage:number;
 
 	getTitle 		= () => this.title;
 	getChannel 		= () => this.channelName;
@@ -21,6 +23,15 @@ export class Video {
 	getDurationSec 	= () => this.durationSec;
 
 	setDuration		= (time) => this.duration = time;
+
+	setPercentage 	= (decimal) =>  {
+		this.percentage = Math.floor(decimal*100);
+		this.isCurrent = true;
+	}
+	removeIsCurrent = () => {
+		this.percentage = 0;
+		this.isCurrent = false;
+	}
 
 	constructor(video:any) {
 		if(video['length'] < 1) {
@@ -34,6 +45,9 @@ export class Video {
 		this.channelName 	= vid['channelTitle'];
 		this.date 			= vid['publishedAt'];
 		this.description 	= vid['description'];
+
+		this.isCurrent = false;
+		this.percentage = 0;
 	}
 
 	public setData(data) {
@@ -45,12 +59,19 @@ export class Video {
 	public convertTime(duration) {
 	  var match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/)
 
-	  var hours = (parseInt(match[1]) || 0);
-	  var minutes = (parseInt(match[2]) || 0);
-	  var seconds = (parseInt(match[3]) || 0);
+	  let h = (parseInt(match[1]) || 0);
+	  let m = (parseInt(match[2]) || 0);
+	  let s = (parseInt(match[3]) || 0);
+
+	  let str = '';
+	  if(h > 0) {
+	  	str = `${(h < 10) ? 0 : ''}${h}:${(m < 10) ? 0 : ''}${m}:${(s < 10) ? 0 : ''}${s}`;
+	  } else {
+	  	str = `${(m < 10) ? 0 : ''}${m}:${(s < 10) ? 0 : ''}${s}`;
+	  }
 
 	  return {
-	  	'seconds': hours * 3600 + minutes * 60 + seconds,
-	  	'string': hours + ':' + minutes + ':' + seconds
+	  	'seconds': h * 3600 + m * 60 + s,
+	  	'string': str
 	}
 }
