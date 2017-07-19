@@ -18,6 +18,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	var playlists = shared.getPlaylists();
 	var thisIndex = $routeParams.id;
 	$scope.plist = playlists[thisIndex];
+	console.log($scope.plist);
 	$scope.videos = $scope.plist.videos;
 	$scope.watchCount = $scope.plist.lastVideo;
 	$scope.currentVideo = $scope.plist.currentVideo;
@@ -204,16 +205,14 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 
 		// mark video as watched since it is watched more than the threshhold.
 		// currently watching is set to null because the video was now fully watched.
-		console.log(shared.config().watchTimeThresh);
 		if(percentage > shared.config().watchTimeThresh) {
 			console.log('CURRENT VIDEO SET AS WATCHED');
 
-
-			$scope.currentVideo = playlists[thisIndex].lastVideo = $scope.watchCount++;
+			playlists[thisIndex].lastVideo = ++$scope.watchCount;
 			playlists[thisIndex].currentVideoWatchTime = 0;
 			playlists[thisIndex].currentVideo = -1;
+			$scope.currentVideo = -1;
 
-			applyData();
 		}
 
 		//else, video was not fully watched.
@@ -225,10 +224,8 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 			playlists[thisIndex].videos[current].setPercentage(percentage);
 			setCurrentVideo();
 		}
-
 		//either way, save to database.
 		shared.setPlaylists(playlists);
-
 	}
 
 	var applyData = function() {

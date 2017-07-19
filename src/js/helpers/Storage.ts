@@ -42,7 +42,6 @@ export class Storage {
 			(resolve, reject) => {
 				this.storage.get(obj, (error, data) => {
 					if(error) { reject(error); }
-					console.log(data);
 					resolve(data);
 				});
 			}

@@ -143,7 +143,6 @@ function uiController($scope, shared) {
 				config = data;
 			}
 			shared.setConfig(config);
-			console.log(shared.config());
 		});
 	}
 

@@ -1,1 +1,50 @@
-{{ message }}
+<div class="content">
+	<form class="settingsform">
+	<!--   <div class="checkbox">
+	    <label>
+	      <input type="checkbox"> This is a checkbox
+	    </label>
+	  </div>
+	  <div class="checkbox">
+	    <label>
+	      <input type="checkbox"> This is a checkbox too
+	    </label>
+	  </div> -->
+	<div class="form-group">
+		Theme
+		<select id="theme" class="form-control">
+		    <option>Light</option>
+		    <option>Dark**</option>
+		</select>
+	</div>
+
+	<div class="form-group">
+		Default playlist type
+		<select id="theme" class="form-control">
+		    <option>Sequential</option>
+		    <option>Non-sequential**</option>
+		</select>
+	</div>
+
+	<div class="form-group">
+		<div class="checkbox">
+		  <label>
+		    <input ng-change="onTopChange()" ng-model="alwaysontop" id="alwaysontop" type="checkbox"> Player Always-on-top
+		  </label>
+		</div>
+		<div>
+			<label>
+			Video is "Watched" after completing: {{sliderValue}}%
+			<br/><input value="{{sliderValue}}" ng-model="threshhold" ng-change="slider()" id="threshhold" type ="range" min=".5" max="1" step=".05"/>
+			</label>
+		</div>
+	</div>
+
+	  <div class="form-actions">
+	    <button value="" ng-click="getConfig()" type="submit" class="btn btn-form btn-primary">OK</button>
+	  </div>
+
+	  <span style="font-size: 10px;">** = Work In Progress</span>
+	</form>
+</div>
+
