@@ -17,3 +17,8 @@ ipcMain.on('video-closed', (event, time) => {
 	console.log('window closed');
 	Main.mainWindow.webContents.send('calc-watch-time', { 'time':Math.floor(time) });
 });
+
+ipcMain.on('always-on-top', (event, data) => {
+	console.log('received event always on top');
+	Main.setAlwaysOnTop(data);
+});

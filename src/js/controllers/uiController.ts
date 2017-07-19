@@ -1,5 +1,6 @@
 import { Playlist } from './../Playlist';
 import { api_key } from './../APIAuth';
+import {ipcRenderer} from 'electron';
 
 require('angular').module('viewTube')
 .controller('uiController', uiController);
@@ -142,6 +143,8 @@ function uiController($scope, shared) {
 			} else {
 				config = data;
 			}
+			console.log('sending event alwaysontop... ' + config.alwaysontop);
+			ipcRenderer.send('always-on-top', config.alwaysontop);
 			shared.setConfig(config);
 		});
 	}

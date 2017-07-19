@@ -1,3 +1,5 @@
+import {ipcRenderer} from 'electron';
+
 require('angular').module('viewTube')
 .controller('settingsController', settingsController);
 
@@ -32,5 +34,6 @@ function settingsController($scope, shared, $timeout) {
 	$scope.onTopChange = function() {
 		config.alwaysontop = alwaysOnTop.checked;
 		shared.setConfig(config);
+		ipcRenderer.send('always-on-top', alwaysOnTop.checked);
 	}
 }

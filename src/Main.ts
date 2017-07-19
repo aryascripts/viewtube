@@ -7,6 +7,9 @@ export default class Main {
 
     static application: Electron.App;
     static BrowserWindow;
+
+    static alwaysontop = false;
+
     static onWindowAllClosed() {
         if (process.platform !== 'darwin')
             Main.application.quit();
@@ -37,7 +40,6 @@ export default class Main {
         Main.mainWindow.on('closed', Main.onClose);
         Main.mainWindow.once('ready-to-show', () => {
             Main.mainWindow.show();
-
         });
     }
     static main(app: Electron.App, browserWindow: typeof BrowserWindow){
@@ -57,7 +59,8 @@ export default class Main {
             'minWidth': 600,
             'minHeight': 350,
             'acceptFirstMouse': true,
-            'titleBarStyle': 'hidden'
+            'titleBarStyle': 'hidden',
+            'alwaysOnTop': Main.alwaysontop
         });
 
         Main.videoWindow.once('ready-to-show', () => {
@@ -65,6 +68,9 @@ export default class Main {
         });
 
         Main.videoWindow.on('closed', () => {
+            if(Main.videoWindow) {
+                Main.closeVideoWindow();
+            }
             Main.videoWindow = null;
         });
 
@@ -86,6 +92,13 @@ export default class Main {
         Main.videoWindow.loadURL('file://' + __dirname
             + '/components/video.html?id=' + video.id
             + '&time='+ video.time);
+    }
+
+    static setAlwaysOnTop(value) {
+        Main.alwaysontop = value;
+        if(Main.videoWindow) {
+            Main.videoWindow.setAlwaysOnTop(value);
+        }
     }
 }
 
