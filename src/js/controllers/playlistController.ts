@@ -20,8 +20,10 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	$scope.plist = playlists[thisIndex];
 	$scope.videos = $scope.plist.videos;
 	$scope.watchCount = $scope.plist.lastVideo;
-	$scope.currentVideo;
-	$scope.currentBg;
+	$scope.currentVideo = $scope.plist.currentVideo;
+	
+	$scope.currentBg = ($scope.videos[$scope.currentVideo]) ? 'background: -webkit-linear-gradient(left, #6b6969 0%,#6b6969 '+ $scope.videos[$scope.currentVideo].percentage +'%,#b50505 '+ $scope.videos[$scope.currentVideo].percentage +'%,#b50505 '+$scope.videos[$scope.currentVideo].percentage+'%,#b50505 100%)' : '';
+
 	var nextPageToken = null;
 
 	if($scope.plist.videos.length < $scope.plist.totalVideos) {
@@ -155,7 +157,6 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 				'time': time
 				});
 		});
-		applyData();
 	}
 
 	//function to load the next video (if there is no current)
