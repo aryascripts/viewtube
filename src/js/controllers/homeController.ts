@@ -1,7 +1,7 @@
 require('angular').module('viewTube')
 .controller('homeController', homeController);
 
-function homeController($scope, shared) {
+function homeController($scope, shared, $window) {
 	$scope.plists = shared.getPlaylists();
 
 	$scope.displayMsg = true;
@@ -20,4 +20,13 @@ function homeController($scope, shared) {
 	}
 
 	shared.registerObserver(updatePlaylists);
+
+	$scope.remove = function(n) {
+		console.log();
+		if(confirm('Remove playlist ' + shared.getPlaylists()[n].title + '?')) {
+			let temp = shared.getPlaylists();
+			temp.splice(n, 1);
+			shared.setPlaylists(temp);
+		};
+	}
 }

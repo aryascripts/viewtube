@@ -49,7 +49,10 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 			observers.push(callback);
 		},
 		setConfig: (value) => {
+			value.autoplay = true;
 			config = value;
+
+			console.log(config);
 			storage.set('config', value);
 		},
 

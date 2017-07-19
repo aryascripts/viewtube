@@ -55,13 +55,32 @@ footer {
 	cursor: pointer;
 }
 
-.heading-container {
+.linkspace {
+	width: 95%;
 	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
 	flex-direction: row;
 	flex-wrap: nowrap;
-	justify-content: space-between;
-	align-items: flex-start;
+}
+
+.delete{
+	width: 3%;
+	text-align: center;
+	margin: auto auto;
+	background-color: #3e3e3e;
+	color: #fff;
+}
+
+.heading-container {
 	padding: 3px 0 3px 0;
+	width: 100%;
+
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	flex-direction: row;
+	flex-wrap: nowrap;
 }
 
 .gradient {

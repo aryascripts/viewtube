@@ -41,9 +41,6 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 							nextPage($scope.plist.id, nextPageToken)
 								.then(() => {});
 						} else {
-							if(playlists[thisIndex].currentVideo >= 0) {
-								// setCurrentVideo();
-							}
 							getMoreInfo();
 						}
 					});
