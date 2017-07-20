@@ -24,7 +24,8 @@ function uiController($scope, shared) {
 				if(url.startsWith(shared.prefix())) {
 					//when adding a new playlist from the form,
 					//no need to set any parameters for current/last video.
-					addPlaylist(url.split('=')[1], -1, -1, -1, shared.config().sequential, null);
+					let watched = [];
+					addPlaylist(url.split('=')[1], -1, -1, -1, shared.config().sequential);
 				}
 				//Not a valid url for playlist
 				else {
@@ -38,12 +39,12 @@ function uiController($scope, shared) {
 	//Creates a new Playlist object based on the url in the form.
 	//Pushes object to the array of all playlists currently tracking
 	//Called on checkmark button press
-	function addPlaylist(id, lastVideo, current, currentTime, seq, watchedArr) {
+	function addPlaylist(id, lastVideo, current, currentTime, seq, watchedArr = []) {
 
 		//used to add playlist from ANYWHERE.
 		getPlaylistInfo(id).then(info => {
 			let plist = new Playlist(info);
-			plist.sequential = false;
+			plist.sequential = true;
 			plist.setLastVideo(lastVideo);
 			plist.currentVideo = current;
 			plist.currentVideoWatchTime = currentTime;

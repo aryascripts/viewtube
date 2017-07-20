@@ -155,6 +155,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 
 				for(let i = 0; i < n; i++) {
 					playlists[thisIndex].videos[i].watched = true;
+
 					if(!playlists[thisIndex].watched.includes(i)) {
 						playlists[thisIndex].watched.push(i);
 					}
