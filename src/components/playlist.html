@@ -30,7 +30,8 @@
 
 
 
-<div ng-repeat="video in videos" ng-click="loadVideo($index)" class="{{ ($index <= watchCount) ? 'watched' : 'unwatched' }} bottom-margin-px windowWidth heading-container" ng-attr-style="{{ ($index == currentVideo) ? currentBg : '' }}">
+<div ng-repeat="video in videos" ng-click="loadVideo($index)"
+class="{{ video.watched ? 'watched' : 'unwatched' }} bottom-margin-px windowWidth heading-container" ng-attr-style="{{ ($index == currentVideo) ? currentBg : '' }}">
 
 	<span style="width: 5%;" class="white heading-container-item"> {{ $index+1 }} </span>
 	<span style="width: 70%;" class="white heading-container-item"> {{ video.getTitle(); }} </span>

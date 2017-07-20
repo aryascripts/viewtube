@@ -8,11 +8,14 @@ export class Storage {
 				var data = { 'playlists': [] }
 
 				for(let i = 0; i < plists.length; i++) {
+
 					data.playlists.push({
 						'id': plists[i].getId(),
 						'lastVideo': plists[i].getLastVideoNumber(),
 						'currentVideo': plists[i].currentVideo,
-						'currentVideoWatchTime': plists[i].currentVideoWatchTime 
+						'currentVideoWatchTime': plists[i].currentVideoWatchTime,
+						'watched': plists[i].watched,
+						'sequential': plists[i].sequential
 					});
 				}
 				//if resolved, it sends back the same playlists that came in
@@ -42,6 +45,7 @@ export class Storage {
 			(resolve, reject) => {
 				this.storage.get(obj, (error, data) => {
 					if(error) { reject(error); }
+					console.log(data);
 					resolve(data);
 				});
 			}

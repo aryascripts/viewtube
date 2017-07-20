@@ -15,6 +15,9 @@ export class Playlist {
 	currentVideoWatchTime:number;
 	currentVideo:number;
 
+	sequential:boolean;
+	watched: Array<number>;
+
 	getVideos = () => this.videos;
 	getId = () => this.id;
 	getChannel = () => this.channelName;
@@ -43,6 +46,9 @@ export class Playlist {
 		this.channelName 	= plist['channelTitle'];
 		this.description 	= plist['description'] || this.channelName + ' has not set a description for this playlist. Go bug them about it, not me!';
 		this.thumbnails 	= plist['thumbnails'];
+
+		this.sequential = true;
+		this.watched = [];
 
 		this.currentVideo = -1;
 		this.currentVideoWatchTime = -1;

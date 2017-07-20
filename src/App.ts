@@ -22,3 +22,7 @@ ipcMain.on('always-on-top', (event, data) => {
 	console.log('received event always on top');
 	Main.setAlwaysOnTop(data);
 });
+
+ipcMain.on('close-video', (event, data) => {
+	Main.closeVideoWindow();
+});

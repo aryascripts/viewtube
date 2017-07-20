@@ -19,6 +19,8 @@ export default class Main {
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
         Main.mainWindow = null;
+        Main.application.exit();
+        
     }
     static onReady(){
         // this is a dependency we will have to live with
@@ -56,8 +58,8 @@ export default class Main {
             show: false,
             width: 750,
             height: 530,
-            'minWidth': 600,
-            'minHeight': 350,
+            'minWidth': 160,
+            'minHeight': 90,
             'acceptFirstMouse': true,
             'titleBarStyle': 'hidden',
             'alwaysOnTop': Main.alwaysontop
@@ -68,9 +70,6 @@ export default class Main {
         });
 
         Main.videoWindow.on('closed', () => {
-            if(Main.videoWindow) {
-                Main.closeVideoWindow();
-            }
             Main.videoWindow = null;
         });
 

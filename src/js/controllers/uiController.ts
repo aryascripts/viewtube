@@ -24,7 +24,7 @@ function uiController($scope, shared) {
 				if(url.startsWith(shared.prefix())) {
 					//when adding a new playlist from the form,
 					//no need to set any parameters for current/last video.
-					addPlaylist(url.split('=')[1], -1, -1, -1);
+					addPlaylist(url.split('=')[1], -1, -1, -1, shared.config().sequential, null);
 				}
 				//Not a valid url for playlist
 				else {
@@ -38,14 +38,16 @@ function uiController($scope, shared) {
 	//Creates a new Playlist object based on the url in the form.
 	//Pushes object to the array of all playlists currently tracking
 	//Called on checkmark button press
-	function addPlaylist(id, lastVideo, current, currentTime) {
+	function addPlaylist(id, lastVideo, current, currentTime, seq, watchedArr) {
 
 		//used to add playlist from ANYWHERE.
 		getPlaylistInfo(id).then(info => {
 			let plist = new Playlist(info);
+			plist.sequential = false;
 			plist.setLastVideo(lastVideo);
 			plist.currentVideo = current;
 			plist.currentVideoWatchTime = currentTime;
+			plist.watched = watchedArr;
 
 			let temp = shared.getPlaylists();
 			temp.push(plist);
@@ -104,10 +106,14 @@ function uiController($scope, shared) {
 							//adding playlists fro the storage
 							//sets all parameters in the currently adding playlist.
 							//go see addPlaylist() definition above.
-							addPlaylist(data['playlists'][i].id,
+							addPlaylist(
+								data['playlists'][i].id,
 								data['playlists'][i].lastVideo,
 								data['playlists'][i].currentVideo,
-								data['playlists'][i].currentVideoWatchTime);
+								data['playlists'][i].currentVideoWatchTime,
+								data['playlists'][i].sequential,
+								data['playlists'][i].watched
+								);
 							
 						}
 					}
@@ -137,7 +143,7 @@ function uiController($scope, shared) {
 					'autoplay':false,
 					'iframe':true,
 					'alwaysontop':false,
-					'default': 'sequential',
+					'sequential': true,
 					'watchTimeThresh': 0.90
 				}
 			} else {

@@ -13,6 +13,7 @@ export class Video {
 	durationSec:number;
 	isCurrent:boolean;
 	percentage:number;
+	watched:boolean;
 
 	getTitle 		= () => this.title;
 	getChannel 		= () => this.channelName;
@@ -48,6 +49,7 @@ export class Video {
 
 		this.isCurrent = false;
 		this.percentage = 0;
+		this.watched = false;
 	}
 
 	public setData(data) {
@@ -73,5 +75,6 @@ export class Video {
 	  return {
 	  	'seconds': h * 3600 + m * 60 + s,
 	  	'string': str
+	  }
 	}
 }
