@@ -5,13 +5,13 @@
 
         <a class="linkspace" href="#!playlist/{{$index}}">
           <span style="width: 55%;" class="bold plist-title heading-container-item playlist-title white">
-          	{{ p.getTitle(); }}
+          	{{ p.title; }}
           </span>
           <span class="channel-name heading-container-item white">
-          	by {{ p.getChannel(); }} 
+          	by {{ p.channelName; }} 
           </span>
           <span class="video-count text-right heading-container-item white">
-          	 {{ p.getLastVideoNumber() + 1; }} / {{ p.getTotalVideos(); }}
+          	 {{ p.lastVideo + 1; }} / {{ p.totalVideos }}
           </span>
         </a>
 
@@ -23,7 +23,7 @@
     <div class="playlist-content">
       <div class="left-padding-4 thumbnail playlist-content-item"> <a href="#!playlist/{{$index}}"><img ng-src="{{ p.getThumbnailUrl(); }}" width="120px" /></a> </div>
       <div class="left-padding-2 description playlist-content-item text-left">
-        {{ p.getDescription(); }}
+        {{ p.description; }}
       </div>
     </div>
   </div>

@@ -22,7 +22,6 @@ function homeController($scope, shared, $window) {
 	shared.registerObserver(updatePlaylists);
 
 	$scope.remove = function(n) {
-		console.log();
 		if(confirm('Remove playlist ' + shared.getPlaylists()[n].title + '?')) {
 			let temp = shared.getPlaylists();
 			temp.splice(n, 1);

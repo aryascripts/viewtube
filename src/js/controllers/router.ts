@@ -51,6 +51,13 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 		setConfig: (value) => {
 			storage.set('config', value)
 				.then(data => {
+
+					// LOOK AT THIS NOW AND DELETE THE NEXT LINE
+					// PLEASE
+					// VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+					value.markPrevious = true;
+					value.markNext = true;
+
 					config = value;
 				});
 		},

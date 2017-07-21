@@ -2,7 +2,7 @@
 
 <div class="content">
 	<form class="settingsform">
-	<h4 class="bold">Settings</h4>
+	<h3 class="bold">Settings</h3>
 	<!--   <div class="checkbox">
 	    <label>
 	      <input type="checkbox"> This is a checkbox
@@ -13,44 +13,92 @@
 	      <input type="checkbox"> This is a checkbox too
 	    </label>
 	  </div> -->
-	<div class="form-group">
+
+	<h4 class="bold">General</h3>
+
+	<div class="tooltip form-group">
 		Theme
 		<select id="theme" class="form-control">
 		    <option>Light</option>
 		    <option>Dark**</option>
 		</select>
+		<span class="tooltiptext">No Restart Required</span>
 	</div>
 
-	<div class="form-group">
+	<div class="tooltip form-group">
 		Default Playlist Type
 		<select id="theme" class="form-control">
 		    <option>Sequential</option>
 		    <option>Non-sequential**</option>
 		</select>
+		<span class="tooltiptext">Adding new playlists are set to the default type. Existing playlists do not change type.</span>
 	</div>
-	<div class="form-group">
-		Sort Playlist By
+	<div class="tooltip form-group">
+		Sort Playlists By
 		<select id="theme" class="form-control">
 		    <option>Playlist Name</option>
 		    <option>Channel Name</option>
 		</select>
+		<span class="tooltiptext">All playlists change order real-time. Already watched</span>
 	</div>
 
 	<div class="form-group">
-
-		<div>
+		<div class="tooltip">
 			<label>
 			Video is "Watched" after completing: {{sliderValue}}%
 			<br/><input value="{{sliderValue}}" ng-model="threshhold" ng-change="slider()" id="threshhold" type ="range" min=".5" max=".95" step=".05"/>
 			</label>
+			<span class="tooltiptext">When you exit video window after completing this percentage of it, the video is marked as watched.</span>
 		</div>
 
-		<div class="item">
+		<div class="tooltip item">
 			<p>Player Always-On-Top</p>
 			<input type="checkbox" id="alwaysontop" ng-model="alwaysontop" ng-change="onTopChange()">
 			<div class="toggle">
 				<label for="alwaysontop"><i></i></label>
 			</div>
+			<span class="tooltiptext">Player stays on top of other windows. The player does not follow multiple desktops. Updated real-time if you have a player running.</span>
+		</div>
+
+		<h4 class="bold">Sequentail Behavior</h4>
+
+		<div class="tooltip item">
+			<p>Mark All Previous Watched</p>
+			<input type="checkbox" id="markPrevious" ng-model="markPrevious" ng-change="watchedToggle()">
+			<div class="toggle">
+				<label for="markPrevious"><i></i></label>
+			</div>
+			<span class="tooltiptext">If on, marks all previous videos as "watched" in sequential playlists if you start one manually (by clicking on the title).</span>
+		</div>
+
+		<div class="tooltip item">
+			<p>Mark All Next Unwatched</p>
+			<input type="checkbox" id="markPrevious" ng-model="markPrevious" ng-change="watchedToggle()">
+			<div class="toggle">
+				<label for="markPrevious"><i></i></label>
+			</div>
+			<span class="tooltiptext">If on, marks all next videos as "unwatched" in sequential playlists if you start one manually (by clicking on the title).</span>
+		</div>
+
+		<div class="tooltip item">
+			<p>Skip Watched Videos</p>
+			<input type="checkbox" id="skipWatched" ng-model="skipWatched" ng-change="skipWatched()">
+			<div class="toggle">
+				<label for="skipWatched"><i></i></label>
+			</div>
+			<span class="tooltiptext">If on, in sequential playlists, it will skip all next videos that are watched, and load the next unwatched video. If off, it plays sequentailly whether or not the video is watched.</span>
+		</div>
+
+		<h4 class="bold">Non-sequential Behavior</h4>
+
+		<div class="tooltip form-group">
+			After Video Finishes
+			<select id="theme" class="form-control">
+				<option>Next video in playlist</option>
+				<option>Random unwatched video</option>
+			    <option>Close after video finishes</option>
+			</select>
+			<span class="tooltiptext">1: Plays the very next video after current.<br/>2: Plays random unwatched video after current.<br/>3: Closes player after current video.</span>
 		</div>
 
 	</div>

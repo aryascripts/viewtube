@@ -13,6 +13,10 @@ body { -webkit-user-select: text;}
 .unwatched			{ background-color: #b50505; }
 .no-margin 			{ margin: 0; }
 .margin-b-12		{ margin-bottom: 12px; }
+h4 					{ 
+	text-decoration: underline;
+	/*background: rgba(0,121,252,0.2);*/
+}
 
 header {
 	-webkit-app-region: drag;
@@ -177,7 +181,7 @@ footer {
 	padding: 0 40px;
 	/*background-color: #f2f2f2;*/
 	width: 60%;
-	max-width: 420px;
+	max-width: 640px;
 
 }
 .content {
@@ -196,6 +200,40 @@ footer {
 	margin:0 !important;
 	padding:0 !important;
 }
+
+.info {
+	width: 100%;
+}
+
+
+/* Tooltip container */
+.tooltip {
+    position: relative;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    opacity: 0;
+    background: rgba(0,121,255, 0.6);
+    color: #000;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 25px;
+    width: 20vw;
+    max-width: 200px;
+ 
+    position: absolute;
+    top: -5px;
+    right: 105%;
+
+    font-size: 12px;
+    -webkit-transition: opacity 0.3s ease-out;
+}
+
+.tooltip:hover .tooltiptext {
+    opacity: 1;
+}
+
 
 .green-bg { background-color: #008E09; }
 .red-bg { background-color: #FF0303; }

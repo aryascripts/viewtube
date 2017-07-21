@@ -9,7 +9,6 @@ export class HttpRequest {
 				var http:XMLHttpRequest = new XMLHttpRequest();
 
 				url = this.addHeaders(url, headers);
-
 				http.open('get', url, true);
 
 				http.onload = () => {

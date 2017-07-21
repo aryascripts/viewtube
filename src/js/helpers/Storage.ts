@@ -10,8 +10,8 @@ export class Storage {
 				for(let i = 0; i < plists.length; i++) {
 
 					data.playlists.push({
-						'id': plists[i].getId(),
-						'lastVideo': plists[i].getLastVideoNumber(),
+						'id': plists[i].id,
+						'lastVideo': plists[i].lastVideo,
 						'currentVideo': plists[i].currentVideo,
 						'currentVideoWatchTime': plists[i].currentVideoWatchTime,
 						'watched': plists[i].watched,

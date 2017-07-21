@@ -39,15 +39,15 @@ function uiController($scope, shared) {
 	//Creates a new Playlist object based on the url in the form.
 	//Pushes object to the array of all playlists currently tracking
 	//Called on checkmark button press
-	function addPlaylist(id, lastVideo, current, currentTime, seq, watchedArr = []) {
+	function addPlaylist(id, last, current, currentTime, seq, watchedArr = []) {
 
 		//used to add playlist from ANYWHERE.
 		getPlaylistInfo(id).then(info => {
 			let plist = new Playlist(info);
 			plist.sequential = true;
-			plist.setLastVideo(lastVideo);
-			plist.currentVideo = current;
-			plist.currentVideoWatchTime = currentTime;
+			plist.lastCompleted = last;
+			plist.watching = current;
+			plist.watchingTime = currentTime;
 			plist.watched = watchedArr;
 
 			let temp = shared.getPlaylists();
@@ -145,7 +145,7 @@ function uiController($scope, shared) {
 					'iframe':true,
 					'alwaysontop':false,
 					'sequential': true,
-					'watchTimeThresh': 0.90
+					'threshhold': 0.90
 				}
 			} else {
 				config = data;

@@ -7,6 +7,7 @@ function settingsController($scope, shared, $timeout) {
 	var display = document.getElementById('amt');
 	var threshhold = <HTMLInputElement>document.getElementById('threshhold');
 	var alwaysOnTop = <HTMLInputElement>document.getElementById('alwaysontop');
+	var markPrevious = <HTMLInputElement>document.getElementById('markPrevious');
 
 	var config;
 
@@ -22,7 +23,7 @@ function settingsController($scope, shared, $timeout) {
 		$scope.sliderValue = Math.floor(threshhold.value*100);
 		if(config) {
 			config.watchTimeThresh = threshhold.value;
-			shared.setConfig(config);
+			saveConfig();
 		}
 	}
 
@@ -32,7 +33,16 @@ function settingsController($scope, shared, $timeout) {
 
 	$scope.onTopChange = function() {
 		config.alwaysontop = alwaysOnTop.checked;
-		shared.setConfig(config);
+		saveConfig();
 		ipcRenderer.send('always-on-top', alwaysOnTop.checked);
+	}
+
+	$scope.watchedToggle = function() {
+		config.markPrevious = markPrevious.checked;
+		saveConfig();
+	}
+
+	function saveConfig() {
+		shared.setConfig(config);
 	}
 }

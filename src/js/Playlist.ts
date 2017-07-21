@@ -8,34 +8,24 @@ export class Playlist {
 	channelName:string;
 	thumbnails:object;
 	description:string;
-	lastVideo:number;
 	
 	totalVideos:number;
 
-	currentVideoWatchTime:number;
-	currentVideo:number;
+	watching:number;			//used only when there is an unwatched last video
+	watchingTime:number;
 
 	sequential:boolean;
-	watched: Array<number>;
+	watched: Array<string>;		//array of video IDs which is then used to set videos as watched upon loadVideos();
 
-	getVideos = () => this.videos;
-	getId = () => this.id;
-	getChannel = () => this.channelName;
-	getDescription = () => this.description;
-	getLastVideoNumber = () => this.lastVideo;
-	getThumbnailUrl = () => this.thumbnails['default']['url'];
-	getTitle = () => this.title;
-	getTotalVideos = () => this.totalVideos;
+	lastCompleted:number;
 
-	setLastVideo = (index) => {
-		this.lastVideo = index;
-	}
+	getThumbnailUrl = () => this.thumbnails['default'].url;
+
 
 	constructor(info:any) {
 		if(info['length'] < 1) {
 			return;
 		}
-		this.lastVideo 		= -1;
 		this.videos 		= [];
 		this.obj 			= info;
 		this.totalVideos 	= info['items'][0]['contentDetails']['itemCount'];
@@ -49,16 +39,14 @@ export class Playlist {
 
 		this.sequential = true;
 		this.watched = [];
-
-		this.currentVideo = -1;
-		this.currentVideoWatchTime = -1;
+		this.lastCompleted = -1;
 	}
 
 //// REMINDER: This is only adding 5 videos! Pagination or re-query is needed.
 	public addVideos(videos:any) {
 		let list = videos['items'];
 		for(let i = 0; i < list.length; i++) {
-			this.videos.push(new Video(list[i]));
+			this.videos.push(new Video(list[i], false));
 		}
 	}
 

@@ -11,30 +11,14 @@ export class Video {
 	date:string;
 	duration:string;
 	durationSec:number;
-	isCurrent:boolean;
 	percentage:number;
 	watched:boolean;
 
-	getTitle 		= () => this.title;
-	getChannel 		= () => this.channelName;
-	getDescription 	= () => this.description;
-	getDate 		= () => this.date;
-	getId 			= () => this.id;
-	getDuration 	= () => this.duration;
-	getDurationSec 	= () => this.durationSec;
-
-	setDuration		= (time) => this.duration = time;
-
 	setPercentage 	= (decimal) =>  {
 		this.percentage = Math.floor(decimal*100);
-		this.isCurrent = true;
-	}
-	removeIsCurrent = () => {
-		this.percentage = 0;
-		this.isCurrent = false;
 	}
 
-	constructor(video:any) {
+	constructor(video:any, fin:boolean) {
 		if(video['length'] < 1) {
 			return;
 		}
@@ -47,9 +31,8 @@ export class Video {
 		this.date 			= vid['publishedAt'];
 		this.description 	= vid['description'];
 
-		this.isCurrent = false;
 		this.percentage = 0;
-		this.watched = false;
+		this.watched = fin;
 	}
 
 	public setData(data) {
