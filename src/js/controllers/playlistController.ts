@@ -47,6 +47,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	//that logic is in Main.ts
 	function loadVideo(index, time) {
 		playlists[thisIndex].watching = index;
+		console.log('setting watching to' + index);
 
 		ipcRenderer.send(
 			'create-window',
@@ -79,6 +80,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	function calculateWatchTime(timeCompleted) {
 		
 		let thresh = shared.config().threshhold;
+		console.log('watching#:'+playlists[thisIndex].watching)
 		let totalTime = playlists[thisIndex].videos[ playlists[thisIndex].watching ].durationSec;
 		let perc =  timeCompleted / totalTime;
 		console.log(thresh + ' ' + totalTime);
@@ -93,8 +95,10 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 			playlists[thisIndex].lastVideo = finished;
 			
 			//reset the partially watched ID since there is none anymore.
+			console.log('SETTING WATCHING TO -1');
 			playlists[thisIndex].watching = -1;
 			playlists[thisIndex].watchingTime = -1;
+			$scope.currentBg = '';
 
 			console.log(playlists[thisIndex].videos[finished].title + ' was set as watched');
 			console.log(playlists[thisIndex].videos);
@@ -184,12 +188,11 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	//Need to calculate if the whole video was watched or not.
 	ipcRenderer.on('calc-watch-time', (event, obj) => {
 		calculateWatchTime(obj.time);
-	})
+	});
 
 
 	//************************************************//
 	//	     			HELPERS	    			     //
-
 	// takes an index and marks all the previous videos 
 	// (excluding n) as watched. 
 	// mainly used for sequential playlists 
