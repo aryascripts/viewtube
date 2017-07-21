@@ -1,7 +1,6 @@
+
+
 <div class="content">
-	
-
-
 	<form class="settingsform">
 	<h4 class="bold">Settings</h4>
 	<!--   <div class="checkbox">
@@ -23,32 +22,38 @@
 	</div>
 
 	<div class="form-group">
-		Default playlist type
+		Default Playlist Type
 		<select id="theme" class="form-control">
 		    <option>Sequential</option>
 		    <option>Non-sequential**</option>
 		</select>
 	</div>
+	<div class="form-group">
+		Sort Playlist By
+		<select id="theme" class="form-control">
+		    <option>Playlist Name</option>
+		    <option>Channel Name</option>
+		</select>
+	</div>
 
 	<div class="form-group">
-		<div class="checkbox">
-		  <label>
-		    <input ng-change="onTopChange()" ng-model="alwaysontop" id="alwaysontop" type="checkbox"> Player Always-on-top
-		  </label>
-		</div>
+
 		<div>
 			<label>
 			Video is "Watched" after completing: {{sliderValue}}%
 			<br/><input value="{{sliderValue}}" ng-model="threshhold" ng-change="slider()" id="threshhold" type ="range" min=".5" max=".95" step=".05"/>
 			</label>
 		</div>
+
+		<div class="item">
+			<p>Player Always-On-Top</p>
+			<input type="checkbox" id="alwaysontop" ng-model="alwaysontop" ng-change="onTopChange()">
+			<div class="toggle">
+				<label for="alwaysontop"><i></i></label>
+			</div>
+		</div>
+
 	</div>
-
-	  <div class="form-actions">
-	    <button value="" ng-click="getConfig()" type="submit" class="btn btn-form btn-primary">OK</button>
-	  </div>
-
-	  <span style="font-size: 10px;">** = Work In Progress</span>
 	</form>
 </div>
 

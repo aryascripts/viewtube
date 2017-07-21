@@ -99,7 +99,7 @@ footer {
 	margin: 0 0 0 2%;
 	padding: 0 2% 0 2%;
 	
-	font-size: 14px;
+	font-size: 15px;
 	font-family: 'Helvetica', 'Arial', sans-serif;
 	cursor: pointer;
 	text-align: left;
@@ -177,6 +177,7 @@ footer {
 	padding: 0 40px;
 	/*background-color: #f2f2f2;*/
 	width: 60%;
+	max-width: 420px;
 
 }
 .content {
@@ -185,6 +186,10 @@ footer {
 	width: 100vw;
 	font-family: 'Monaco', monospace;
 	font-size: 12pt;
+}
+
+#threshhold {
+	width: 100%;
 }
 
 .radio {

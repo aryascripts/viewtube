@@ -12,7 +12,6 @@ function settingsController($scope, shared, $timeout) {
 
 	$timeout(() => {
 		config = shared.config();
-
 		$scope.sliderValue = config.watchTimeThresh*100;
 		threshhold.value = config.watchTimeThresh;
 		
