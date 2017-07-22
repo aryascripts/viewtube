@@ -35,6 +35,11 @@ player.on('stateChange', (event) => {
 
 window.onbeforeunload = function() {
 	player.getCurrentTime().then(data => {
-		ipcRenderer.send('video-closed', data);
+		var sendInfo = {
+			'time': data,
+			'id': id
+		}
+
+		ipcRenderer.send('video-closed', sendInfo);
 	})
 }

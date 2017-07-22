@@ -25,7 +25,7 @@ function uiController($scope, shared) {
 					//when adding a new playlist from the form,
 					//no need to set any parameters for current/last video.
 					let watched = [];
-					addPlaylist(url.split('=')[1], -1, -1, -1, shared.config().sequential);
+					addPlaylist(url.split('=')[1], -1, '', -1, shared.config().sequential);
 				}
 				//Not a valid url for playlist
 				else {
@@ -39,15 +39,15 @@ function uiController($scope, shared) {
 	//Creates a new Playlist object based on the url in the form.
 	//Pushes object to the array of all playlists currently tracking
 	//Called on checkmark button press
-	function addPlaylist(id, last, current, currentTime, seq, watchedArr = []) {
+	function addPlaylist(id, last, watchingId, watchingTime, seq, watchedArr = []) {
 
 		//used to add playlist from ANYWHERE.
 		getPlaylistInfo(id).then(info => {
 			let plist = new Playlist(info);
 			plist.sequential = true;
 			plist.lastCompleted = last;
-			plist.watching = current;
-			plist.watchingTime = currentTime;
+			plist.watchingId = watchingId;
+			plist.watchingTime = watchingTime;
 			plist.watched = watchedArr;
 
 			let temp = shared.getPlaylists();
@@ -107,19 +107,18 @@ function uiController($scope, shared) {
 							//adding playlists fro the storage
 							//sets all parameters in the currently adding playlist.
 							//go see addPlaylist() definition above.
+
 							addPlaylist(
 								data['playlists'][i].id,
 								data['playlists'][i].lastVideo,
-								data['playlists'][i].currentVideo,
-								data['playlists'][i].currentVideoWatchTime,
+								data['playlists'][i].watchingId,
+								data['playlists'][i].watchingTime,
 								data['playlists'][i].sequential,
 								data['playlists'][i].watched
 								);
 							
 						}
 					}
-					console.log('playlists loaded and added..');
-					console.log(shared.getPlaylists());
 				})
 				.catch(error => {
 					console.log(error);

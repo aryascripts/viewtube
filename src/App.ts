@@ -13,9 +13,9 @@ ipcMain.on('next-video', (event, args) => {
 	Main.mainWindow.webContents.send('load-next');
 });
 
-ipcMain.on('video-closed', (event, time) => {
+ipcMain.on('video-closed', (event, data) => {
 	console.log('window closed');
-	Main.mainWindow.webContents.send('calc-watch-time', { 'time':Math.floor(time) });
+	Main.mainWindow.webContents.send('calc-watch-time', data)
 });
 
 ipcMain.on('always-on-top', (event, data) => {

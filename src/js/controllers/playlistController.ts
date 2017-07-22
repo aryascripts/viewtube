@@ -12,17 +12,12 @@ require('angular').module('viewTube')
 .controller('playlistController', playlistController);
 
 function playlistController($scope, shared, $routeParams, $timeout) {
-	
 
 	//Local variables for playlists management
 	//At major changes this object is saved to the database in router.ts
 	var playlists = shared.getPlaylists();
 	console.log(playlists);
 	var thisIndex = $routeParams.id;
-
-	if(playlists[thisIndex].watching > -1) {
-		setPartialVideoBg();
-	}
 
 	//These variables are LOCAL only. DO NOT update ANYTHING in these.
 	//Only used for DISPLAYING information.
@@ -47,6 +42,8 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	//that logic is in Main.ts
 	function loadVideo(index, time) {
 		playlists[thisIndex].watching = index;
+		playlists[thisIndex].watchingId = playlists[thisIndex].videos[index].id;
+
 		console.log('setting watching to' + index);
 
 		ipcRenderer.send(
@@ -77,40 +74,48 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 
 	//If the video has been watched more than the threshhold in Settings,
 	//Set it as watched, and save it to database.
-	function calculateWatchTime(timeCompleted) {
+	function calculateWatchTime(timeCompleted, vidId) {
+
+		console.log('CALCULATE ENOUGH WATCHED TIME');
+
+		if(playlists[thisIndex].watching < 0) return;
+		if(playlists[thisIndex].videos[ playlists[thisIndex].watching ].id !== vidId) {
+			return;
+		}
 		
 		let thresh = shared.config().threshhold;
 		console.log('watching#:'+playlists[thisIndex].watching)
 		let totalTime = playlists[thisIndex].videos[ playlists[thisIndex].watching ].durationSec;
 		let perc =  timeCompleted / totalTime;
-		console.log(thresh + ' ' + totalTime);
+		console.log(thresh + ' ' + perc);
 
 		//enough of the video was watched
 		if(perc > thresh) {
-			console.log('playlist was marked as watched');
-
+			
 			let finished = playlists[thisIndex].watching;
+			console.log('video was marked as watched: ' + finished );
 
-			playlists[thisIndex].videos[finished].watched = true;
+			playlists[thisIndex].videos[finished].setWatched(true);
+			playlists[thisIndex].watched.push(playlists[thisIndex].videos[finished].id);
 			playlists[thisIndex].lastVideo = finished;
 			
 			//reset the partially watched ID since there is none anymore.
 			console.log('SETTING WATCHING TO -1');
 			playlists[thisIndex].watching = -1;
 			playlists[thisIndex].watchingTime = -1;
+			playlists[thisIndex].watchingId = '';
 			$scope.currentBg = '';
 
 			console.log(playlists[thisIndex].videos[finished].title + ' was set as watched');
-			console.log(playlists[thisIndex].videos);
 		}
 
 		//video was only partially watched
 		else {
+			console.log('video was marked partially watched');
 			let watching = playlists[thisIndex].watching;
 			playlists[thisIndex].watchingTime = timeCompleted;
 			playlists[thisIndex].videos[watching].setPercentage(perc);
-
-			setPartialVideoBg();
+			playlists[thisIndex].videos[watching].setWatching(true);
 		}
 
 		//save because a playlist was just marked as watched or partially watched.
@@ -133,7 +138,14 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	$scope.clickEvent = function(index) {
 
 		//set the current video unwatched (because the user clicked on it to watch it)
-		playlists[thisIndex].videos[index].watched = false;
+		playlists[thisIndex].videos[index].setWatched(false);
+		
+		//remove the id from the array 'watched' if it exists
+		for(let i = 0; i < playlists[thisIndex].watched.length; i++) {
+			if(playlists[thisIndex].watched[i] === playlists[thisIndex].videos[index].id) {
+				playlists[thisIndex].watched.splice(i,1);
+			}
+		}
 
 		//mark all previous watched if the setting allows it.
 		if(playlists[thisIndex].sequential && shared.config().markPrevious) {
@@ -148,7 +160,6 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 
 		//save because bunch of things might have changed.
 		savePlaylists();
-
 		loadVideo(index, 0);
 	}
 
@@ -164,30 +175,29 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		//if playlist is sequential
 		if(playlists[thisIndex].sequential) {
 
-			//mark the CURRENT video as watched
-			playlists[thisIndex].videos[watching].watched = true;
+			//mark the CURRENT video as watched & push the ID
+			playlists[thisIndex].videos[watching].setWatched(true);
+			playlists[thisIndex].watched.push(playlists[thisIndex].videos[watching].id);
 
 			//loadNext takes the parameter from where to load the next video
 			//in this case, this would be the CURRENT, and it loads the NEXT.
 			loadNext(watching);
-
-			//Update UI and save playlists because 
-			//a video was just marked as watched.
-			update();
-			savePlaylists();
 		}
 
 		//non-sequential playlist
 		else {
 			loadNonSequential(watching);
 		}
-		
+
+		console.log('next is update and save');
+		savePlaylists();
+		update();
 	});
 
 	//Received when the videoPlayerWindow is closed
 	//Need to calculate if the whole video was watched or not.
 	ipcRenderer.on('calc-watch-time', (event, obj) => {
-		calculateWatchTime(obj.time);
+		calculateWatchTime(obj.time, obj.id);
 	});
 
 
@@ -198,7 +208,8 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	// mainly used for sequential playlists 
 	function markPreviousWatched(n) {
 		for(let i = 0; i < n; i++) {
-			playlists[thisIndex].videos[i].watched = true;
+			playlists[thisIndex].videos[i].setWatched(true);
+			playlists[thisIndex].watched.push(playlists[thisIndex].videos[i].id);
 		}
 		playlists[thisIndex].lastCompleted = n-1;
 
@@ -209,7 +220,12 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	//as unwatched (leaves the current n alone)
 	function markNextUnwatched(n) {
 		for(let i = n+1; i < playlists[thisIndex].totalVideos; i++) {
-			playlists[thisIndex].videos[i].watched = false;
+			playlists[thisIndex].videos[i].setWatched(false);
+			for(let j = 0; j < playlists[thisIndex].watched.length; j++) {
+				if(playlists[thisIndex].videos[i].id === playlists[thisIndex].watched[j]) {
+					playlists[thisIndex].watched.splice(j,1);
+				}
+			}
 		}
 	}
 
@@ -224,12 +240,6 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	//save the playlists object to the database FROM this controller.
 	function savePlaylists() {
 		shared.setPlaylists(playlists);
-	}
-
-	function setPartialVideoBg() {
-		let perc = playlists[thisIndex].videos[ playlists[thisIndex].watching ].percentage;
-		$scope.currentBg = 'background: -webkit-linear-gradient(left, #6b6969 0%,#6b6969 '+ perc +'%,#b50505 '+ perc +'%,#b50505 '+perc+'%,#b50505 100%)';
-		$scope.watching = playlists[thisIndex].watching;
 	}
 
 	//************************************************//
@@ -316,6 +326,16 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		let info = [];
 		let url = 'https://www.googleapis.com/youtube/v3/videos';
 
+		//for sending the currently watching info, if there is any.
+		//if there is no current video, -1 is sent. 
+		let watchingInfo = (playlists[thisIndex].watchingId !== '') ? {
+			'id': playlists[thisIndex].watchingId,
+			'time': playlists[thisIndex].watchingTime
+		}
+		: -1;
+
+		console.log(watchingInfo);
+
 		for(let i = 0; i < playlists[thisIndex].videos.length ; i++) {
 			let headers = {
 				'id': playlists[thisIndex].videos[i].id,
@@ -323,13 +343,20 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 				'part':'contentDetails,snippet'
 			};
 
+
+			//set the playlists[thisIndex].watching index (NUMBER)
+			if(playlists[thisIndex].videos[i].id === playlists[thisIndex].watchingId) {
+				playlists[thisIndex].watching = i;
+			}
+
 			shared.request().getResponse(url, headers)
 			.then(data => {
-				playlists[thisIndex].videos[i].setData(data);
+				playlists[thisIndex].videos[i].setData(data, playlists[thisIndex].watched, watchingInfo);
 
 				update();
 			}); //shared.request()	
 		} //for
+		console.log(playlists[thisIndex]);
 	} //fn
 	 //				POPULATE ENDS 				//
 	//*****************************************//

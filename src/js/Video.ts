@@ -13,12 +13,31 @@ export class Video {
 	durationSec:number;
 	percentage:number;
 	watched:boolean;
+	watching:boolean;
 
 	setPercentage 	= (decimal) =>  {
 		this.percentage = Math.floor(decimal*100);
 	}
 
-	constructor(video:any, fin:boolean) {
+	setWatched = (val) => {
+		this.watched = val;
+		if(val) {
+			this.watching = !val;
+		}	
+	}
+
+	setWatching = (val) => {
+		this.watching = val;
+		this.watched = !val; 
+	}
+
+	clearWatchedWatching = () => {
+		this.watching = false;
+		this.watched = false;
+	}
+
+
+	constructor(video:any, wahtchedList:any) {
 		if(video['length'] < 1) {
 			return;
 		}
@@ -32,13 +51,29 @@ export class Video {
 		this.description 	= vid['description'];
 
 		this.percentage = 0;
-		this.watched = fin;
+		this.watched = false;
+
+		this.watching = false;
 	}
 
-	public setData(data) {
+	public setData(data, watchedList, watchingInfo) {
 		let dur = this.convertTime(data['items'][0]['contentDetails']['duration']);
 		this.durationSec = dur.seconds;
 		this.duration = dur.string;
+
+		if(watchedList.includes(this.id)) {
+			this.watched = true;
+		}
+
+		if(watchingInfo === -1) {
+			return;
+		}
+
+		if(this.id === watchingInfo.id) {
+			this.watching = true;
+
+			this.setPercentage(watchingInfo.time / this.durationSec);
+		}
 	}
 
 	public convertTime(duration) {

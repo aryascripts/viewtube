@@ -12,15 +12,16 @@ export class Playlist {
 	totalVideos:number;
 
 	watching:number;			//used only when there is an unwatched last video
+	watchingId:string;
 	watchingTime:number;
 
 	sequential:boolean;
 	watched: Array<string>;		//array of video IDs which is then used to set videos as watched upon loadVideos();
 
 	lastCompleted:number;
+	lastCompletedId:string;
 
 	getThumbnailUrl = () => this.thumbnails['default'].url;
-
 
 	constructor(info:any) {
 		if(info['length'] < 1) {
@@ -40,6 +41,9 @@ export class Playlist {
 		this.sequential = true;
 		this.watched = [];
 		this.lastCompleted = -1;
+		this.lastCompletedId = '';
+
+		this.watchingId = '';
 	}
 
 //// REMINDER: This is only adding 5 videos! Pagination or re-query is needed.
