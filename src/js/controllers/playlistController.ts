@@ -1,3 +1,13 @@
+//*****************************************//
+//				TODOS
+// [] (function) Do not enter into watched array if it already exists
+// [x] display the count of watched array in the completed section at the top
+// 
+//
+//
+//
+//
+
 import { api_key } from './../APIAuth';
 
 const { BrowserWindow } = require('electron').remote;
@@ -96,7 +106,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 			console.log('video was marked as watched: ' + finished );
 
 			playlists[thisIndex].videos[finished].setWatched(true);
-			playlists[thisIndex].watched.push(playlists[thisIndex].videos[finished].id);
+			pushToWatched(playlists[thisIndex].videos[finished].id);
 			playlists[thisIndex].lastVideo = finished;
 			
 			//reset the partially watched ID since there is none anymore.
@@ -177,7 +187,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 
 			//mark the CURRENT video as watched & push the ID
 			playlists[thisIndex].videos[watching].setWatched(true);
-			playlists[thisIndex].watched.push(playlists[thisIndex].videos[watching].id);
+			pushToWatched(playlists[thisIndex].videos[watching].id);
 
 			//loadNext takes the parameter from where to load the next video
 			//in this case, this would be the CURRENT, and it loads the NEXT.
@@ -209,7 +219,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	function markPreviousWatched(n) {
 		for(let i = 0; i < n; i++) {
 			playlists[thisIndex].videos[i].setWatched(true);
-			playlists[thisIndex].watched.push(playlists[thisIndex].videos[i].id);
+			pushToWatched(playlists[thisIndex].videos[i].id);
 		}
 		playlists[thisIndex].lastCompleted = n-1;
 
@@ -240,6 +250,13 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	//save the playlists object to the database FROM this controller.
 	function savePlaylists() {
 		shared.setPlaylists(playlists);
+	}
+
+	function pushToWatched(id) {
+		if(!playlists[thisIndex].watched.includes(id)) {
+			playlists[thisIndex].watched.push(id);
+		}
+
 	}
 
 	//************************************************//
