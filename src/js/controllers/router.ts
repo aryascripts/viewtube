@@ -8,7 +8,7 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 .service('shared', function() {
 	
 	var btnAdd:HTMLElement = document.getElementById('btn-url-add');
-	var urlInput:HTMLElement = document.getElementById('url-input-container');
+	var urlContainer:HTMLElement = document.getElementById('url-input-container');
 	var wrapper:HTMLElement = document.getElementById('main-wrapper');
 	var template = (<HTMLTemplateElement>document.getElementById('playlist-template'));
 	const prefix:string = 'https://www.youtube.com/playlist?list=';
@@ -51,13 +51,6 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 		setConfig: (value) => {
 			storage.set('config', value)
 				.then(data => {
-
-					// LOOK AT THIS NOW AND DELETE THE NEXT LINE
-					// PLEASE
-					// VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-					value.markPrevious = true;
-					value.markNext = true;
-
 					config = value;
 				});
 		},
@@ -65,7 +58,7 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 		config: 		() => config,
 		getPlaylists: 	() => playlists,
 		btnAdd: 		() => btnAdd,
-		urlInput: 		() => urlInput,
+		urlCont: 		() => urlContainer,
 		wrapper: 		() => wrapper,
 
 		request: 		() => request,

@@ -26,3 +26,8 @@ ipcMain.on('always-on-top', (event, data) => {
 ipcMain.on('close-video', (event, data) => {
 	Main.closeVideoWindow();
 });
+
+ipcMain.on('restart-app', (event, data) => {
+	Main.application.relaunch();
+	Main.application.quit();
+});

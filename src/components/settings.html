@@ -1,104 +1,122 @@
 <div class="content">
 	<form class="settingsform">
 	<h3 class="bold">Settings</h3>
-	<!--   <div class="checkbox">
-	    <label>
-	      <input type="checkbox"> This is a checkbox
-	    </label>
-	  </div>
-	  <div class="checkbox">
-	    <label>
-	      <input type="checkbox"> This is a checkbox too
-	    </label>
-	  </div> -->
 
 	<h4 class="bold">General</h3>
 
+	<!-- THEME SETTING -->
 	<div class="tooltip form-group">
 		Theme
-		<select id="theme" class="form-control">
-		    <option>Light</option>
-		    <option>Dark**</option>
+		<select name="theme" id="theme"
+		ng-options="option.name for option in data.themeOptions track by option.id"
+		ng-model="data.themeSelected"
+		ng-change="dataChanged('theme')">
 		</select>
+
 		<span class="tooltiptext">No Restart Required</span>
 	</div>
 
+	<!-- PLAYLIST TYPE -->
 	<div class="tooltip form-group">
 		Default Playlist Type
-		<select id="theme" class="form-control">
-		    <option>Sequential</option>
-		    <option>Non-sequential**</option>
+		<select name="defaultType" id="defaultType"
+		ng-options="option.name for option in data.defaultType track by option.id"
+		ng-model="data.defaultTypeSelected"
+		ng-change="dataChanged('defaultType')">
 		</select>
 		<span class="tooltiptext">Adding new playlists are set to the default type. Existing playlists do not change type.</span>
 	</div>
+
+	<!-- PLAYLIST SORTING -->
 	<div class="tooltip form-group">
 		Sort Playlists By
-		<select id="theme" class="form-control">
-		    <option>Playlist Name</option>
-		    <option>Channel Name</option>
+		<select name="sortPlaylistsBy" id="sortPlaylistsBy"
+			ng-options="option.name for option in data.sortPlaylistsBy track by option.id"
+			ng-model="data.sortPlaylistsBySelected"
+			ng-change="dataChanged('sortPlaylistsBy')">
 		</select>
 		<span class="tooltiptext">All playlists change order real-time. Already watched</span>
 	</div>
 
+	<!-- THRESHHOLD -->
 	<div class="form-group">
 		<div class="tooltip">
 			<label>
-			Video is "Watched" after completing: {{sliderValue}}%
-			<br/><input value="{{sliderValue}}" ng-model="threshhold" ng-change="slider()" id="threshhold" type ="range" min=".5" max=".95" step=".05"/>
+			Video is "Watched" after completing: {{ data.percentage }}%
+			<br/><input value="data.threshhold" ng-model="data.threshhold" ng-change="dataChanged('threshhold')" id="threshhold" type ="range" min=".5" max=".95" step=".05"/>
 			</label>
 			<span class="tooltiptext">When you exit video window after completing this percentage of it, the video is marked as watched.</span>
 		</div>
 
+	<!-- PLAYER ON TOP  -->
 		<div class="tooltip item">
 			<p>Player Always-On-Top</p>
-			<input type="checkbox" id="alwaysontop" ng-model="alwaysontop" ng-change="onTopChange()">
+			<input value="data.alwaysOnTop" type="checkbox" id="alwaysontop" ng-model="data.alwaysOnTop" ng-change="dataChanged('alwaysOnTop')">
 			<div class="toggle">
 				<label for="alwaysontop"><i></i></label>
 			</div>
 			<span class="tooltiptext">Player stays on top of other windows. The player does not follow multiple desktops. Updated real-time if you have a player running.</span>
 		</div>
 
+<!-- SEQUENTIAL BEHAVIOR -->
 		<h4 class="bold">Sequentail Behavior</h4>
 
+	<!-- MARK ALL PREVIOUS WATCHED -->
 		<div class="tooltip item">
 			<p>Mark All Previous Watched</p>
-			<input type="checkbox" id="markPrevious" ng-model="markPrevious" ng-change="watchedToggle()">
+			<input value="data.markPrevious" type="checkbox" id="markPrevious" ng-model="data.markPrevious" ng-change="dataChanged('markPrevious')">
 			<div class="toggle">
 				<label for="markPrevious"><i></i></label>
 			</div>
 			<span class="tooltiptext">If on, marks all previous videos as "watched" in sequential playlists if you start one manually (by clicking on the title).</span>
 		</div>
 
+	<!-- MARK ALL NEXT UNWATCHED -->
 		<div class="tooltip item">
 			<p>Mark All Next Unwatched</p>
-			<input type="checkbox" id="markPrevious" ng-model="markPrevious" ng-change="watchedToggle()">
+			<input value="data.markNext" type="checkbox" id="markNext" ng-model="data.markNext" ng-change="dataChanged('markNext')">
 			<div class="toggle">
-				<label for="markPrevious"><i></i></label>
+				<label for="markNext"><i></i></label>
 			</div>
 			<span class="tooltiptext">If on, marks all next videos as "unwatched" in sequential playlists if you start one manually (by clicking on the title).</span>
 		</div>
 
+	<!-- SKIP WATCHED  -->
 		<div class="tooltip item">
 			<p>Skip Watched Videos</p>
-			<input type="checkbox" id="skipWatched" ng-model="skipWatched" ng-change="skipWatched()">
+
+			<input value="data.skipWatched" type="checkbox" id="skipWatched" ng-model="data.skipWatched" ng-change="dataChanged('skipWatched')">
+			
 			<div class="toggle">
 				<label for="skipWatched"><i></i></label>
 			</div>
 			<span class="tooltiptext">If on, in sequential playlists, it will skip all next videos that are watched, and load the next unwatched video. If off, it plays sequentailly whether or not the video is watched.</span>
 		</div>
 
+<!-- NON SEQUENTIAL BEHAVIOR -->
 		<h4 class="bold">Non-sequential Behavior</h4>
 
+	<!-- AFTER VIDEO FINISH -->
 		<div class="tooltip form-group">
 			After Video Finishes
-			<select id="theme" class="form-control">
-				<option>Next video in playlist</option>
-				<option>Random unwatched video</option>
-			    <option>Close after video finishes</option>
+			<select name="afterNonsequentialFinishes" id="afterNonsequentialFinishes"
+			ng-options="option.name for option in data.afterNonsequentialFinishes track by option.id"
+			ng-model="data.afterNonsequentialFinishesSelected"
+			ng-change="dataChanged('afterNonsequentialFinishes')">
 			</select>
 			<span class="tooltiptext">1: Plays the very next video after current.<br/>2: Plays random unwatched video after current.<br/>3: Closes player after current video.</span>
 		</div>
 
+<!-- Backup and Restore -->
+		<h4 class="bold">Backup and Restore</h4>
+
+		<button class="stretch btn btn-large btn-primary" ng-click="backup()">Backup Playlists & Settings</button>
+
+		<div id="restoreBox" class="restore">
+			<div>
+				Drop File to Restore
+			</div>
+		</div>
 	</div>
 	</form>
 </div>

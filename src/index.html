@@ -35,7 +35,12 @@
           <button id="btn-url-add" class="btn btn-default">
             <span id="btn-url-span" class="icon icon-plus-circled"></span>
           </button>
-          <span id="url-input-container">
+          <span id="url-input-container" class="hidden">
+              <form id="addVideoForm">
+                <input id="url-text" style="width: 50%;" class="text-input" type="text" placeholder=" https://www.youtube.com/playlist?list=..." onfocus="if(this.value) this.value='';">
+                <button id="btn-check" ng-click="update()" class="btn btn-default"><span class="icon icon-check"></span></button>
+              </form>
+
           </span>
 
           <button class="btn btn-default pull-right">

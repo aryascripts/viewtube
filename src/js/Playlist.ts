@@ -40,6 +40,7 @@ export class Playlist {
 
 		this.sequential = true;
 		this.watched = [];
+		this.watching = -1;
 		this.lastCompleted = -1;
 		this.lastCompletedId = '';
 

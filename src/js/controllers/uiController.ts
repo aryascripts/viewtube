@@ -1,11 +1,24 @@
 import { Playlist } from './../Playlist';
 import { api_key } from './../APIAuth';
 import {ipcRenderer} from 'electron';
+const fs = require('fs');
 
 require('angular').module('viewTube')
 .controller('uiController', uiController);
 
 function uiController($scope, shared) {
+
+	var checkButton = document.getElementById('btn-check');
+	var urlTextBox = <HTMLInputElement>document.getElementById('url-text');
+
+	document.addEventListener('drop', function(e) {
+	  e.preventDefault();
+	  e.stopPropagation();
+	});
+	document.addEventListener('dragover', function(e) {
+	  e.preventDefault();
+	  e.stopPropagation();
+	});
 
 	loadConfig();
 	loadPlaylists();
@@ -14,27 +27,37 @@ function uiController($scope, shared) {
 	//first you toggle the add form, then if the check button is pressed,
 	//add a new tab with provided URL and place the repository name.
 	shared.btnAdd().addEventListener('click', () => {
-
 		toggleAddForm();
-		let checkButton:HTMLElement = document.getElementById('btn-check');
+		urlTextBox.focus();
 
-		if(shared.urlInput().innerHTML.trim() !== '') {
-			checkButton.addEventListener('click', () => {
-				let url:string = (<HTMLInputElement>document.getElementById('url-text')).value;
-				if(url.startsWith(shared.prefix())) {
-					//when adding a new playlist from the form,
-					//no need to set any parameters for current/last video.
-					let watched = [];
-					addPlaylist(url.split('=')[1], -1, '', -1, shared.config().sequential);
-				}
-				//Not a valid url for playlist
-				else {
-					console.log('Please enter a valid playlist URL. For example: ' + shared.prefix() + '...');
-				}
-				toggleAddForm();
-			});
-		}
+		urlTextBox.addEventListener("keyup", function(event) {
+		    event.preventDefault();
+		    if (event.keyCode == 13) {
+		        addFromForm();
+		    }
+		});
+
 	});
+
+	checkButton.addEventListener('click', addFromForm);
+
+	function addFromForm() {
+		let url:string = urlTextBox.value;
+		if(url.startsWith(shared.prefix())) {
+			//when adding a new playlist from the form,
+			//no need to set any parameters for current/last video.
+			let watched = [];
+			addPlaylist(url.split('=')[1], -1, '', -1, shared.config().sequential);
+			toggleAddForm();
+		}
+		//Not a valid url for playlist
+		else {
+			console.log(shared.prefix());
+			alert('Please check URL matches format. Example: ' + shared.prefix() + '...');
+		}
+
+		(<HTMLFormElement>document.getElementById('addVideoForm')).reset();
+	}
 
 	//Creates a new Playlist object based on the url in the form.
 	//Pushes object to the array of all playlists currently tracking
@@ -44,7 +67,7 @@ function uiController($scope, shared) {
 		//used to add playlist from ANYWHERE.
 		getPlaylistInfo(id).then(info => {
 			let plist = new Playlist(info);
-			plist.sequential = true;
+			plist.sequential = seq;
 			plist.lastCompleted = last;
 			plist.watchingId = watchingId;
 			plist.watchingTime = watchingTime;
@@ -83,23 +106,16 @@ function uiController($scope, shared) {
 		btnSpan.classList.toggle('icon-plus-circled');
 		btnSpan.classList.toggle('icon-minus-circled');
 
-		let formElements:string = '<input id="url-text" style="width: 50%;" class="text-input" type="text" placeholder=" https://www.youtube.com/playlist?list=..."><button id="btn-check" ng-click="update()" class="btn btn-default"><span class="icon icon-check"></span></button>';
-		shared.urlInput().innerHTML = shared.urlInput().innerHTML.trim() == '' ? formElements : '';
-	}
-
-	function toggleBackButton() {
-		let backButton:HTMLElement = document.getElementById('btn-back');
-		backButton.classList.toggle('hidden');
+		shared.urlCont().classList.toggle('hidden');
 	}
 
 	//this method is for loading ALL playlists from the storage file.
 	//can also be used in the future for loading playlists from a backup.
-	function loadPlaylists(obj) {
+	function loadPlaylists() {
 
 		//if nothing was passed in here, load from the storage
 		//if there is nothing in storage, a new storage file is created next time.
-		if(!obj) {
-			shared.storage().get('playlists')
+		shared.storage().get('playlists')
 				.then(data => {
 					if(data['playlists']) {
 						for(let i = 0; i < data['playlists'].length; i++) {
@@ -110,7 +126,7 @@ function uiController($scope, shared) {
 
 							addPlaylist(
 								data['playlists'][i].id,
-								data['playlists'][i].lastVideo,
+								data['playlists'][i].lastCompleted,
 								data['playlists'][i].watchingId,
 								data['playlists'][i].watchingTime,
 								data['playlists'][i].sequential,
@@ -125,26 +141,24 @@ function uiController($scope, shared) {
 				});
 
 		}
-		
-		//else an object was provided, load the playlists from there
-		//storage object will be overridden.
-		else {
-			//to be implemented in the future.
-		}
-
-	}
 
 	function loadConfig() {
 		let config;
 		shared.storage().get('config').then(data => {
 			if(isEmpty(data)) {
+				console.log('LOADING DEFAULT CONFIG');
 				config = {
-					'dark':false,
+					'theme':'light', 					// light | dark
 					'autoplay':false,
-					'iframe':true,
-					'alwaysontop':false,
+					'iFrame':true,
+					'alwaysOnTop':false,
 					'sequential': true,
-					'threshhold': 0.90
+					'threshhold': 0.90,					// 0.5 - 0.95
+					'sortPlaylistsByName':'playlist', 	// playlist | channel
+					'markPrevious': true,
+					'markNext': true,
+					'skipWatched': false,
+					'afterNonsequentialFinishes': 'next' 		// next | random | close
 				}
 			} else {
 				config = data;

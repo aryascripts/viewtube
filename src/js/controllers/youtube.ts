@@ -33,13 +33,21 @@ player.on('stateChange', (event) => {
 	}
 });
 
-window.onbeforeunload = function() {
-	player.getCurrentTime().then(data => {
-		var sendInfo = {
-			'time': data,
-			'id': id
-		}
+//This is triggered around 15 times, not sure why.
+let sent = false;
 
-		ipcRenderer.send('video-closed', sendInfo);
-	})
+window.onunload = function() {
+		player.getCurrentTime().then(data => {
+			var sendInfo = {
+				'time': data,
+				'id': id
+			}
+
+			if(!sent) {
+				ipcRenderer.send('video-closed', sendInfo);
+				sent = true;
+			}
+			
+		})
 }
+

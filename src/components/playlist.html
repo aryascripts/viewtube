@@ -2,35 +2,42 @@
 
     <div class="heading-container gradient">
       <span style="width:55%" class="bold plist-title heading-container-item playlist-title white">
-      	{{ plist.title; }}
+      	{{ data.plist.title; }}
       </span>
       <span style="width:25%" class="channel-name heading-container-item white">
-      	by {{ plist.channelName; }} 
+      	by {{ data.plist.channelName; }} 
       </span>
       <span style="width:10%" class="video-count text-right heading-container-item white">
-      	 {{ plist.watched.length; }} / {{ plist.totalVideos }}
+      	 {{ data.plist.watched.length; }} / {{ data.plist.totalVideos }}
       </span>
     </div>
   <div class="playlist-content">
-    <div class="left-padding-4 thumbnail playlist-content-item"> <img ng-src="{{ plist.getThumbnailUrl(); }}" width="120px" /> </div>
+    <div class="left-padding-4 thumbnail playlist-content-item"> <img ng-src="{{ data.plist.getThumbnailUrl(); }}" width="120px" /> </div>
     <div class="left-padding-2 description playlist-content-item text-left">
-      {{ plist.description; }}
+      {{ data.plist.description; }}
+  
+      <br>
+      <div class="playlistType">
+        Playlist is
+        <select name="type" id="type"
+          ng-options="option.name for option in data.type track by option.id"
+          ng-model="data.typeSelected"
+          ng-change="typeChanged()">
+        </select>
+      </div>
+
     </div>
+    
+
   </div>
 </div>
 <div class="buttons-container">
-	<div ng-click="loadNext()" class="green-bg button">
-		Resume Watching
+	<div ng-click="greenButton()" class="green-bg button">
+		{{data.buttonText}}
 	</div>
 </div>
 
-<div class="white note-bg note">
-	*Clicking a video marks all previous as watched*
-</div>
-
-
-
-<div ng-repeat="video in videos" ng-click="clickEvent($index)"
+<div ng-repeat="video in data.videos" ng-click="clickEvent($index)"
 class="{{ video.watched ? 'watched' : 'unwatched' }}
 bottom-margin-px windowWidth heading-container"
 
@@ -44,6 +51,6 @@ style="
 
 	<span style="width: 5%;" class="white heading-container-item"> {{ $index+1 }} </span>
 	<span style="width: 70%;" class="white heading-container-item"> {{ video.title; }} </span>
-	<span style="width: 25%;"class="white heading-container-item"> {{ video.duration; }} </span>
+	<span style="width: 8%;"class="white heading-container-item"> {{ video.duration; }} </span>
 
 </div>

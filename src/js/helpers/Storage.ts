@@ -12,7 +12,7 @@ export class Storage {
 
 					data.playlists.push({
 						'id': playlists[i].id,
-						'lastVideo': playlists[i].lastVideo,
+						'lastCompleted': playlists[i].lastCompleted,
 						'watchingTime': playlists[i].watchingTime,
 						'watchingId': playlists[i].watchingId,
 						'watched': playlists[i].watched,

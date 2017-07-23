@@ -1,20 +1,9 @@
-//*****************************************//
-//				TODOS
-// [] (function) Do not enter into watched array if it already exists
-// [x] display the count of watched array in the completed section at the top
-// 
-//
-//
-//
-//
-
 import { api_key } from './../APIAuth';
 
 const { BrowserWindow } = require('electron').remote;
 const remote = require('electron').remote;
 const {ipcRenderer} = require('electron');
-
-import Main from './../../Main';
+const {shell} = require('electron')
 
 const max = 50;
 
@@ -32,9 +21,20 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	//These variables are LOCAL only. DO NOT update ANYTHING in these.
 	//Only used for DISPLAYING information.
 	//All updates to be done in actual playlists[thisIndex] object.
-	$scope.videos = playlists[thisIndex].videos;
-	$scope.plist = playlists[thisIndex];
-	$scope.watching = playlists[thisIndex].watching;
+	$scope.data = {
+		'type': [
+			{ id:'sequential', name:'Sequential'},
+			{ id:'nonsequential', name: 'Non-sequential' }
+		],
+		'typeSelected': (playlists[thisIndex].sequential) ?
+			{'id': 'sequential'} : {'id': 'nonsequential'},
+		'watching': playlists[thisIndex].watching,
+		'plist': playlists[thisIndex],
+		'videos': playlists[thisIndex].videos,
+		'buttonText': buttonText()
+	}
+
+	console.log($scope.data);
 
 	//Populates the page with playlists
 	//This fetches all data from YouTube.
@@ -52,9 +52,12 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	//that logic is in Main.ts
 	function loadVideo(index, time) {
 		playlists[thisIndex].watching = index;
+		playlists[thisIndex].videos[index].setWatching(true);
 		playlists[thisIndex].watchingId = playlists[thisIndex].videos[index].id;
 
 		console.log('setting watching to' + index);
+
+		console.log(time);
 
 		ipcRenderer.send(
 			'create-window',
@@ -68,17 +71,74 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	//Loads the next video from given index.
 	//If there is no next window, video window
 	//is asked to be closed.
-	function loadNext(from) {
+	function loadNext(from, skipWatched) {
 		//check if trying to load next from the LAST video in the playlist
-		if(from === playlists[thisIndex].totalVideos) {
-			//there is no more videos in this playlist 
-			Main.closeVideoWindow();
-			return;
+		if(from === playlists[thisIndex].totalVideos - 1) {
+			//there are no more videos in this playlist 
+			ipcRenderer.send('close-video');
 		}
 
 		//there is a next video, load it
+		//check if you want to skip watched videos
 		else {
-			loadVideo(from+1, 0);
+			let n = from+1;
+			if(playlists[thisIndex].sequential && skipWatched) {
+				for(let i = n; i < playlists[thisIndex].totalVideos; i++) {
+					if(!playlists[thisIndex].videos[i].watched) {
+						n = i;
+						break;
+					}
+				}
+			}
+
+			loadVideo(n, 0);
+		}
+	}
+
+	//called from an event when the WATCHING video ends
+	//and we need to load the next.
+	function loadNonSequential(from) {
+
+		//check if this video is really non sequential
+		if(playlists[thisIndex].sequential) { 
+			if(confirm('Something went wrong. Error#: 151. It is recommended you restart ViewTube. Press OK to view or create an issue in GitHub.')) {
+				shell.openExternal('https://github.com/amanb014/viewtube/issues');
+			}
+		}
+
+
+
+		switch(shared.config().afterNonsequentialFinishes) {
+			case 'next':
+				loadNext(from, false);
+				break;
+			
+			case 'close':
+				ipcRenderer.send('close-video');
+				break;
+
+			default:
+				loadRandomVideo();
+				break;
+		}
+	}
+
+	function loadRandomVideo() {
+		//all videos were watched, just load any video.
+		if(playlists[thisIndex].watched.length === playlists[thisIndex].totalVideos) {
+			loadVideo(Math.floor(Math.random() * (playlists[thisIndex].videos.length-1)), 0);
+		}
+
+		//else, look for a video that is unwatched
+		else {
+			let found = false;
+			while(!found) {
+				let rand = Math.floor(Math.random() * (playlists[thisIndex].videos.length-1));
+				if(!playlists[thisIndex].videos[rand].watched) {
+					found = true;
+					loadVideo(rand, 0);
+				}
+			}
 		}
 	}
 
@@ -107,14 +167,13 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 
 			playlists[thisIndex].videos[finished].setWatched(true);
 			pushToWatched(playlists[thisIndex].videos[finished].id);
-			playlists[thisIndex].lastVideo = finished;
+			playlists[thisIndex].lastCompleted = finished;
 			
 			//reset the partially watched ID since there is none anymore.
 			console.log('SETTING WATCHING TO -1');
 			playlists[thisIndex].watching = -1;
 			playlists[thisIndex].watchingTime = -1;
 			playlists[thisIndex].watchingId = '';
-			$scope.currentBg = '';
 
 			console.log(playlists[thisIndex].videos[finished].title + ' was set as watched');
 		}
@@ -123,7 +182,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		else {
 			console.log('video was marked partially watched');
 			let watching = playlists[thisIndex].watching;
-			playlists[thisIndex].watchingTime = timeCompleted;
+			playlists[thisIndex].watchingTime = Math.floor(timeCompleted);
 			playlists[thisIndex].videos[watching].setPercentage(perc);
 			playlists[thisIndex].videos[watching].setWatching(true);
 		}
@@ -133,19 +192,11 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		savePlaylists();
 	}
 
-	//called from an event when the WATCHING video ends
-	//and we need to load the next.
-	function loadNonSequential(from) {
-		//check if this video is really non sequential
-		if(!playlists[thisIndex].sequential) { console.log('you\'re in the wrong method.'); return; }
-
-		console.log('handle non sequential load next video');
-		Main.closeVideoWindow();
-
-	}
-
 	//CALLED when the user clicks on a video manually
 	$scope.clickEvent = function(index) {
+
+
+		let time = (index === playlists[thisIndex].watching) ? playlists[thisIndex].watchingTime : 0;
 
 		//set the current video unwatched (because the user clicked on it to watch it)
 		playlists[thisIndex].videos[index].setWatched(false);
@@ -170,7 +221,8 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 
 		//save because bunch of things might have changed.
 		savePlaylists();
-		loadVideo(index, 0);
+		console.log(time);
+		loadVideo(index, time);
 	}
 
 	//************************************************//
@@ -182,16 +234,15 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	ipcRenderer.on('load-next', (event, args) => {
 		let watching = playlists[thisIndex].watching;
 
+		//mark the CURRENT video as watched & push the ID
+		playlists[thisIndex].videos[watching].setWatched(true);
+		pushToWatched(playlists[thisIndex].videos[watching].id);
+
 		//if playlist is sequential
 		if(playlists[thisIndex].sequential) {
-
-			//mark the CURRENT video as watched & push the ID
-			playlists[thisIndex].videos[watching].setWatched(true);
-			pushToWatched(playlists[thisIndex].videos[watching].id);
-
 			//loadNext takes the parameter from where to load the next video
 			//in this case, this would be the CURRENT, and it loads the NEXT.
-			loadNext(watching);
+			loadNext(watching, shared.config().skipWatched);
 		}
 
 		//non-sequential playlist
@@ -199,7 +250,6 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 			loadNonSequential(watching);
 		}
 
-		console.log('next is update and save');
 		savePlaylists();
 		update();
 	});
@@ -207,8 +257,66 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	//Received when the videoPlayerWindow is closed
 	//Need to calculate if the whole video was watched or not.
 	ipcRenderer.on('calc-watch-time', (event, obj) => {
+		console.log('received watch time event');
 		calculateWatchTime(obj.time, obj.id);
 	});
+
+	//Playlist type was changed
+	$scope.typeChanged = () => {
+		playlists[thisIndex].sequential = 
+				($scope.data['typeSelected']['id'] === 'sequential') ? true : false;
+		savePlaylists();
+		$scope.data.buttonText = buttonText();
+	}
+
+	//Green button was pressed
+	//Based on the playlist type and state of playlist,
+	//It does different things
+	$scope.greenButton = () => {
+
+		//If there is an unfinished video, load that.
+		if(playlists[thisIndex].watching > -1) {
+			loadVideo(playlists[thisIndex].watching, playlists[thisIndex].watchingTime);
+			return;
+		}
+
+		//Sequential playlist
+		if(playlists[thisIndex].sequential) {
+
+			//If no videos have been watched so far
+			if($scope.data.buttonText === 'Start Watching') {
+				loadVideo(0, 0);
+			}
+
+			//If they have, load the one right after the last one that was completed
+			else {
+				//load next if the last completed was NOT the last video in playlist
+				if(playlists[thisIndex].lastCompleted !== playlists[thisIndex].videos.length - 1) {
+					loadNext(playlists[thisIndex].lastCompleted, shared.config().skipWatched);
+				}
+
+				//if all videos have not been watched, load the first unwatched video you can find.
+				else if(playlists[thisIndex].totalVideos !== playlists[thisIndex].watched.length){
+					for(let i = 0; i < playlists[thisIndex].videos.length; i++) {
+						if(!playlists[thisIndex].videos[i].watched) {
+							loadVideo(i, 0);
+						}
+					}
+				}
+
+				//If nothing works, just load the first video
+				else {
+					loadVideo(0, 0);
+				}
+			}
+		}
+
+		//Non sequential playlist
+		else {
+			loadRandomVideo();
+		}
+
+	}
 
 
 	//************************************************//
@@ -242,8 +350,8 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	//Update the playlists and videos of THIS controller
 	//using the global playlists
 	function update() {
-		$scope.videos = playlists[thisIndex].videos;
-		$scope.plists = playlists[thisIndex];
+		$scope.data.videos = playlists[thisIndex].videos;
+		$scope.data.plist = playlists[thisIndex];
 		$scope.$apply();
 	}
 
@@ -259,6 +367,25 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 
 	}
 
+	function buttonText() {
+		console.log(playlists[thisIndex].watching);
+			if(playlists[thisIndex].watchingTime > -1) {
+				return 'Resume Watching';
+			}
+
+			if(playlists[thisIndex].sequential) {
+				if(playlists[thisIndex].watched.length === playlists[thisIndex].totalVideos){
+					return 'Restart Playlist'
+				} 
+				else if(playlists[thisIndex].lastCompleted < 0) {
+					return 'Start Watching';
+				}
+				else { return 'Resume Watching'; }
+			}
+			else {
+				return 'Random Video';
+			}
+	}
 	//************************************************//
 	//	     ALL OF THESE ARE MEANT TO POPULATE      //
 	function populate() {
