@@ -194,9 +194,9 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 
 	//CALLED when the user clicks on a video manually
 	$scope.clickEvent = function(index) {
+		
 
-
-		let time = (index === playlists[thisIndex].watching) ? playlists[thisIndex].watchingTime : 0;
+		let time = shared.config().restart ? 0 : playlists[thisIndex].videos[index].watchingTime;
 
 		//set the current video unwatched (because the user clicked on it to watch it)
 		playlists[thisIndex].videos[index].setWatched(false);
@@ -220,14 +220,12 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		}
 
 		//save because bunch of things might have changed.
-		savePlaylists();
-		console.log(time);
+		savePlaylists()
 		loadVideo(index, time);
 	}
 
 	//************************************************//
 	//	     				 EVENTS    			     //
-
 	//received when the 'watching' video is FULLY watched
 	//load the next video based on what type of playlist
 	//and the settings user has set.
@@ -315,9 +313,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		else {
 			loadRandomVideo();
 		}
-
 	}
-
 
 	//************************************************//
 	//	     			HELPERS	    			     //
@@ -416,10 +412,10 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 						}); //timeout
 				}); //then
 		} //if
-
 	} //fn
 
 	//Goes to the Google server (with HttpRequest) and retreives the videos inside a playlist id
+	//Gets 50 videos (max) at a time and returns the data
 	function getVideos(id:string, page:string) {
 		let location = 'https://www.googleapis.com/youtube/v3/playlistItems';
 		let headers = {
