@@ -15,8 +15,11 @@ export class Video {
 	watched:boolean;
 	watching:boolean;
 
+	watchingTime:number;
+
 	setPercentage 	= (decimal) =>  {
 		this.percentage = Math.floor(decimal*100);
+		this.watchingTime = Math.floor(decimal * this.durationSec);
 	}
 
 	setWatched = (val) => {
@@ -54,6 +57,7 @@ export class Video {
 		this.watched = false;
 
 		this.watching = false;
+		this.watchingTime = 0;
 	}
 
 	public setData(data, watchedList, watchingInfo) {

@@ -58,6 +58,15 @@
 			<span class="tooltiptext">Player stays on top of other windows. The player does not follow multiple desktops. Updated real-time if you have a player running.</span>
 		</div>
 
+		<div class="tooltip item">
+			<p>Restart Partially Watched</p>
+			<input value="data.restart" type="checkbox" id="restart" ng-model="data.restart" ng-change="dataChanged('restart')">
+			<div class="toggle">
+				<label for="restart"><i></i></label>
+			</div>
+			<span class="tooltiptext">If on, partially watched videos will be restarted.</span>
+		</div>
+
 <!-- SEQUENTIAL BEHAVIOR -->
 		<h4 class="bold">Sequentail Behavior</h4>
 

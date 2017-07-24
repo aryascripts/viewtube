@@ -17,21 +17,21 @@ function settingsController($scope, shared, $timeout) {
 
 	$scope.data = {
 		'themeOptions': [
-			{id: 'light', name: 'Light'},
-			{id: 'dark',  name: 'Dark'}
+			{'id': 'light', 'name': 'Light'},
+			{'id': 'dark',  'name': 'Dark'}
 		],
-		'themeSelected': { id: config.theme },
+		'themeSelected': { 'id': config.theme },
 
 		'defaultType': [
-			{ id:'sequential', name:'Sequential'},
-			{ id:'nonsequential', name: 'Non-sequential' }
+			{ 'id':'sequential', 'name':'Sequential'},
+			{ 'id':'nonsequential', 'name': 'Non-sequential' }
 		],
 		'defaultTypeSelected': (config.sequential) ?
 			{'id': 'sequential'} : {'id': 'nonsequential'},
 
 		'sortPlaylistsBy': [
-			{ id: 'playlist', name: 'Playlist Name' },
-			{ id: 'channel', name: 'Channel Name' }
+			{ 'id': 'playlist', 'name': 'Playlist Name' },
+			{ 'id': 'channel', 'name': 'Channel Name' }
 		],
 		'sortPlaylistsBySelected': (config.sortPlaylistsByName === 'playlist') ? 
 			{'id': 'playlist'} : {'id': 'channel'},
@@ -43,11 +43,12 @@ function settingsController($scope, shared, $timeout) {
 		'markPrevious': config.markPrevious,
 		'markNext': config.markNext,
 		'skipWatched': config.skipWatched,
+		'restart': config.restart,
 
 		'afterNonsequentialFinishes': [
-			{ id: 'next', name: 'Play Next' },
-			{ id: 'random', name: 'Play Random Unwatched' },
-			{ id: 'close', name: 'Close Player' }
+			{ 'id': 'next', 'name': 'Play Next' },
+			{ 'id': 'random', 'name': 'Play Random Unwatched' },
+			{ 'id': 'close', 'name': 'Close Player' }
 		],
 
 		'afterNonsequentialFinishesSelected': { 'id': config.afterNonsequentialFinishes }
@@ -91,6 +92,10 @@ function settingsController($scope, shared, $timeout) {
 
 			case 'afterNonsequentialFinishes':
 				config.afterNonsequentialFinishes = $scope.data.afterNonsequentialFinishesSelected.id;
+				break;
+
+			case 'restart':
+				config.restart = $scope.data.restart;
 				break;
 		}
 
