@@ -71,6 +71,11 @@ export default class Main {
             Main.videoWindow = null;
         });
 
+        Main.videoWindow.webContents.on('new-window', function(e, url) {
+          e.preventDefault();
+          require('electron').shell.openExternal(url);
+        });
+
         Main.changeVideoId(video);
     }
 

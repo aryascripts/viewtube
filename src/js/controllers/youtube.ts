@@ -7,6 +7,7 @@ var t = args[1].split('=')[1];
 var time = (t) ? t : 0;
 
 console.log(time);
+var sendOnUnload = true;
 
 
 var player = YouTubePlayer('player',
@@ -29,12 +30,11 @@ player.on('stateChange', (event) => {
 	console.log(event);
 	if(event.data === 0) {
 		console.log('video ended... queuing send command');
+		sendOnUnload = false;
 		ipcRenderer.send('next-video');
 	}
 });
 
-//This is triggered around 15 times, not sure why.
-let sent = false;
 
 window.onunload = function() {
 		player.getCurrentTime().then(data => {
@@ -43,9 +43,8 @@ window.onunload = function() {
 				'id': id
 			}
 
-			if(!sent) {
+			if(sendOnUnload) {
 				ipcRenderer.send('video-closed', sendInfo);
-				sent = true;
 			}
 			
 		})
