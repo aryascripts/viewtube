@@ -15,8 +15,10 @@ export class Playlist {
 	watchingId:string;
 	watchingTime:number;
 
+
 	sequential:boolean;
 	watched: Array<string>;		//array of video IDs which is then used to set videos as watched upon loadVideos();
+	partial: Array<string>;
 
 	lastCompleted:number;
 	lastCompletedId:string;
@@ -40,6 +42,7 @@ export class Playlist {
 
 		this.sequential = true;
 		this.watched = [];
+		this.partial = [];
 		this.watching = -1;
 		this.lastCompleted = -1;
 		this.lastCompletedId = '';

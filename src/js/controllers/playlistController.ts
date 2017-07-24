@@ -181,10 +181,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		//video was only partially watched
 		else {
 			console.log('video was marked partially watched');
-			let watching = playlists[thisIndex].watching;
-			playlists[thisIndex].watchingTime = Math.floor(timeCompleted);
-			playlists[thisIndex].videos[watching].setPercentage(perc);
-			playlists[thisIndex].videos[watching].setWatching(true);
+			pushToPartiallyWatched(playlists[thisIndex].watching, timeCompleted);
 		}
 
 		//save because a playlist was just marked as watched or partially watched.
@@ -192,10 +189,20 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		savePlaylists();
 	}
 
+	function pushToPartiallyWatched(index, time) {
+			playlists[thisIndex].watchingTime = time;
+			playlists[thisIndex].videos[index].setPercentage(time);
+			playlists[thisIndex].videos[index].setWatching(true);
+			playlists[thisIndex].partial.push({
+				'id': playlists[thisIndex].videos[index].id,
+				'time': Math.floor(time)
+			});
+	}
 	//CALLED when the user clicks on a video manually
 	$scope.clickEvent = function(index) {
 		
-
+		//If config allows, restart the clicked video.
+		//If not, load the time left at (if not started, this was initialized to 0)
 		let time = shared.config().restart ? 0 : playlists[thisIndex].videos[index].watchingTime;
 
 		//set the current video unwatched (because the user clicked on it to watch it)
@@ -466,16 +473,6 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		let info = [];
 		let url = 'https://www.googleapis.com/youtube/v3/videos';
 
-		//for sending the currently watching info, if there is any.
-		//if there is no current video, -1 is sent. 
-		let watchingInfo = (playlists[thisIndex].watchingId !== '') ? {
-			'id': playlists[thisIndex].watchingId,
-			'time': playlists[thisIndex].watchingTime
-		}
-		: -1;
-
-		console.log(watchingInfo);
-
 		for(let i = 0; i < playlists[thisIndex].videos.length ; i++) {
 			let headers = {
 				'id': playlists[thisIndex].videos[i].id,
@@ -491,7 +488,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 
 			shared.request().getResponse(url, headers)
 			.then(data => {
-				playlists[thisIndex].videos[i].setData(data, playlists[thisIndex].watched, watchingInfo);
+				playlists[thisIndex].videos[i].setData(data, playlists[thisIndex].watched, playlists[thisIndex].partial);
 
 				update();
 			}); //shared.request()	

@@ -62,7 +62,9 @@ function uiController($scope, shared) {
 	//Creates a new Playlist object based on the url in the form.
 	//Pushes object to the array of all playlists currently tracking
 	//Called on checkmark button press
-	function addPlaylist(id, last, watchingId, watchingTime, seq, watchedArr = []) {
+	function addPlaylist(id, last, watchingId, watchingTime, seq, 
+		//optional parameters
+		watchedArr = [], partialArr = []) {
 
 		//used to add playlist from ANYWHERE.
 		getPlaylistInfo(id).then(info => {
@@ -72,6 +74,7 @@ function uiController($scope, shared) {
 			plist.watchingId = watchingId;
 			plist.watchingTime = watchingTime;
 			plist.watched = watchedArr;
+			plist.partial = partialArr
 
 			let temp = shared.getPlaylists();
 			temp.push(plist);
@@ -130,7 +133,8 @@ function uiController($scope, shared) {
 								data['playlists'][i].watchingId,
 								data['playlists'][i].watchingTime,
 								data['playlists'][i].sequential,
-								data['playlists'][i].watched
+								data['playlists'][i].watched,
+								data['playlists'][i].partial
 								);
 							
 						}

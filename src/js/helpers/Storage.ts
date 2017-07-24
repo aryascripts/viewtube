@@ -8,10 +8,10 @@ export class Storage {
 				var data = { 'playlists': [] }
 
 				for(let i = 0; i < playlists.length; i++) {
-					let watchedIds = [];
 
 					data.playlists.push({
 						'id': playlists[i].id,
+						'partial':playlists[i].partial,
 						'lastCompleted': playlists[i].lastCompleted,
 						'watchingTime': playlists[i].watchingTime,
 						'watchingId': playlists[i].watchingId,
