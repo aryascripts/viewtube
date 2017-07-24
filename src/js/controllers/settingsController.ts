@@ -4,13 +4,13 @@ const {remote} = require('electron');
 const {dialog} = require('electron').remote;
 const fs = require('fs');
 
-// const writeJson = require('write-json-file');
 
 require('angular').module('viewTube')
 .controller('settingsController', settingsController);
 
 function settingsController($scope, shared, $timeout) {
 	var config = shared.config();
+	console.log(config);
 
 	const holder = document.getElementById('restoreBox');
 	

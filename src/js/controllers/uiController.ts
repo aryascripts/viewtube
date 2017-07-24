@@ -155,6 +155,7 @@ function uiController($scope, shared) {
 					'theme':'light', 					// light | dark
 					'autoplay':false,
 					'iFrame':true,
+					'restart':false,
 					'alwaysOnTop':false,
 					'sequential': true,
 					'threshhold': 0.90,					// 0.5 - 0.95

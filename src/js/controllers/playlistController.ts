@@ -50,14 +50,14 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	//Sends an event to Main window to create
 	//a new window or load the video in current window.
 	//that logic is in Main.ts
-	function loadVideo(index, time) {
+	function loadVideo(index) {
+
 		playlists[thisIndex].watching = index;
 		playlists[thisIndex].videos[index].setWatching(true);
 		playlists[thisIndex].watchingId = playlists[thisIndex].videos[index].id;
 
-		console.log('setting watching to' + index);
-
-		console.log(time);
+		//Check if config wants to restart the video
+		let time = shared.config().restart ? 0 : playlists[thisIndex].videos[index].watchingTime;
 
 		ipcRenderer.send(
 			'create-window',
@@ -71,7 +71,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	//Loads the next video from given index.
 	//If there is no next window, video window
 	//is asked to be closed.
-	function loadNext(from, skipWatched) {
+	function loadNext(from) {
 		//check if trying to load next from the LAST video in the playlist
 		if(from === playlists[thisIndex].totalVideos - 1) {
 			//there are no more videos in this playlist 
@@ -82,7 +82,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		//check if you want to skip watched videos
 		else {
 			let n = from+1;
-			if(playlists[thisIndex].sequential && skipWatched) {
+			if(playlists[thisIndex].sequential && shared.config().skipWatched) {
 				for(let i = n; i < playlists[thisIndex].totalVideos; i++) {
 					if(!playlists[thisIndex].videos[i].watched) {
 						n = i;
@@ -91,7 +91,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 				}
 			}
 
-			loadVideo(n, 0);
+			loadVideo(n);
 		}
 	}
 
@@ -110,7 +110,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 
 		switch(shared.config().afterNonsequentialFinishes) {
 			case 'next':
-				loadNext(from, false);
+				loadNext(from);
 				break;
 			
 			case 'close':
@@ -126,7 +126,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	function loadRandomVideo() {
 		//all videos were watched, just load any video.
 		if(playlists[thisIndex].watched.length === playlists[thisIndex].totalVideos) {
-			loadVideo(Math.floor(Math.random() * (playlists[thisIndex].videos.length-1)), 0);
+			loadVideo(Math.floor(Math.random() * (playlists[thisIndex].videos.length-1)));
 		}
 
 		//else, look for a video that is unwatched
@@ -136,7 +136,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 				let rand = Math.floor(Math.random() * (playlists[thisIndex].videos.length-1));
 				if(!playlists[thisIndex].videos[rand].watched) {
 					found = true;
-					loadVideo(rand, 0);
+					loadVideo(rand);
 				}
 			}
 		}
@@ -193,17 +193,32 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 			playlists[thisIndex].watchingTime = time;
 			playlists[thisIndex].videos[index].setPercentage(time);
 			playlists[thisIndex].videos[index].setWatching(true);
-			playlists[thisIndex].partial.push({
-				'id': playlists[thisIndex].videos[index].id,
-				'time': Math.floor(time)
-			});
+			let found = false;
+
+			//If the video is already in 'partial', then update the time.
+			for(let i = 0; i < playlists[thisIndex].partial.length; i++) {
+				//Check if this video already exists as a partially watching
+				if(playlists[thisIndex].videos[index].id === playlists[thisIndex].partial[i].id) {
+					playlists[thisIndex].partial[i].time = Math.floor(time);
+					found = true;
+					break;
+				}
+			}
+
+			//If the video was not found in 'partial', then push it.
+			if(!found) {
+				playlists[thisIndex].partial.push({
+					'id': playlists[thisIndex].videos[index].id,
+					'time': Math.floor(time)
+				});
+			}
+			
 	}
 	//CALLED when the user clicks on a video manually
 	$scope.clickEvent = function(index) {
 		
 		//If config allows, restart the clicked video.
 		//If not, load the time left at (if not started, this was initialized to 0)
-		let time = shared.config().restart ? 0 : playlists[thisIndex].videos[index].watchingTime;
 
 		//set the current video unwatched (because the user clicked on it to watch it)
 		playlists[thisIndex].videos[index].setWatched(false);
@@ -228,7 +243,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 
 		//save because bunch of things might have changed.
 		savePlaylists()
-		loadVideo(index, time);
+		loadVideo(index);
 	}
 
 	//************************************************//
@@ -247,7 +262,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		if(playlists[thisIndex].sequential) {
 			//loadNext takes the parameter from where to load the next video
 			//in this case, this would be the CURRENT, and it loads the NEXT.
-			loadNext(watching, shared.config().skipWatched);
+			loadNext(watching);
 		}
 
 		//non-sequential playlist
@@ -281,7 +296,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 
 		//If there is an unfinished video, load that.
 		if(playlists[thisIndex].watching > -1) {
-			loadVideo(playlists[thisIndex].watching, playlists[thisIndex].watchingTime);
+			loadVideo(playlists[thisIndex].watching);
 			return;
 		}
 
@@ -290,28 +305,28 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 
 			//If no videos have been watched so far
 			if($scope.data.buttonText === 'Start Watching') {
-				loadVideo(0, 0);
+				loadVideo(0);
 			}
 
 			//If they have, load the one right after the last one that was completed
 			else {
 				//load next if the last completed was NOT the last video in playlist
 				if(playlists[thisIndex].lastCompleted !== playlists[thisIndex].videos.length - 1) {
-					loadNext(playlists[thisIndex].lastCompleted, shared.config().skipWatched);
+					loadNext(playlists[thisIndex].lastCompleted);
 				}
 
 				//if all videos have not been watched, load the first unwatched video you can find.
 				else if(playlists[thisIndex].totalVideos !== playlists[thisIndex].watched.length){
 					for(let i = 0; i < playlists[thisIndex].videos.length; i++) {
 						if(!playlists[thisIndex].videos[i].watched) {
-							loadVideo(i, 0);
+							loadVideo(i);
 						}
 					}
 				}
 
 				//If nothing works, just load the first video
 				else {
-					loadVideo(0, 0);
+					loadVideo(0);
 				}
 			}
 		}
