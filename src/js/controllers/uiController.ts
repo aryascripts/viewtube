@@ -66,21 +66,33 @@ function uiController($scope, shared) {
 		//optional parameters
 		watchedArr = [], partialArr = []) {
 
-		//used to add playlist from ANYWHERE.
-		getPlaylistInfo(id).then(info => {
-			let plist = new Playlist(info);
-			plist.sequential = seq;
-			plist.lastCompleted = last;
-			plist.watchingId = watchingId;
-			plist.watchingTime = watchingTime;
-			plist.watched = watchedArr;
-			plist.partial = partialArr
+		return new Promise((resolve, reject) => {
+			getPlaylistInfo(id)
+				.then(info => {
+					let plist = new Playlist(info);
+					plist.sequential = seq;
+					plist.lastCompleted = last;
+					plist.watchingId = watchingId;
+					plist.watchingTime = watchingTime;
+					plist.watched = watchedArr;
+					plist.partial = partialArr
 
-			let temp = shared.getPlaylists();
-			temp.push(plist);
+					let temp = shared.getPlaylists();
+					temp.push(plist);
 
-			shared.setPlaylists(temp);
+					shared.setPlaylists(temp)
+						//setPlaylists returns a boolean if saved
+						.then(saved => {
+							if(saved){ resolve(temp.length); }
+						})
+						.catch(error => {
+							reject(confirm('Click OK to view current issues on GitHub. Error: ' + error));
+						});
+			});
 		});
+
+		//used to add playlist from ANYWHERE.
+
 	}
 
 	//Goes to the Google server (with HttpRequest) and retreives the playlist information
@@ -98,7 +110,7 @@ function uiController($scope, shared) {
 				return data;
 			})
 			.catch(error => {
-				console.log(error);
+				confirm('Click OK to view current issues on GitHub. Error: ' + error);
 			});
 	}
 
@@ -120,13 +132,13 @@ function uiController($scope, shared) {
 		//if there is nothing in storage, a new storage file is created next time.
 		shared.storage().get('playlists')
 				.then(data => {
+					let sorted = false;
 					if(data['playlists']) {
 						for(let i = 0; i < data['playlists'].length; i++) {
 
 							//adding playlists fro the storage
 							//sets all parameters in the currently adding playlist.
 							//go see addPlaylist() definition above.
-
 							addPlaylist(
 								data['playlists'][i].id,
 								data['playlists'][i].lastCompleted,
@@ -134,17 +146,41 @@ function uiController($scope, shared) {
 								data['playlists'][i].watchingTime,
 								data['playlists'][i].sequential,
 								data['playlists'][i].watched,
-								data['playlists'][i].partial
-								);
-							
+								data['playlists'][i].partial)
+							.then(count => {
+								//all playlists were added. Sort them.
+								console.log(count);
+								if(count === data['playlists'].length) {
+									sortPlaylists();
+								}
+							})
 						}
 					}
 				})
 				.catch(error => {
-					console.log(error);
+					confirm('Click OK to view current issues on GitHub. Error: ' + error);
 				});
-
 		}
+
+	function sortPlaylists() {
+
+		let temp = shared.getPlaylists();
+		temp.sort(comparePlaylists);
+		shared.setPlaylists(temp);
+		console.log('sorted the playlists');
+	}
+
+	function comparePlaylists(a, b) {
+		var a = (shared.config().sortPlaylistsByName === 'channel') ? a.channelName.toUpperCase() : a.title.toUpperCase();
+		var b = (shared.config().sortPlaylistsByName === 'channel ') ? b.channelName.toUpperCase() : b.title.toUpperCase();
+		
+		console.log('comparing ' + a + ' to ' + b);
+
+		if(a < b) { return -1; }
+		if(a > b) { return  1; }
+		
+		return 0;
+	}
 
 	function loadConfig() {
 		let config;

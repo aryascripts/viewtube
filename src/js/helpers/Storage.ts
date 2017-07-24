@@ -22,8 +22,8 @@ export class Storage {
 				//if resolved, it sends back the same playlists that came in
 				//for reuse.
 				this.storage.set('playlists', data, error => {
-					if(error) { reject(error);	} 
-					resolve(playlists);
+					if(error) { reject(error);} 
+					resolve(true);
 				});
 			}
 		);	

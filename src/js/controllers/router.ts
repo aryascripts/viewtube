@@ -25,25 +25,26 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 	var notify = () => {
 		if(observers.length > 0) {
 			angular.forEach(observers, function(callback) {
+				console.log('NOTIFYING');
 				callback();
 			});
 		}
 	}
 
-	//this saves the playlist to database, and if successful,
-	//also sets the local playlist object (above) and notifies
-	//any observers.
-	var savePlaylistsToStorage = (plists) => {
-		storage.savePlaylists(plists)
-			.then(data => {
-				playlists = plists;
-				notify();
-			});
-	}
-
 	return {
 		setPlaylists: (value) => {
-			savePlaylistsToStorage(value);
+			return new Promise((resolve, reject) => {
+				storage.savePlaylists(value)
+					.then(saved => {
+						playlists = value;
+						notify();
+						resolve(saved);
+					})
+					.catch(error => {
+						reject(error);
+					})
+			});
+			
 		},
 		registerObserver: (callback) => {
 			observers.push(callback);

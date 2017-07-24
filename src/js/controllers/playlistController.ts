@@ -373,6 +373,9 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		$scope.$apply();
 	}
 
+	//Register update function as an observer
+	shared.registerObserver(update);
+
 	//save the playlists object to the database FROM this controller.
 	function savePlaylists() {
 		shared.setPlaylists(playlists);
