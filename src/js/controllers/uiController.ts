@@ -163,11 +163,10 @@ function uiController($scope, shared) {
 		}
 
 	function sortPlaylists() {
-
 		let temp = shared.getPlaylists();
 		temp.sort(comparePlaylists);
 		shared.setPlaylists(temp);
-		console.log('sorted the playlists');
+		console.log('sorting playlists');
 	}
 
 	function comparePlaylists(a, b) {
@@ -199,6 +198,7 @@ function uiController($scope, shared) {
 					'markPrevious': true,
 					'markNext': true,
 					'skipWatched': false,
+					'warnBeforeDelete': true,
 					'afterNonsequentialFinishes': 'next' 		// next | random | close
 				}
 			} else {
@@ -213,5 +213,9 @@ function uiController($scope, shared) {
 	function isEmpty(obj){
 		return Object.keys(obj).length === 0;
 	}
+
+	ipcRenderer.on('sort-playlists', (event, obj) => {
+		sortPlaylists();
+	});
 
 }

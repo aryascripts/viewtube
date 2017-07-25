@@ -67,6 +67,7 @@ function settingsController($scope, shared, $timeout) {
 
 			case 'sortPlaylistsBy':
 				config.sortPlaylistsByName = $scope.data.sortPlaylistsBySelected.id;
+				ipcRenderer.send('sort-playlists');
 				break;
 
 			case 'threshhold':
