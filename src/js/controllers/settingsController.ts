@@ -14,7 +14,6 @@ function settingsController($scope, shared, $timeout) {
 
 	const holder = document.getElementById('restoreBox');
 	
-
 	$scope.data = {
 		'themeOptions': [
 			{'id': 'light', 'name': 'Light'},
