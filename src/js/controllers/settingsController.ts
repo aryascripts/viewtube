@@ -51,7 +51,8 @@ function settingsController($scope, shared, $timeout) {
 			{ 'id': 'close', 'name': 'Close Player' }
 		],
 
-		'afterNonsequentialFinishesSelected': { 'id': config.afterNonsequentialFinishes }
+		'afterNonsequentialFinishesSelected': { 'id': config.afterNonsequentialFinishes },
+		'showDesc': config.showDesc
 	}
 
 	$scope.dataChanged = (what) => {
@@ -98,6 +99,9 @@ function settingsController($scope, shared, $timeout) {
 			case 'restart':
 				config.restart = $scope.data.restart;
 				break;
+			case 'showDesc':
+				config.showDesc = $scope.data.showDesc;
+				break;
 		}
 
 		saveConfig();
@@ -124,9 +128,6 @@ function settingsController($scope, shared, $timeout) {
 	  fs.readFile(e.dataTransfer.files[0].path, 'utf-8', (err, data) => {
 			$timeout(restoreData(data));
 	  });
-
-	  
-
 	}
 
 	$scope.backup = () => {

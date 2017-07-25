@@ -5,6 +5,7 @@ function homeController($scope, shared, $window) {
 	$scope.plists = shared.getPlaylists();
 
 	$scope.displayMsg = true;
+	$scope.showDesc = shared.config().showDesc;
 
 	console.log(shared.getPlaylists());
 

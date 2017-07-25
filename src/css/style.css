@@ -5,7 +5,7 @@ body { -webkit-user-select: text;}
 .bold 				{ font-weight: bold; }
 .left-padding-4 	{ padding: 0 0 0 4%; }
 .left-padding-2 	{ padding: 0 0 0 2%; }
-.hidden 			{ display: none; }
+.hidden 			{ display: none !important; }
 .windowWidth		{ width: 100vw; }
 .bottom-margin-px  	{ margin-bottom: 2px; }
 .opacity			{ opacity: 0.4; }
@@ -14,7 +14,8 @@ body { -webkit-user-select: text;}
 .no-margin 			{ margin: 0; }
 .margin-b-12		{ margin-bottom: 12px; }
 h4 					{ border-bottom: 1px solid #000;}
-.stretch			{
+
+.stretch {
 	width: 100%;
 	text-align: center;
 	margin-bottom: 20px;

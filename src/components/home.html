@@ -20,7 +20,7 @@
 
       </div>
     
-    <div class="playlist-content">
+    <div class="{{ showDesc ? '' : 'hidden' }} playlist-content">
       <div class="left-padding-4 thumbnail playlist-content-item"> <a href="#!playlist/{{$index}}"><img ng-src="{{ p.getThumbnailUrl(); }}" width="120px" /></a> </div>
       <div class="left-padding-2 description playlist-content-item text-left">
         {{ p.description; }}

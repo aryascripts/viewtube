@@ -199,6 +199,7 @@ function uiController($scope, shared) {
 					'markNext': true,
 					'skipWatched': false,
 					'warnBeforeDelete': true,
+					'showDesc': true,
 					'afterNonsequentialFinishes': 'next' 		// next | random | close
 				}
 			} else {

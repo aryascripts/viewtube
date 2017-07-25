@@ -40,7 +40,7 @@
 
 	<!-- THRESHHOLD -->
 	<div class="form-group">
-		<div class="tooltip">
+		<div class="item tooltip">
 			<label>
 			Video is "Watched" after completing: {{ data.percentage }}%
 			<br/><input value="data.threshhold" ng-model="data.threshhold" ng-change="dataChanged('threshhold')" id="threshhold" type ="range" min=".5" max=".95" step=".05"/>
@@ -65,6 +65,15 @@
 				<label for="restart"><i></i></label>
 			</div>
 			<span class="tooltiptext">If on, partially watched videos will be restarted.</span>
+		</div>
+
+		<div class="tooltip item">
+			<p>Show Description</p>
+			<input value="data.showDesc" type="checkbox" id="showDesc" ng-model="data.showDesc" ng-change="dataChanged('showDesc')">
+			<div class="toggle">
+				<label for="showDesc"><i></i></label>
+			</div>
+			<span class="tooltiptext">If on, description and thumbnails are shown on the main page.</span>
 		</div>
 
 <!-- SEQUENTIAL BEHAVIOR -->
