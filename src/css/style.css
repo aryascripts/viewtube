@@ -235,6 +235,8 @@ height: 100%;
 	width: 100%;
 }
 
+.item { margin-top: 10px; }
+
 
 /* Tooltip container */
 .tooltip {

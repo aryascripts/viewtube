@@ -41,10 +41,8 @@
 	<!-- THRESHHOLD -->
 	<div class="form-group">
 		<div class="item tooltip">
-			<label>
 			Video is "Watched" after completing: {{ data.percentage }}%
 			<br/><input value="data.threshhold" ng-model="data.threshhold" ng-change="dataChanged('threshhold')" id="threshhold" type ="range" min=".5" max=".95" step=".05"/>
-			</label>
 			<span class="tooltiptext">When you exit video window after completing this percentage of it, the video is marked as watched.</span>
 		</div>
 

@@ -37,7 +37,7 @@ function settingsController($scope, shared, $timeout) {
 			{'id': 'playlist'} : {'id': 'channel'},
 
 		'threshhold': config.threshhold,
-		'percentage': config.threshhold * 100,
+		'percentage': Math.floor(config.threshhold) * 100,
 
 		'alwaysOnTop' : config.alwaysOnTop,
 		'markPrevious': config.markPrevious,
