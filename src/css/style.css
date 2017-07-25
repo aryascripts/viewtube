@@ -14,7 +14,7 @@ body { -webkit-user-select: text;}
 .no-margin 			{ margin: 0; }
 .margin-b-12		{ margin-bottom: 12px; }
 h4 					{ border-bottom: 1px solid #000;}
-
+a 					{ text-decoration: none; }
 .stretch {
 	width: 100%;
 	text-align: center;

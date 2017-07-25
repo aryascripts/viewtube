@@ -35,3 +35,7 @@ ipcMain.on('restart-app', (event, data) => {
 ipcMain.on('sort-playlists', (event, data) => {
 	Main.mainWindow.webContents.send('sort-playlists');
 });
+
+ipcMain.on('config-loaded', (event, data) => {
+	Main.mainWindow.webContents.send('config-loaded');
+});

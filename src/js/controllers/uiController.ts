@@ -20,7 +20,6 @@ function uiController($scope, shared) {
 	  e.stopPropagation();
 	});
 
-	loadConfig();
 	loadPlaylists();
 
 	//shows and hides the add button
@@ -159,6 +158,8 @@ function uiController($scope, shared) {
 							})
 						}
 					}
+					//Send the event to load the page now (everything loaded)
+					ipcRenderer.send('config-loaded');
 				})
 				.catch(error => {
 					confirm('Click OK to view current issues on GitHub. Error: ' + error);
@@ -179,40 +180,6 @@ function uiController($scope, shared) {
 		if(a > b) { return  1; }
 		
 		return 0;
-	}
-
-	function loadConfig() {
-		let config;
-		shared.storage().get('config').then(data => {
-			if(isEmpty(data)) {
-				console.log('LOADING DEFAULT CONFIG');
-				config = {
-					'theme':'light', 					// light | dark
-					'autoplay':false,
-					'iFrame':true,
-					'restart':false,
-					'alwaysOnTop':false,
-					'sequential': true,
-					'threshhold': 0.90,					// 0.5 - 0.95
-					'sortPlaylistsByName':'playlist', 	// playlist | channel
-					'markPrevious': true,
-					'markNext': true,
-					'skipWatched': false,
-					'warnBeforeDelete': true,
-					'showDesc': true,
-					'afterNonsequentialFinishes': 'next' 		// next | random | close
-				}
-			} else {
-				config = data;
-			}
-			console.log('sending event alwaysontop... ' + config.alwaysontop);
-			ipcRenderer.send('always-on-top', config.alwaysontop);
-			shared.setConfig(config);
-		});
-	}
-
-	function isEmpty(obj){
-		return Object.keys(obj).length === 0;
 	}
 
 	ipcRenderer.on('sort-playlists', (event, obj) => {

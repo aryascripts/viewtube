@@ -1,6 +1,6 @@
 import { HttpRequest } from './../helpers/HttpRequest';
 import { Storage } from './../helpers/Storage';
-
+import {ipcRenderer} from 'electron';
 
 const angular = require('angular');
 angular.module('viewTube', [require('angular-route'), require('angular-animate'), require('angular-route')])
@@ -18,7 +18,32 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 	var observers = [];
 	var noPlaylists;
 
-	var config = [];
+	var config = storage.get('config').then(data => {
+			if(isEmpty(data)) {
+				console.log('LOADING DEFAULT CONFIG');
+				config = {
+					'theme':'light', 					// light | dark
+					'autoplay':false,
+					'iFrame':true,
+					'restart':false,
+					'alwaysOnTop':false,
+					'sequential': true,
+					'threshhold': 0.90,					// 0.5 - 0.95
+					'sortPlaylistsByName':'playlist', 	// playlist | channel
+					'markPrevious': true,
+					'markNext': true,
+					'skipWatched': false,
+					'warnBeforeDelete': true,
+					'showDesc': true,
+					'afterNonsequentialFinishes': 'next' 		// next | random | close
+				}
+			} else {
+				config = data;
+			}
+			console.log('sending event alwaysontop... ' + config.alwaysontop);
+			ipcRenderer.send('always-on-top', config.alwaysontop);
+			return config;
+		});
 
 	var playlists = [];
 
@@ -66,12 +91,22 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 		storage: 		() => storage,
 		prefix: 		() => prefix,
 	}
+
+	function isEmpty(obj){
+		return Object.keys(obj).length === 0;
+	}
 })
 
 .config($routeProvider => {
 	$routeProvider
 	//home page displays all the playlists
 		.when('/', {
+			templateUrl : 'components/loading.html',
+			controller : 'loadingController'
+		})
+
+	//home page displays all the playlists
+		.when('/home', {
 			templateUrl : 'components/home.html',
 			controller : 'homeController'
 		})
