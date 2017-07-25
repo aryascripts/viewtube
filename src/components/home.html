@@ -1,23 +1,23 @@
   <div ng-repeat="p in plists" class="playlist margin-b-12">
-    
-    
       <div class="heading-container gradient">
-
+      
         <a class="linkspace" href="#!playlist/{{$index}}">
-          <span style="width: 55%;" class="bold plist-title heading-container-item playlist-title white">
+          <span style="width: 60%;" class="bold plist-title heading-container-item playlist-title white">
           	{{ p.title; }}
           </span>
-          <span class="channel-name heading-container-item white">
+          <span style="width: 20%;" class="channel-name heading-container-item white">
           	by {{ p.channelName; }} 
           </span>
-          <span class="video-count text-right heading-container-item white">
+          <span style="width: 10%; margin-right: 0; flex-grow: 0;" class="video-count text-right heading-container-item white">
           	 {{ p.watched.length }} / {{ p.totalVideos }}
           </span>
         </a>
 
         <span class="delete" ng-click="remove($index)">
-          <span>X</span>
+          <span>x</span>
         </span>
+
+
       </div>
     
     <div class="playlist-content">

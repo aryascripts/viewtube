@@ -47,7 +47,13 @@ function uiController($scope, shared) {
 			//when adding a new playlist from the form,
 			//no need to set any parameters for current/last video.
 			let watched = [];
-			addPlaylist(url.split('=')[1], -1, '', -1, shared.config().sequential);
+			addPlaylist(url.split('=')[1], -1, '', -1, shared.config().sequential)
+				.then(count => {
+					sortPlaylists();
+				})
+				.catch(error => {
+					console.log('ERROR, DOES THIS NEED AN ALERT?');
+				});
 			toggleAddForm();
 		}
 		//Not a valid url for playlist
@@ -79,6 +85,7 @@ function uiController($scope, shared) {
 
 					let temp = shared.getPlaylists();
 					temp.push(plist);
+
 
 					shared.setPlaylists(temp)
 						//setPlaylists returns a boolean if saved
@@ -148,11 +155,7 @@ function uiController($scope, shared) {
 								data['playlists'][i].watched,
 								data['playlists'][i].partial)
 							.then(count => {
-								//all playlists were added. Sort them.
-								console.log(count);
-								if(count === data['playlists'].length) {
-									sortPlaylists();
-								}
+								sortPlaylists();
 							})
 						}
 					}
@@ -166,14 +169,11 @@ function uiController($scope, shared) {
 		let temp = shared.getPlaylists();
 		temp.sort(comparePlaylists);
 		shared.setPlaylists(temp);
-		console.log('sorting playlists');
 	}
 
 	function comparePlaylists(a, b) {
 		var a = (shared.config().sortPlaylistsByName === 'channel') ? a.channelName.toUpperCase() : a.title.toUpperCase();
 		var b = (shared.config().sortPlaylistsByName === 'channel ') ? b.channelName.toUpperCase() : b.title.toUpperCase();
-		
-		console.log('comparing ' + a + ' to ' + b);
 
 		if(a < b) { return -1; }
 		if(a > b) { return  1; }
