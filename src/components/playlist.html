@@ -14,7 +14,8 @@
   <div class="playlist-content">
     <div class="left-padding-4 thumbnail playlist-content-item"> <img ng-src="{{ data.plist.getThumbnailUrl(); }}" width="120px" /> </div>
     <div class="left-padding-2 description playlist-content-item text-left">
-      {{ data.plist.description; }}
+      {{ data.plist.description; }}<br/>
+      <a class="link" ng-click="goToYouTube(data.plist.id)">View on YouTube.com</a>
   
       <br>
       <div class="playlistType">

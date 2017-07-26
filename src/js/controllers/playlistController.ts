@@ -352,6 +352,11 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		console.log('last completed: ' + playlists[thisIndex].videos[n-1].title);
 	}
 
+	//Opens the playlist in a default browser
+	$scope.goToYouTube = (id) => {
+		shell.openExternal('https://www.youtube.com/playlist?list='+id);
+	}
+
 	//marks the next videos in playlist
 	//as unwatched (leaves the current n alone)
 	function markNextUnwatched(n) {

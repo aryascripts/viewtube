@@ -15,6 +15,11 @@ body { -webkit-user-select: text;}
 .margin-b-12		{ margin-bottom: 12px; }
 h4 					{ border-bottom: 1px solid #000;}
 a 					{ text-decoration: none; }
+.link {
+	color: #0000ad;
+	font-weight: bold;
+	cursor: pointer;
+}
 .stretch {
 	width: 100%;
 	text-align: center;

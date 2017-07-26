@@ -1,3 +1,5 @@
+import {shell} from 'electron';
+
 require('angular').module('viewTube')
 .controller('homeController', homeController);
 
@@ -30,5 +32,9 @@ function homeController($scope, shared, $window) {
 			temp.splice(n, 1);
 			shared.setPlaylists(temp);
 		};
+	}
+
+	$scope.goToYouTube = (id) => {
+		shell.openExternal('https://www.youtube.com/playlist?list='+id);
 	}
 }
