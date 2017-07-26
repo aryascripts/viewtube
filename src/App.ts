@@ -32,6 +32,10 @@ ipcMain.on('restart-app', (event, data) => {
 	Main.application.quit();
 });
 
+ipcMain.on('close-app', (event, data) => {
+	Main.application.quit();
+});
+
 ipcMain.on('sort-playlists', (event, data) => {
 	Main.mainWindow.webContents.send('sort-playlists');
 });

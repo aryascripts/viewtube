@@ -20,7 +20,6 @@ export class HttpRequest {
 				}
 
 				http.onerror = () => reject(http.statusText);
-				console.log('querying google...');
 				http.send();
 		});
 	}

@@ -25,7 +25,16 @@ function uiController($scope, shared, $rootScope) {
 	  e.stopPropagation();
 	});
 
-	loadPlaylists();
+	require('dns').resolve('www.google.com', function(err) {
+		if(err) {
+			alert('There was no internet connection found.');
+			ipcRenderer.send('close-app');
+		}
+
+		else {
+			loadPlaylists();
+		}
+	}
 
 	//shows and hides the add button
 	//first you toggle the add form, then if the check button is pressed,
@@ -34,7 +43,7 @@ function uiController($scope, shared, $rootScope) {
 		toggleAddForm();
 		urlTextBox.focus();
 
-		urlTextBox.addEventListener("keyup", function(event) {
+		urlTextBox.addEventListener('keyup', function(event) {
 		    event.preventDefault();
 		    if (event.keyCode == 13) {
 		        addFromForm();
@@ -97,13 +106,20 @@ function uiController($scope, shared, $rootScope) {
 							if(saved){ resolve(temp.length); }
 						})
 						.catch(error => {
-							reject(confirm('Click OK to view current issues on GitHub. Error: ' + error));
+							reject(confirm('We had an error saving your data. ' + error));
 						});
-			});
+			})
+				.catch(error => {
+					//Restart the program
+					if(confirm('Please check your internet connection. Press OK to Restart.' + error)) {
+						ipcRenderer.send('restart-app');
+					}
+					//Close the program
+					else {
+						ipcRenderer.send('close-app');
+					}
+				});
 		});
-
-		//used to add playlist from ANYWHERE.
-
 	}
 
 	//Goes to the Google server (with HttpRequest) and retreives the playlist information
