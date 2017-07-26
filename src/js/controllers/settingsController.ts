@@ -77,6 +77,7 @@ function settingsController($scope, shared, $timeout) {
 
 			case 'alwaysOnTop':
 				config.alwaysOnTop = $scope.data.alwaysOnTop;
+				ipcRenderer.send('always-on-top', config.alwaysOnTop);
 				break;
 
 			case 'markPrevious':

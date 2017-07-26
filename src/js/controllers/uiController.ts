@@ -56,6 +56,7 @@ function uiController($scope, shared, $rootScope) {
 
 	function addFromForm() {
 		let url:string = urlTextBox.value;
+		if(!url) { return; }
 		if(url.startsWith(shared.prefix())) {
 			//when adding a new playlist from the form,
 			//no need to set any parameters for current/last video.
@@ -65,14 +66,14 @@ function uiController($scope, shared, $rootScope) {
 					sortPlaylists();
 				})
 				.catch(error => {
-					console.log('ERROR, DOES THIS NEED AN ALERT?');
+					alert('hi');
 				});
 			toggleAddForm();
 		}
 		//Not a valid url for playlist
 		else {
 			console.log(shared.prefix());
-			alert('Please check URL matches format. Example: ' + shared.prefix() + '...');
+			alert('Please check URL matches format.\nExample: ' + shared.prefix() + '...');
 		}
 
 		(<HTMLFormElement>document.getElementById('addVideoForm')).reset();
@@ -111,13 +112,7 @@ function uiController($scope, shared, $rootScope) {
 			})
 				.catch(error => {
 					//Restart the program
-					if(confirm('Please check your internet connection. Press OK to Restart.' + error)) {
-						ipcRenderer.send('restart-app');
-					}
-					//Close the program
-					else {
-						ipcRenderer.send('close-app');
-					}
+					alert('There was a problem adding your playlist. Please check the URL.');
 				});
 		});
 	}
