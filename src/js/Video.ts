@@ -14,6 +14,7 @@ export class Video {
 	percentage:number;
 	watched:boolean;
 	watching:boolean;
+	index:number;
 
 	watchingTime:number;
 
@@ -38,7 +39,6 @@ export class Video {
 		this.watching = false;
 		this.watched = false;
 	}
-
 
 	constructor(video:any, wahtchedList:any) {
 		if(video['length'] < 1) {

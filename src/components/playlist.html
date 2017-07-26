@@ -37,7 +37,7 @@
 	</div>
 </div>
 
-<div ng-repeat="video in data.videos" ng-click="clickEvent($index)"
+<div ng-repeat="video in data.videos | filter:searchBox" ng-click="clickEvent(video.index)"
 class="{{ video.watched ? 'watched' : 'unwatched' }}
 bottom-margin-px windowWidth heading-container"
 
@@ -48,7 +48,7 @@ style="
 
 >
 
-	<span style="width: 5%;" class="white heading-container-item"> {{ $index+1 }} </span>
+	<span style="width: 5%;" class="white heading-container-item"> {{ video.index+1 }} </span>
 	<span style="width: 70%;" class="white heading-container-item"> {{ video.title; }} </span>
 	<span style="width: 8%;"class="white heading-container-item"> {{ video.duration; }} </span>
 

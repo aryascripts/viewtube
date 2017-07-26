@@ -1,7 +1,7 @@
-  <div ng-repeat="p in plists" class="playlist margin-b-12">
+  <div ng-repeat="p in plists | filter:searchBox" class="playlist margin-b-12">
       <div class="heading-container gradient">
       
-        <a class="linkspace" href="#!playlist/{{$index}}">
+        <a class="linkspace" href="#!playlist/{{p.index}}">
           <span style="width: 60%;" class="bold plist-title heading-container-item playlist-title white">
           	{{ p.title; }}
           </span>

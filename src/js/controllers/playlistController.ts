@@ -31,7 +31,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		'watching': playlists[thisIndex].watching,
 		'plist': playlists[thisIndex],
 		'videos': playlists[thisIndex].videos,
-		'buttonText': buttonText()
+		'buttonText': buttonText(),
 	}
 
 	console.log($scope.data);
@@ -498,6 +498,8 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 				'part':'contentDetails,snippet'
 			};
 
+			//set the index of the video in Video object (mainly for search)
+			playlists[thisIndex].videos[i].index = i;
 
 			//set the playlists[thisIndex].watching index (NUMBER)
 			if(playlists[thisIndex].videos[i].id === playlists[thisIndex].watchingId) {
@@ -511,7 +513,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 				update();
 			}); //shared.request()	
 		} //for
-		console.log(playlists[thisIndex]);
+
 	} //fn
 	 //				POPULATE ENDS 				//
 	//*****************************************//

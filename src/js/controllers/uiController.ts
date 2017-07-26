@@ -6,10 +6,15 @@ const fs = require('fs');
 require('angular').module('viewTube')
 .controller('uiController', uiController);
 
-function uiController($scope, shared) {
+function uiController($scope, shared, $rootScope) {
 
 	var checkButton = document.getElementById('btn-check');
 	var urlTextBox = <HTMLInputElement>document.getElementById('url-text');
+
+
+	$scope.clearSearch = function() {
+		$scope.searchBox = '';
+	}
 
 	document.addEventListener('drop', function(e) {
 	  e.preventDefault();
@@ -169,6 +174,9 @@ function uiController($scope, shared) {
 	function sortPlaylists() {
 		let temp = shared.getPlaylists();
 		temp.sort(comparePlaylists);
+		for(let i = 0; i < temp.length; i++) {
+			temp[i].index = i;
+		}
 		shared.setPlaylists(temp);
 	}
 
@@ -184,6 +192,10 @@ function uiController($scope, shared) {
 
 	ipcRenderer.on('sort-playlists', (event, obj) => {
 		sortPlaylists();
+	});
+
+	$rootScope.$on("$routeChangeSuccess", () => {
+		$scope.clearSearch();
 	});
 
 }
