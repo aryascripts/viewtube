@@ -28,11 +28,11 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		],
 		'typeSelected': (playlists[thisIndex].sequential) ?
 			{'id': 'sequential'} : {'id': 'nonsequential'},
-		'watching': playlists[thisIndex].watching,
 		'plist': playlists[thisIndex],
 		'videos': playlists[thisIndex].videos,
 		'buttonText': buttonText(),
-	}
+		'registered': false
+	} 
 
 	console.log($scope.data);
 
@@ -53,6 +53,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	function loadVideo(index) {
 
 		playlists[thisIndex].watching = index;
+		console.log('setting watching to ' + index);
 		playlists[thisIndex].videos[index].setWatching(true);
 		playlists[thisIndex].watchingId = playlists[thisIndex].videos[index].id;
 
@@ -72,6 +73,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	//If there is no next window, video window
 	//is asked to be closed.
 	function loadNext(from) {
+		console.log('trying to load next from ' + from);
 		//check if trying to load next from the LAST video in the playlist
 		if(from === playlists[thisIndex].totalVideos - 1) {
 			//there are no more videos in this playlist 
@@ -93,6 +95,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 
 			loadVideo(n);
 		}
+		update();
 	}
 
 	//called from an event when the WATCHING video ends
@@ -105,8 +108,6 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 				shell.openExternal('https://github.com/amanb014/viewtube/issues');
 			}
 		}
-
-
 
 		switch(shared.config().afterNonsequentialFinishes) {
 			case 'next':
@@ -172,6 +173,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 			//reset the partially watched ID since there is none anymore.
 			console.log('SETTING WATCHING TO -1');
 			playlists[thisIndex].watching = -1;
+			console.log('setting watching to -1');
 			playlists[thisIndex].watchingTime = -1;
 			playlists[thisIndex].watchingId = '';
 
@@ -251,12 +253,19 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	//received when the 'watching' video is FULLY watched
 	//load the next video based on what type of playlist
 	//and the settings user has set.
-	ipcRenderer.on('load-next', (event, args) => {
+	ipcRenderer.on('load-next', (event, data) => {
 		let watching = playlists[thisIndex].watching;
+		let watchingId = playlists[thisIndex].videos[watching].id;
+
+		//If the current watching video's ID does not match
+		//The one that was passed in, then ignore the event.
+		if(watchingId !== data.from) {
+			return;
+		}
 
 		//mark the CURRENT video as watched & push the ID
 		playlists[thisIndex].videos[watching].setWatched(true);
-		pushToWatched(playlists[thisIndex].videos[watching].id);
+		pushToWatched(watchingId);
 
 		//if playlist is sequential
 		if(playlists[thisIndex].sequential) {
@@ -277,7 +286,6 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	//Received when the videoPlayerWindow is closed
 	//Need to calculate if the whole video was watched or not.
 	ipcRenderer.on('calc-watch-time', (event, obj) => {
-		console.log('received watch time event');
 		calculateWatchTime(obj.time, obj.id);
 	});
 
@@ -377,9 +385,6 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		$scope.data.plist = playlists[thisIndex];
 		$scope.$apply();
 	}
-
-	//Register update function as an observer
-	shared.registerObserver(update);
 
 	//save the playlists object to the database FROM this controller.
 	function savePlaylists() {
@@ -509,6 +514,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 			//set the playlists[thisIndex].watching index (NUMBER)
 			if(playlists[thisIndex].videos[i].id === playlists[thisIndex].watchingId) {
 				playlists[thisIndex].watching = i;
+				console.log('setting watching to ' + i);
 			}
 
 			shared.request().getResponse(url, headers)

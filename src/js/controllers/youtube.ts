@@ -20,18 +20,16 @@ var player = YouTubePlayer('player',
 	);
 
 
-player
-	.playVideo()
-	.then(() => {
-
-	});
+player.playVideo();
 
 player.on('stateChange', (event) => {
 	console.log(event);
 	if(event.data === 0) {
 		console.log('video ended... queuing send command');
 		sendOnUnload = false;
-		ipcRenderer.send('next-video');
+		ipcRenderer.send('next-video', {
+			'from': id
+		});
 	}
 });
 
