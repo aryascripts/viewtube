@@ -34,7 +34,7 @@ function uiController($scope, shared, $rootScope) {
 		else {
 			loadPlaylists();
 		}
-	}
+	});
 
 	//shows and hides the add button
 	//first you toggle the add form, then if the check button is pressed,
