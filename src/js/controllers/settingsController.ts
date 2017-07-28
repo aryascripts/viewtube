@@ -4,7 +4,6 @@ const {remote} = require('electron');
 const {dialog} = require('electron').remote;
 const fs = require('fs');
 
-
 require('angular').module('viewTube')
 .controller('settingsController', settingsController);
 
@@ -13,7 +12,9 @@ function settingsController($scope, shared, $timeout) {
 	console.log(config);
 
 	const holder = document.getElementById('restoreBox');
-	
+
+	var tabs = document.querySelector('.tab-group').getElementsByClassName('.tab-item');
+
 	$scope.data = {
 		'themeOptions': [
 			{'id': 'light', 'name': 'Light'},
@@ -36,7 +37,7 @@ function settingsController($scope, shared, $timeout) {
 			{'id': 'playlist'} : {'id': 'channel'},
 
 		'threshhold': config.threshhold,
-		'percentage': Math.floor(config.threshhold) * 100,
+		'percentage': Math.floor(config.threshhold * 100),
 
 		'alwaysOnTop' : config.alwaysOnTop,
 		'markPrevious': config.markPrevious,
@@ -51,8 +52,12 @@ function settingsController($scope, shared, $timeout) {
 		],
 
 		'afterNonsequentialFinishesSelected': { 'id': config.afterNonsequentialFinishes },
-		'showDesc': config.showDesc
+		'showDesc': config.showDesc,
+
+		'activeTab': 0
 	}
+
+	console.log($scope.data);
 
 	$scope.dataChanged = (what) => {
 		
@@ -121,7 +126,7 @@ function settingsController($scope, shared, $timeout) {
 	}
 
 	holder.ondrop = (e) => {
-	  e.preventDefault()
+	  e.preventDefault();
 
 	  if(e.dataTransfer.files.length > 1) { alert('Only 1 file is allowed!'); return; }
 
@@ -137,6 +142,10 @@ function settingsController($scope, shared, $timeout) {
 			}
 			
 		}); 
+	}
+
+	$scope.tabChange = (tabNo) => {
+		$scope.data.activeTab = tabNo;
 	}
 
 	function saveBackup(path) {

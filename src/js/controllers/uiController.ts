@@ -15,7 +15,7 @@ function uiController($scope, shared, $rootScope) {
 	$scope.clearSearch = function() {
 		$scope.searchBox = '';
 	}
-
+	
 	document.addEventListener('drop', function(e) {
 	  e.preventDefault();
 	  e.stopPropagation();

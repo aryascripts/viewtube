@@ -1,61 +1,93 @@
+<div class="tab-wrapper">
+	<div class="tab-group">
+	  <div ng-click="tabChange(0)" class="tab-item {{data.activeTab === 0 ? 'active' : '' }}">
+	    <span class="icon"></span>
+	    General
+	  </div>
+	  <div ng-click="tabChange(1)" class="tab-item {{data.activeTab === 1 ? 'active' : '' }}">
+	    <span class="icon"></span>
+	    Playlists
+	  </div>
+	  <div ng-click="tabChange(2)" class="tab-item {{data.activeTab === 2 ? 'active' : '' }} ">
+	    <span class="icon"></span>
+	    Video Player
+	  </div>
+	</div>
+</div>
+
+
 <div class="content">
 	<form class="settingsform">
-	<h3 class="bold">Settings</h3>
 
-	<h4 class="bold">General</h3>
+<!-- GENERAL TAB -->
+	<div id="general" class="new-tab {{ data.activeTab === 0 ? '' : 'hidden' }}">
+		<h4 class="bold">General</h3>
+		<!-- THEME SETTING -->
+		<div class="tooltip form-group">
+			Theme
+			<select name="theme" id="theme"
+			ng-options="option.name for option in data.themeOptions track by option.id"
+			ng-model="data.themeSelected"
+			ng-change="dataChanged('theme')">
+			</select>
 
-	<!-- THEME SETTING -->
-	<div class="tooltip form-group">
-		Theme
-		<select name="theme" id="theme"
-		ng-options="option.name for option in data.themeOptions track by option.id"
-		ng-model="data.themeSelected"
-		ng-change="dataChanged('theme')">
-		</select>
-
-		<span class="tooltiptext">No Restart Required</span>
-	</div>
-
-	<!-- PLAYLIST TYPE -->
-	<div class="tooltip form-group">
-		Default Playlist Type
-		<select name="defaultType" id="defaultType"
-		ng-options="option.name for option in data.defaultType track by option.id"
-		ng-model="data.defaultTypeSelected"
-		ng-change="dataChanged('defaultType')">
-		</select>
-		<span class="tooltiptext">Adding new playlists are set to the default type. Existing playlists do not change type.</span>
-	</div>
-
-	<!-- PLAYLIST SORTING -->
-	<div class="tooltip form-group">
-		Sort Playlists By
-		<select name="sortPlaylistsBy" id="sortPlaylistsBy"
-			ng-options="option.name for option in data.sortPlaylistsBy track by option.id"
-			ng-model="data.sortPlaylistsBySelected"
-			ng-change="dataChanged('sortPlaylistsBy')">
-		</select>
-		<span class="tooltiptext">All playlists change order real-time. Already watched</span>
-	</div>
-
-	<!-- THRESHHOLD -->
-	<div class="form-group">
-		<div class="item tooltip">
-			Video is "Watched" after completing: {{ data.percentage }}%
-			<br/><input value="data.threshhold" ng-model="data.threshhold" ng-change="dataChanged('threshhold')" id="threshhold" type ="range" min=".5" max=".95" step=".05"/>
-			<span class="tooltiptext">When you exit video window after completing this percentage of it, the video is marked as watched.</span>
+			<span class="tooltiptext">No Restart Required</span>
 		</div>
 
-	<!-- PLAYER ON TOP  -->
-		<div class="tooltip item">
-			<p>Player Always-On-Top</p>
-			<input value="data.alwaysOnTop" type="checkbox" id="alwaysontop" ng-model="data.alwaysOnTop" ng-change="dataChanged('alwaysOnTop')">
-			<div class="toggle">
-				<label for="alwaysontop"><i></i></label>
+		<!-- PLAYLIST SORTING -->
+		<div class="tooltip form-group">
+			Sort Playlists By
+			<select name="sortPlaylistsBy" id="sortPlaylistsBy"
+				ng-options="option.name for option in data.sortPlaylistsBy track by option.id"
+				ng-model="data.sortPlaylistsBySelected"
+				ng-change="dataChanged('sortPlaylistsBy')">
+			</select>
+			<span class="tooltiptext">All playlists change order real-time. Already watched</span>
+		</div>
+
+		<!-- SHOW DESCRIPTION  -->
+			<div class="tooltip item">
+				<p>Show Description</p>
+				<input value="data.showDesc" type="checkbox" id="showDesc" ng-model="data.showDesc" ng-change="dataChanged('showDesc')">
+				<div class="toggle">
+					<label for="showDesc"><i></i></label>
+				</div>
+				<span class="tooltiptext">If on, description and thumbnails are shown on the main page.</span>
 			</div>
-			<span class="tooltiptext">Player stays on top of other windows. The player does not follow multiple desktops. Updated real-time if you have a player running.</span>
+
+
+			<div class="form-group">
+		<!-- Backup and Restore -->
+				<h4 class="bold">Backup and Restore</h4>
+
+				<button class="stretch btn btn-large btn-primary" ng-click="backup()">Backup Playlists & Settings</button>
+
+				<div id="restoreBox" class="restore">
+					<div>
+						Drop File to Restore
+					</div>
+				</div>
+			</div>
+
+	</div>
+
+<!-- PLAYLIST TAB -->
+	<div id="playlist" class="new-tab {{ data.activeTab === 1 ? '' : 'hidden' }}">
+		
+		<h4 class="bold">General Playlists</h4>
+
+		<!-- PLAYLIST TYPE -->
+		<div class="tooltip form-group">
+			Default Playlist Type
+			<select name="defaultType" id="defaultType"
+			ng-options="option.name for option in data.defaultType track by option.id"
+			ng-model="data.defaultTypeSelected"
+			ng-change="dataChanged('defaultType')">
+			</select>
+			<span class="tooltiptext">Adding new playlists are set to the default type. Existing playlists do not change type.</span>
 		</div>
 
+		<!-- RESTART PARTIALLY WATCHED -->
 		<div class="tooltip item">
 			<p>Restart Partially Watched</p>
 			<input value="data.restart" type="checkbox" id="restart" ng-model="data.restart" ng-change="dataChanged('restart')">
@@ -65,74 +97,79 @@
 			<span class="tooltiptext">If on, partially watched videos will be restarted.</span>
 		</div>
 
+		<!-- SEQUENTIAL BEHAVIOR -->
+			<h4 class="bold">Sequentail Behavior</h4>
+
+			<!-- MARK ALL PREVIOUS WATCHED -->
+				<div class="tooltip item">
+					<p>Mark All Previous Watched</p>
+					<input value="data.markPrevious" type="checkbox" id="markPrevious" ng-model="data.markPrevious" ng-change="dataChanged('markPrevious')">
+					<div class="toggle">
+						<label for="markPrevious"><i></i></label>
+					</div>
+					<span class="tooltiptext">If on, marks all previous videos as "watched" in sequential playlists if you start one manually (by clicking on the title).</span>
+				</div>
+
+			<!-- MARK ALL NEXT UNWATCHED -->
+				<div class="tooltip item">
+					<p>Mark All Next Unwatched</p>
+					<input value="data.markNext" type="checkbox" id="markNext" ng-model="data.markNext" ng-change="dataChanged('markNext')">
+					<div class="toggle">
+						<label for="markNext"><i></i></label>
+					</div>
+					<span class="tooltiptext">If on, marks all next videos as "unwatched" in sequential playlists if you start one manually (by clicking on the title).</span>
+				</div>
+
+			<!-- SKIP WATCHED  -->
+				<div class="tooltip item">
+					<p>Skip Watched Videos</p>
+
+					<input value="data.skipWatched" type="checkbox" id="skipWatched" ng-model="data.skipWatched" ng-change="dataChanged('skipWatched')">
+					
+					<div class="toggle">
+						<label for="skipWatched"><i></i></label>
+					</div>
+					<span class="tooltiptext">If on, in sequential playlists, it will skip all next videos that are watched, and load the next unwatched video. If off, it plays sequentailly whether or not the video is watched.</span>
+				</div>
+
+		<!-- NON SEQUENTIAL BEHAVIOR -->
+				<h4 class="bold">Non-sequential Behavior</h4>
+
+			<!-- AFTER VIDEO FINISH -->
+				<div class="tooltip form-group">
+					After Video Finishes
+					<select name="afterNonsequentialFinishes" id="afterNonsequentialFinishes"
+					ng-options="option.name for option in data.afterNonsequentialFinishes track by option.id"
+					ng-model="data.afterNonsequentialFinishesSelected"
+					ng-change="dataChanged('afterNonsequentialFinishes')">
+					</select>
+					<span class="tooltiptext">1: Plays the very next video after current.<br/>2: Plays random unwatched video after current.<br/>3: Closes player after current video.</span>
+				</div>
+
+	</div>
+
+<!-- VIDEO PLAYER TAB -->
+	<div id="video-player" class="new-tab {{ data.activeTab === 2 ? '' : 'hidden' }}">
+	
+		<h4 class="bold">Video Player Settings</h4>
+
+		<!-- PARTIALLY WATCHED AFTER  -->
+		<div class="item tooltip">
+			Video is "Watched" after completing: {{ data.percentage }}%
+			<br/><input value="data.threshhold" ng-model="data.threshhold" ng-change="dataChanged('threshhold')" id="threshhold" type ="range" min=".5" max=".95" step=".05"/>
+			<span class="tooltiptext">When you exit video window after completing this percentage of it, the video is marked as watched.</span>
+		</div>
+
+		<!-- PLAYER ON TOP  -->
 		<div class="tooltip item">
-			<p>Show Description</p>
-			<input value="data.showDesc" type="checkbox" id="showDesc" ng-model="data.showDesc" ng-change="dataChanged('showDesc')">
+			<p>Player Always-On-Top</p>
+			<input value="data.alwaysOnTop" type="checkbox" id="alwaysontop" ng-model="data.alwaysOnTop" ng-change="dataChanged('alwaysOnTop')">
 			<div class="toggle">
-				<label for="showDesc"><i></i></label>
+				<label for="alwaysontop"><i></i></label>
 			</div>
-			<span class="tooltiptext">If on, description and thumbnails are shown on the main page.</span>
+			<span class="tooltiptext">Player stays on top of other windows. The player does not follow multiple desktops. Updated real-time if you have a player running.</span>
 		</div>
 
-<!-- SEQUENTIAL BEHAVIOR -->
-		<h4 class="bold">Sequentail Behavior</h4>
-
-	<!-- MARK ALL PREVIOUS WATCHED -->
-		<div class="tooltip item">
-			<p>Mark All Previous Watched</p>
-			<input value="data.markPrevious" type="checkbox" id="markPrevious" ng-model="data.markPrevious" ng-change="dataChanged('markPrevious')">
-			<div class="toggle">
-				<label for="markPrevious"><i></i></label>
-			</div>
-			<span class="tooltiptext">If on, marks all previous videos as "watched" in sequential playlists if you start one manually (by clicking on the title).</span>
-		</div>
-
-	<!-- MARK ALL NEXT UNWATCHED -->
-		<div class="tooltip item">
-			<p>Mark All Next Unwatched</p>
-			<input value="data.markNext" type="checkbox" id="markNext" ng-model="data.markNext" ng-change="dataChanged('markNext')">
-			<div class="toggle">
-				<label for="markNext"><i></i></label>
-			</div>
-			<span class="tooltiptext">If on, marks all next videos as "unwatched" in sequential playlists if you start one manually (by clicking on the title).</span>
-		</div>
-
-	<!-- SKIP WATCHED  -->
-		<div class="tooltip item">
-			<p>Skip Watched Videos</p>
-
-			<input value="data.skipWatched" type="checkbox" id="skipWatched" ng-model="data.skipWatched" ng-change="dataChanged('skipWatched')">
-			
-			<div class="toggle">
-				<label for="skipWatched"><i></i></label>
-			</div>
-			<span class="tooltiptext">If on, in sequential playlists, it will skip all next videos that are watched, and load the next unwatched video. If off, it plays sequentailly whether or not the video is watched.</span>
-		</div>
-
-<!-- NON SEQUENTIAL BEHAVIOR -->
-		<h4 class="bold">Non-sequential Behavior</h4>
-
-	<!-- AFTER VIDEO FINISH -->
-		<div class="tooltip form-group">
-			After Video Finishes
-			<select name="afterNonsequentialFinishes" id="afterNonsequentialFinishes"
-			ng-options="option.name for option in data.afterNonsequentialFinishes track by option.id"
-			ng-model="data.afterNonsequentialFinishesSelected"
-			ng-change="dataChanged('afterNonsequentialFinishes')">
-			</select>
-			<span class="tooltiptext">1: Plays the very next video after current.<br/>2: Plays random unwatched video after current.<br/>3: Closes player after current video.</span>
-		</div>
-
-<!-- Backup and Restore -->
-		<h4 class="bold">Backup and Restore</h4>
-
-		<button class="stretch btn btn-large btn-primary" ng-click="backup()">Backup Playlists & Settings</button>
-
-		<div id="restoreBox" class="restore">
-			<div>
-				Drop File to Restore
-			</div>
-		</div>
 	</div>
 	</form>
 </div>

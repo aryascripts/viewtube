@@ -5,6 +5,8 @@ require('angular').module('viewTube')
 
 function loadingController($scope, $location) {
 
+	console.log('loading...');
+
 	ipcRenderer.on('config-loaded', (event, data) => {
 		console.log('received event to load home page');
 		$location.url('/home');

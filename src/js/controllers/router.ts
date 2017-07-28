@@ -18,7 +18,8 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 	var observers = [];
 	var noPlaylists;
 
-	var config = storage.get('config').then(data => {
+	var config;
+	storage.get('config').then(data => {
 			if(isEmpty(data)) {
 				console.log('LOADING DEFAULT CONFIG');
 				config = {
@@ -41,8 +42,14 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 				config = data;
 			}
 			console.log('sending event alwaysontop... ' + config.alwaysontop);
+			
+			console.log('NEXT IS CONFIG');
+			console.log(config);
+
 			ipcRenderer.send('always-on-top', config.alwaysontop);
-			return config;
+			ipcRenderer.send('config-loaded');
+
+
 		});
 
 	var playlists = [];

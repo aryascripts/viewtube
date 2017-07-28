@@ -291,6 +291,16 @@ height: 100%;
 
 }
 
+.tab-wrapper {
+	position: fixed;
+	width: 100vw;
+	top: 55px;
+	z-index: 100;
+}
+.new-tab {
+	margin-top: 55px;
+}
+
 .green-bg { background-color: #008E09; }
 .red-bg { background-color: #FF0303; }
 .yellow-bg { background-color: #FFBF00; }
