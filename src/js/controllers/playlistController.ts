@@ -197,7 +197,7 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 			playlists[thisIndex].videos[index].setWatching(true);
 			let found = false;
 
-			//If the video is already in 'partial', then update the time.
+
 			for(let i = 0; i < playlists[thisIndex].partial.length; i++) {
 				//Check if this video already exists as a partially watching
 				if(playlists[thisIndex].videos[index].id === playlists[thisIndex].partial[i].id) {
@@ -417,6 +417,14 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 				return 'Random Video';
 			}
 	}
+
+	//Gets the total time of all videos in this playlist
+
+	function getTotalTime() {
+
+	}
+
+
 	//************************************************//
 	//	     ALL OF THESE ARE MEANT TO POPULATE      //
 	function populate() {
@@ -521,7 +529,10 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 			.then(data => {
 				playlists[thisIndex].videos[i].setData(data, playlists[thisIndex].watched, playlists[thisIndex].partial);
 
-				update();
+				playlists[thisIndex].playlistDuration()
+					.then(() => {
+						update();
+					});
 			}); //shared.request()	
 		} //for
 

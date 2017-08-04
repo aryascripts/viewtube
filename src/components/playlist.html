@@ -38,19 +38,20 @@
 	</div>
 </div>
 
+<div style="background-color: #212121;" class="bottom-margin-px windowWidth heading-container">
+  <span style="width: 5%;" class="white heading-container-item"> # </span>
+  <span style="width: 70%;" class="white heading-container-item"> Video Title </span>
+  <span style="width: 14%;"class="white heading-container-item"> {{data.plist.totalTime}} </span>
+</div>
+
 <div ng-repeat="video in data.videos | filter:searchBox" ng-click="clickEvent(video.index)"
 class="{{ video.watched ? 'watched' : 'unwatched' }}
 bottom-margin-px windowWidth heading-container"
 
-style="
-{{
-  video.watching ? 'background: -webkit-linear-gradient(left, #6b6969 0%,#6b6969 '+ video.percentage +'%,#b50505 '+ video.percentage +'%,#b50505 '+ video.percentage +'%,#b50505 100%)' : '' }}
-"
-
->
+style="{{ video.watching ? 'background: -webkit-linear-gradient(left, #6b6969 0%,#6b6969 '+ video.percentage +'%,#b50505 '+ video.percentage +'%,#b50505 '+ video.percentage +'%,#b50505 100%)' : '' }}">
 
 	<span style="width: 5%;" class="white heading-container-item"> {{ video.index+1 }} </span>
 	<span style="width: 70%;" class="white heading-container-item"> {{ video.title; }} </span>
-	<span style="width: 8%;"class="white heading-container-item"> {{ video.duration; }} </span>
+	<span style="width: 14%;"class="white heading-container-item"> {{ video.duration; }} </span>
 
 </div>
