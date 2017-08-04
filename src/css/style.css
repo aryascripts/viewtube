@@ -10,11 +10,13 @@ body { -webkit-user-select: text;}
 .bottom-margin-px  	{ margin-bottom: 2px; }
 .opacity			{ opacity: 0.4; }
 .watched 			{ background-color: #6B6969; }
-.unwatched			{ background-color: #b50505; }
+.unwatched			{ background-color: #d82020; }
 .no-margin 			{ margin: 0; }
 .margin-b-12		{ margin-bottom: 12px; }
 h4 					{ border-bottom: 1px solid #000;}
 a 					{ text-decoration: none; }
+.btn { cursor: pointer;	}
+.icon { cursor: pointer; }
 .link {
 	color: #0000ad;
 	font-weight: bold;
@@ -46,7 +48,6 @@ footer {
 	/*-webkit-user-select: all;*/
 	/*user-select: all;*/
 	background-color: #e3e3e3;
-
 }
 
 .text-input {
@@ -73,6 +74,7 @@ footer {
 .playlist {
 	width: 100vw;
 	background-color: #F7F3F3;
+
 	background: -webkit-linear-gradient(top, #f7f3f3 0%,#ededed 99%);
 	cursor: text;
 }

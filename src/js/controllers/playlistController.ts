@@ -351,13 +351,12 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 	// (excluding n) as watched. 
 	// mainly used for sequential playlists 
 	function markPreviousWatched(n) {
+		if(n === 0) return;
 		for(let i = 0; i < n; i++) {
 			playlists[thisIndex].videos[i].setWatched(true);
 			pushToWatched(playlists[thisIndex].videos[i].id);
 		}
 		playlists[thisIndex].lastCompleted = n-1;
-
-		console.log('last completed: ' + playlists[thisIndex].videos[n-1].title);
 	}
 
 	//Opens the playlist in a default browser
