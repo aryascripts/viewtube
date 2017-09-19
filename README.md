@@ -18,13 +18,7 @@ To run the program follow the following:
 3. From terminal, run `npm install electron -g`
 4. `electron .`
 
-## Technical Features
-+ Single Page Application
-+ Developer with HTML, CSS, JavaScript (Angular)
-+ Uses YouTube API to retreive information
-
 ## Screenshots
-
 ![alt-text](https://github.com/amanb014/viewtube/blob/master/img/main.png)
 ![alt-text](https://github.com/amanb014/viewtube/blob/master/img/settings1.png)
 ![alt-text](https://github.com/amanb014/viewtube/blob/master/img/settings2.png)
