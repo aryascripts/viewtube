@@ -57,11 +57,13 @@ function playlistController($scope, shared, $routeParams, $timeout) {
 		playlists[thisIndex].videos[index].setWatching(true);
 		playlists[thisIndex].watchingId = playlists[thisIndex].videos[index].id;
 
+		savePlaylists();
+
 		//Check if config wants to restart the video
 		let time = shared.config().restart ? 0 : playlists[thisIndex].videos[index].watchingTime;
 
 		ipcRenderer.send(
-			'create-window',
+			'create-window', 
 			{
 				'id': playlists[thisIndex].videos[index].id,
 				'time': time
