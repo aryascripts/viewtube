@@ -11,7 +11,8 @@ ViewTube is a YouTube playlist application to manage and watch playlists on YouT
 + Restore playlist data and settings (from file)
 
 ## Installation
-Support for Windows, Mac OS, Linux. Currently a binary file is not made. To run the program follow the following:
+Support for Windows, Mac OS, Linux. Currently a binary file is not made.
+To run the program follow the following:
 1. Clone/Download Repository
 2. From terminal, run `npm install`
 3. From terminal, run `npm install electron -g`
