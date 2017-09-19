@@ -1,0 +1,53 @@
+* {
+	color: #e3e3e3 !important;
+}
+
+h1 {
+	-webkit-margin-before: 0;
+}
+.window {
+	background-color: #3e3e3e;
+}
+
+.playlist-content {
+	background-color: #272727;
+}
+
+.link {
+	color: #5998ff;
+}
+
+select {
+	background-color: #272727 !important;
+}
+
+.btn-default {
+	background: rgb(39, 39, 39) !important;
+}
+
+.btn-default:hover {
+	background: rgb(100, 100, 100);
+}
+
+input {
+	background-color: #272727;
+}
+
+.toolbar, .toolbar-header {
+	background-image: linear-gradient(to bottom, #4f4f4f 0%, #3e3e3e 100%);
+	box-shadow: none;
+}
+header {
+	border: none !important;
+}
+
+.tab-item {
+	background-image: linear-gradient(to bottom, #6d6d6d 0%, #666666 100%);
+	border-left: #3e3e3e 1px solid;
+	border-right: #3e3e3e 1px solid;
+}
+
+.active {
+	background-image: linear-gradient(to bottom, #888888 0%, #8e8e8e 100%) !important;
+
+}
