@@ -7,6 +7,8 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 
 .service('shared', function() {
 	
+	//All these variables are global variables that can be accessed by all controllers that share this service
+	//The config, and playlists are stored to persist in further sessions as well.
 	var btnAdd:HTMLElement = document.getElementById('btn-url-add');
 	var urlContainer:HTMLElement = document.getElementById('url-input-container');
 	var wrapper:HTMLElement = document.getElementById('main-wrapper');
@@ -22,6 +24,8 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 	storage.get('config').then(data => {
 			if(isEmpty(data)) {
 				console.log('LOADING DEFAULT CONFIG');
+				
+				//This is the default config thati s loaded in case there is no config.
 				config = {
 					'theme':'light', 					// light | dark
 					'autoplay':false,
@@ -42,18 +46,20 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 				config = data;
 			}
 			console.log('sending event alwaysontop... ' + config.alwaysontop);
-			
 			console.log('NEXT IS CONFIG');
 			console.log(config);
 
+			//Set the always-on-top variable in the Main process to whatever is found on the config.
 			ipcRenderer.send('always-on-top', config.alwaysontop);
 			ipcRenderer.send('config-loaded');
 
 
 		});
 
+	//Global variable for the playlists
 	var playlists = [];
 
+	//Observer method for notification
 	var notify = () => {
 		if(observers.length > 0) {
 			angular.forEach(observers, function(callback) {
@@ -63,6 +69,7 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 		}
 	}
 
+	//Returns all the methods needed from the service (used by everything else)
 	return {
 		setPlaylists: (value) => {
 			return new Promise((resolve, reject) => {
@@ -87,7 +94,8 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 					config = value;
 				});
 		},
-
+		
+		//functions that return all hobjects needed by other objects/service
 		config: 		() => config,
 		getPlaylists: 	() => playlists,
 		btnAdd: 		() => btnAdd,
@@ -99,6 +107,7 @@ angular.module('viewTube', [require('angular-route'), require('angular-animate')
 		prefix: 		() => prefix,
 	}
 
+	//Helper function to check if an object is empty.
 	function isEmpty(obj){
 		return Object.keys(obj).length === 0;
 	}
