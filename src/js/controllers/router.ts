@@ -1,3 +1,10 @@
+/****************************************************************
+File: router.ts
+Purpose: Router includes the Angular ng-route and also the global
+service that distributes global variables. 
+Author: Aman Bhimani
+*****************************************************************/
+
 import { HttpRequest } from './../helpers/HttpRequest';
 import { Storage } from './../helpers/Storage';
 import {ipcRenderer} from 'electron';
