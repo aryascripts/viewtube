@@ -1,3 +1,9 @@
+/****************************************************************
+File: settingsController.ts
+Purpose: this is the controlelr that changes and manages config JSON. 
+
+Author: Aman Bhimani
+*****************************************************************/
 import {ipcRenderer} from 'electron';
 
 const {remote} = require('electron');
@@ -14,7 +20,9 @@ function settingsController($scope, shared, $timeout) {
 	const holder = document.getElementById('restoreBox');
 
 	var tabs = document.querySelector('.tab-group').getElementsByClassName('.tab-item');
-
+	
+	//This data is used in the angular scope to display and set the settings in UI.
+	//Enagles 2-way data binding
 	$scope.data = {
 		'themeOptions': [
 			{'id': 'light', 'name': 'Light'},
@@ -59,6 +67,7 @@ function settingsController($scope, shared, $timeout) {
 
 	console.log($scope.data);
 
+	//once the data has changed, this is the function called.
 	$scope.dataChanged = (what) => {
 		
 		switch(what) {
@@ -71,6 +80,7 @@ function settingsController($scope, shared, $timeout) {
 				break;
 
 			case 'sortPlaylistsBy':
+				//Also sends the event to sort playlists in the 'playlists' array in service.
 				config.sortPlaylistsByName = $scope.data.sortPlaylistsBySelected.id;
 				ipcRenderer.send('sort-playlists');
 				break;
@@ -117,6 +127,9 @@ function settingsController($scope, shared, $timeout) {
 		console.log(shared.config());
 	}
 
+	//No drag enabled on the holders
+	//The holder is the space where you can drop the JSON file for the config.
+	//Backup and Restore
 	holder.ondragover = () => {
 	  return false;
 	}
@@ -124,7 +137,7 @@ function settingsController($scope, shared, $timeout) {
 	holder.ondragleave = holder.ondragend = () => {
 	  return false;
 	}
-
+	
 	holder.ondrop = (e) => {
 	  e.preventDefault();
 
@@ -148,6 +161,7 @@ function settingsController($scope, shared, $timeout) {
 		$scope.data.activeTab = tabNo;
 	}
 
+	//Saves the backup file to the path provided.
 	function saveBackup(path) {
 
 		let info = JSON.stringify({
@@ -160,6 +174,7 @@ function settingsController($scope, shared, $timeout) {
 		});
 	}
 
+	//Loads the data from the file provided.
 	function restoreData(data) {
 		if(data === '') {
 			alert('File is empty. Please try another file.');
@@ -169,18 +184,21 @@ function settingsController($scope, shared, $timeout) {
 		var msg;
 		var restart = false;
 
+		//if the config object exists
 		if(restored.config) {
 			shared.setConfig(restored.config);
 			msg = 'Settings were restored!';
 			restart = true;
 		} else { msg = 'Settings were not found in file.'; }
 
+		//if the playlists object exists
 		if(restored.playlists) {
 			shared.setPlaylists(restored.playlists);
 			msg += ' Playlists were restored!';
 			restart = true;
 		} else { msg += ' Playlists were not found in file.'; }
 
+		//Add to the message to restart ViewTube
 		msg += (restart) ? ' Press OK to restart ViewTube.' : '';
 		alert(msg)
 		
