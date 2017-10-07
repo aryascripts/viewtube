@@ -1,5 +1,5 @@
-import {BrowserWindow} from 'electron';
 const {ipcMain} = require('electron');
+import {BrowserWindow} from 'electron';
 
 export default class Main {
     static mainWindow: Electron.BrowserWindow;
@@ -36,7 +36,7 @@ export default class Main {
 
         console.log('registering event listener');
 
-        Main.mainWindow.loadURL('file://' + __dirname + '/index.html');
+        Main.mainWindow.loadURL('http://localhost:4200');
         Main.mainWindow.on('closed', Main.onClose);
         Main.mainWindow.once('ready-to-show', () => {
             Main.mainWindow.show();
