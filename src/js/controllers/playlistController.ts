@@ -1,4 +1,4 @@
-import { api_key } from './../APIAuth';
+import { api_key } from './../helpers/auth';
 
 const { BrowserWindow } = require('electron').remote;
 const remote = require('electron').remote;

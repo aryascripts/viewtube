@@ -1,4 +1,5 @@
-import {api_key} from './APIAuth';
+import {api_key} from './helpers/auth'
+
 import { HttpRequest } from './helpers/HttpRequest';
 
 export class Video {

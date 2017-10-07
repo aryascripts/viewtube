@@ -1,5 +1,5 @@
 import { Playlist } from './../Playlist';
-import { api_key } from './../APIAuth';
+import { api_key } from './../helpers/auth';
 import {ipcRenderer} from 'electron';
 const fs = require('fs');
 
