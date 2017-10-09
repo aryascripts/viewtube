@@ -1,5 +1,36 @@
-<!-- Home component is responsible for displaying the list of all playlists. It is the home page of the application. -->
-<!-- App content goes inside .window-content -->
-<div id="main-wrapper" class="window-content">
-  Hello, I am the home page! 
+<div *ngFor="let p of sharedService.getPlaylists()" class="playlist margin-b-12">
+  <div class="heading-container gradient">
+    
+    <a class="linkspace" href="#!playlist/{{p.index}}">
+      <span style="width: 60%;" class="bold plist-title heading-container-item playlist-title white">
+        {{ p.title }}
+      </span>
+      <span style="width: 20%;" class="channel-name heading-container-item white">
+        by {{ p.channelName }}
+      </span>
+      <span style="width: 15%; margin-right: 0; flex-grow: 0;" class="video-count text-right heading-container-item white">
+        {{ p.watched.length }} / {{ p.totalVideos }}
+      </span>
+    </a>
+    
+    <span class="delete">
+      <span>x</span>
+    </span>
+    
+    
+  </div>
+  
+  <div class="playlist-content">
+    <div class="left-padding-4 thumbnail playlist-content-item"> <a href="#!playlist/{{$index}}"><img width="120px" /></a> </div>
+    <div class="left-padding-2 description playlist-content-item text-left">
+      {{ p.description }}<br />
+      <a class="link" ng-click="goToYouTube(p.id)">View on YouTube.com</a>
+    </div>
+  </div>
+</div>
+
+<div class="note">
+  Press  <button id="btn-url-add" class="btn btn-default">
+    <span id="btn-url-span" class="icon icon-plus-circled"></span>
+  </button> to add a playlist!
 </div>

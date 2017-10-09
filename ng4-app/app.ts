@@ -44,5 +44,10 @@ ipcMain.on('sort-playlists', (event, data) => {
 
 ipcMain.on('config-loaded', (event, data) => {
     console.log('CONFIG LOADED EVENT RECD');
+    Main.mainWindow.webContents.send('config-loaded');
+})
+
+ipcMain.on('playlists-loaded', (event, data) => {
+    console.log('playlists loaded. going to /home');
     Main.mainWindow.webContents.send('load-home');
 })

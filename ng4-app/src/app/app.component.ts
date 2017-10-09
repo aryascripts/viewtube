@@ -30,6 +30,14 @@ export class AppComponent {
         this.showForm = true;
         this.plusOrMinus = 'icon-minus-circled';
         this.urlBox = '';
+        this.registerEvents();
+    }
+
+    registerEvents() {
+        this.electronService.ipcRenderer.on('config-loaded', (event, data) => {
+            console.log('APP COMPONENT: config is finished loading.. next is loading playlists');
+            this.loadPlaylists();
+        });
     }
 
     // Called when the "add" button is pressed (or when video is added)
@@ -40,15 +48,12 @@ export class AppComponent {
 
     //Called when user presses "add playlist" check in the form
     addFromForm() {
-
-        
         if(this.urlBox.startsWith(this.shared.getPrefix())) {
             this.getPlaylistInfo(this.urlBox.split('=')[1])
                 .then(this.addPlaylist.bind(this))
                 .catch(error => {
                     console.log(error);
                 })
-            
 	}
 	//Not a valid url for playlist
 	else {
@@ -57,17 +62,16 @@ export class AppComponent {
 	}
     }
 
-    addPlaylist(data, last = -1, watchingId = '', watchingTime = -1, watchedArr = [], partialArr = []) {
+    addPlaylist(data, last = -1, watchingId = '', watchingTime = -1, watchedArr = [], partialArr = [], seq = this.shared.getConfig().sequential) {
         console.log(data);
         
         let plist = new Playlist(data);
 	plist.lastCompleted = last;
 	plist.watchingId = watchingId;
-        plist.sequential = this.shared.getConfig().sequential;
+        plist.sequential = seq;
 	plist.watchingTime = watchingTime;
 	plist.watched = watchedArr;
 	plist.partial = partialArr;
-
 
         this.shared.addingPlaylist(plist);
 
@@ -84,5 +88,38 @@ export class AppComponent {
         
         //This is a promise (unresolved)
         return this.shared.getRequest().getResponse(location, headers);
+    }
+
+    loadPlaylists() {
+        console.log('inside loadPlaylists');
+        this.shared.getStorage().get('playlists')
+            .then(data => {
+                if(data['playlists']) {
+                    for(let i = 0; i < data['playlists'].length; i++) {
+
+                        this.getPlaylistInfo(data['playlists'][i].id)
+                            .then(info => {
+                                this.addPlaylist(
+			            info,
+			            data['playlists'][i].lastCompleted,
+			            data['playlists'][i].watchingId,
+			            data['playlists'][i].watchingTime,
+			            data['playlists'][i].watched,
+			            data['playlists'][i].partial,
+                                    data['playlists'][i].sequential);
+                            });
+                        
+			//adding playlists fro the storage
+			//sets all parameters in the currently adding playlist.
+			//go see addPlaylist() definition above.
+			
+                    }
+                    //everything has loaded now, send 
+                    this.electronService.ipcRenderer.send('playlists-loaded');
+                }   
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 }

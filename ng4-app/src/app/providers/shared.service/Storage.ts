@@ -42,7 +42,7 @@ export class Storage {
 	}
 
 	public get(obj) {
-		console.log('loading object...' + obj);
+	    console.log('STORAGE: loading object...', obj);
 		return new Promise(
 			(resolve, reject) => {
 				this.storage.get(obj, (error, data) => {
@@ -54,7 +54,7 @@ export class Storage {
 		);
 	}
 	public set(str, obj) {
-		console.log('setting object...' + obj);
+	    console.log('STORAGE: setting object...', obj);
 		return new Promise(
 			(resolve, reject) => {
 				this.storage.set(str, obj, error => {
