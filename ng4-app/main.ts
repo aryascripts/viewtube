@@ -1,5 +1,5 @@
-const {ipcMain} = require('electron');
-import {BrowserWindow} from 'electron';
+import { app, BrowserWindow, screen } from 'electron';
+import * as path from 'path';
 
 export default class Main {
     static mainWindow: Electron.BrowserWindow;
@@ -33,10 +33,8 @@ export default class Main {
             'acceptFirstMouse': true,
             'titleBarStyle': 'hidden'
         });
-
-        console.log('registering event listener');
-
-        Main.mainWindow.loadURL('http://localhost:4200');
+        
+        Main.mainWindow.loadURL('file://' + __dirname + '/index.html');
         Main.mainWindow.on('closed', Main.onClose);
         Main.mainWindow.once('ready-to-show', () => {
             Main.mainWindow.show();

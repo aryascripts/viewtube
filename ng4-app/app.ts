@@ -1,5 +1,6 @@
 import { app,BrowserWindow } from 'electron';
 import Main from './Main';
+// import ElectronService from './src/app/providers/electron.service';
 const {ipcMain} = require('electron');
 
 var i = 0;
@@ -40,3 +41,8 @@ ipcMain.on('close-app', (event, data) => {
 ipcMain.on('sort-playlists', (event, data) => {
 	Main.mainWindow.webContents.send('sort-playlists');
 });
+
+ipcMain.on('config-loaded', (event, data) => {
+    console.log('CONFIG LOADED EVENT RECD');
+    Main.mainWindow.webContents.send('load-home');
+})
