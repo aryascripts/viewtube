@@ -1,4 +1,4 @@
-<div *ngFor="let p of sharedService.getPlaylists()" class="playlist margin-b-12">
+<div *ngFor="let p of shared.getPlaylists(); let i = index" class="playlist margin-b-12">
   <div class="heading-container gradient">
     
     <a class="linkspace" href="#!playlist/{{p.index}}">
@@ -13,7 +13,7 @@
       </span>
     </a>
     
-    <span class="delete">
+    <span (click)="removePlaylist(p.index)" class="delete">
       <span>x</span>
     </span>
     
@@ -21,10 +21,10 @@
   </div>
   
   <div class="playlist-content">
-    <div class="left-padding-4 thumbnail playlist-content-item"> <a href="#!playlist/{{$index}}"><img width="120px" /></a> </div>
+    <div class="left-padding-4 thumbnail playlist-content-item"> <a><img width="120px" src="{{p.getThumbnailUrl()}}"/></a> </div>
     <div class="left-padding-2 description playlist-content-item text-left">
       {{ p.description }}<br />
-      <a class="link" ng-click="goToYouTube(p.id)">View on YouTube.com</a>
+      <a class="link">View on YouTube.com</a>
     </div>
   </div>
 </div>

@@ -9,10 +9,14 @@ import { SharedService } from './../../providers/shared.service/shared.service';
 export class HomeComponent implements OnInit {
 
     
-    constructor(private sharedService:SharedService) { 
+    constructor(private shared:SharedService) { 
     }
 
     ngOnInit() {
     }
 
+    removePlaylist(index) {
+        console.log(index);
+        this.shared.removeAtIndex(index);
+    }
 }
