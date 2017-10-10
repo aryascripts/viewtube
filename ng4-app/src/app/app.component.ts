@@ -40,17 +40,24 @@ export class AppComponent {
         });
     }
 
-    // Called when the "add" button is pressed (or when video is added)
+    //toggles the form that is used to add videos
     toggleShowForm() {
         this.showForm = !this.showForm;
-        this.plusOrMinus = (this.showForm) ? 'icon-minus-circled' : 'icon-plus-circled'
+        this.plusOrMinus = (this.showForm) ? 'icon-minus-circled' : 'icon-plus-circled';
+        if(this.showForm) {
+            this.urlBox = '';
+        }
     }
 
     //Called when user presses "add playlist" check in the form
     addFromForm() {
+        this.toggleShowForm();
+        
         if(this.urlBox.startsWith(this.shared.getPrefix())) {
             this.getPlaylistInfo(this.urlBox.split('=')[1])
-                .then(this.addPlaylist.bind(this))
+                .then(data => {
+                    this.addPlaylist(data);
+                })
                 .catch(error => {
                     console.log(error);
                 })

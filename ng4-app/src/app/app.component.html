@@ -20,15 +20,15 @@
         
       </div>
       
-      <button id="btn-url-add" class="btn btn-default">
+      <button (click)="toggleShowForm()" id="btn-url-add" class="btn btn-default">
         <span id="btn-url-span" class="icon {{ plusOrMinus }}"></span>
       </button>
 
       <!-- Conditionally show form based on the state of the buttons  -->
-      <span id="url-input-container">
+      <span *ngIf="showForm" id="url-input-container">
         <form id="addVideoForm">
           <!-- TWO WAY BINDING -->
-          <input id="url-text" [(ngModel)]="urlBox" name="urlText" style="width: 50%;" class="text-input" type="text" placeholder="https://www.youtube.com/playlist?list=..." onfocus="if(this.value) this.value='';">
+          <input id="url-text" (click)="urlBox=''" [(ngModel)]="urlBox" name="urlText" style="width: 50%;" class="text-input" type="text" placeholder="https://www.youtube.com/playlist?list=...">
 
           <!-- Clicking the button processes the url provided  -->
           <button id="btn-check" (click)="addFromForm()" class="btn btn-default"><span class="icon icon-check"></span></button>
@@ -42,7 +42,6 @@
     </div>
     
   </header>
-{{urlBox}}
   <router-outlet></router-outlet>
   
 </div>
