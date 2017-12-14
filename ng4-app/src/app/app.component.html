@@ -4,15 +4,15 @@
     <h1 class="title">ViewTube</h1>
     
     <div class="toolbar-actions">
-      
       <div class="btn-group">
-        <a routerlink="/">
+
+        <a routerLink="/home">
           <button class="btn btn-default">
             <span class="icon icon-home"></span>
           </button>
         </a>
         
-        <a href="#!settings">
+        <a routerLink="/settings">
           <button class="btn btn-default">
             <span class="icon icon-cog"></span>
           </button>
@@ -42,6 +42,8 @@
     </div>
     
   </header>
+
+  <!-- This is where the router will place components -->
   <router-outlet></router-outlet>
   
 </div>

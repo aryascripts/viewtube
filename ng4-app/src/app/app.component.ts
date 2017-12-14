@@ -1,3 +1,12 @@
+/* 
+Purpose: 
+    This is the main app component.
+    All the code (after compilation) is placed into ../index.html, which holds the app template.
+    Everything you see in the window is placed into THIS component.
+    ../index.html is simply a placeholder.
+*/
+
+
 import { Component } from '@angular/core';
 import { ElectronService } from './providers/electron.service';
 import { SharedService } from './providers/shared.service/shared.service';
@@ -121,12 +130,13 @@ export class AppComponent {
 			//go see addPlaylist() definition above.
 			
                     }
-                    //everything has loaded now, send 
-                    this.electronService.ipcRenderer.send('playlists-loaded');
                 }   
+            })
+            .then(() => {
+                this.electronService.ipcRenderer.send('playlists-loaded');
             })
             .catch(err => {
                 console.log(err);
-            })
+            });
     }
 }

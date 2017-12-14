@@ -1,14 +1,13 @@
 {
-  "name": "angular-electron",
+  "name": "ViewTube",
   "version": "1.9.0",
-  "description": "Angular 4 with Electron (Typescript + SASS + Hot Reload)",
-  "homepage": "https://github.com/maximegris/angular-electron",
+  "description": "Youtube Application to manage playlists.",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "Aman Bhimani",
+    "email": "amanb014@gmail.com"
   },
   "keywords": [
-    "angular",
+    "angulSar",
     "electron",
     "typescript",
     "sass"
@@ -45,6 +44,7 @@
     "@angular/platform-browser-dynamic": "4.4.3",
     "@angular/router": "4.4.3",
     "core-js": "2.4.1",
+    "electron-json-storage": "^4.0.2",
     "enhanced-resolve": "3.3.0",
     "rxjs": "5.4.3",
     "zone.js": "0.8.17"
