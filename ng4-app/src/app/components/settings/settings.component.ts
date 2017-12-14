@@ -41,7 +41,7 @@ export class SettingsComponent {
                     {'id': 'playlist'} : {'id': 'channel'},
 
                 'threshhold': this.config.threshhold,
-                'percentage': Math.floor(this.config.threshhold * 100),
+                'percentage': this.getThreshhold(),
 
                 'alwaysOnTop' : this.config.alwaysOnTop,
                 'markPrevious': this.config.markPrevious,
@@ -73,6 +73,14 @@ export class SettingsComponent {
         this.shared.saveConfig(this.data);
     }
 
+    getThreshhold() {
+        return Math.floor(this.config.threshhold * 100);
+    }
+
+    updatePercentage() {
+        this.data.percentage = this.getThreshhold();
+        this.updateConfig();
+    }
     
     
 }
