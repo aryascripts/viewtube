@@ -149,7 +149,7 @@
 
 		<!-- PARTIALLY WATCHED AFTER  -->
 		<div class="item tooltip">
-			Video is "Watched" after completing: {{ data.percentage }}%
+			Video is "Watched" after completing: {{ percentage }}%
 			<br/><input (change)="updatePercentage();" name="threshold" [(ngModel)]="data.threshhold" id="threshhold" type ="range" min=".5" max=".95" step=".05"/>
 			<span class="tooltiptext">When you exit video window after completing this percentage of it, the video is marked as watched.</span>
 		</div>

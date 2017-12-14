@@ -13,6 +13,7 @@ export class SettingsComponent {
     activeTab:number;
     config:any;
     data:any = {};
+    percentage: number;
 
     constructor(private shared:SharedService) {
         this.activeTab = 0;
@@ -41,8 +42,6 @@ export class SettingsComponent {
                     {'id': 'playlist'} : {'id': 'channel'},
 
                 'threshhold': this.config.threshhold,
-                'percentage': this.getThreshhold(),
-
                 'alwaysOnTop' : this.config.alwaysOnTop,
                 'markPrevious': this.config.markPrevious,
                 'markNext': this.config.markNext,
@@ -62,6 +61,7 @@ export class SettingsComponent {
             }
 
             console.log(this.data);
+            this.updatePercentage();
     }
 
     tabChange(n) {
@@ -73,12 +73,8 @@ export class SettingsComponent {
         this.shared.saveConfig(this.data);
     }
 
-    getThreshhold() {
-        return Math.floor(this.config.threshhold * 100);
-    }
-
     updatePercentage() {
-        this.data.percentage = this.getThreshhold();
+        this.percentage = Math.floor(this.data.threshhold * 100);
         this.updateConfig();
     }
     
