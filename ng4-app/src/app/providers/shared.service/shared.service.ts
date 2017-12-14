@@ -52,9 +52,10 @@ export class SharedService {
 	}
     }
     
-    saveConfig() {
+    saveConfig(data) {
         console.log('SHARED: Saving configs...')
-        this.storage.set('config', this.config);
+        this.storage.set('config', data);
+        this.config = data;
     }
     
     sortPlaylists() {
@@ -82,29 +83,27 @@ export class SharedService {
 	    if(this.isEmpty(data)) {
 		console.log('LOADING DEFAULT CONFIG');
 		
-		//This is the default config thati s loaded in case there is no config.
+		//This is the default config that is loaded in case there is no config.
 		this.config = {
-		    'theme':'light', 					// light | dark
+		    'themeSelected':'light', 					// light | dark
 		    'autoplay':false,
 		    'iFrame':true,
 		    'restart':false,
 		    'alwaysOnTop':false,
-		    'sequential': true,
+		    'defaultTypeSelected': 'sequential',
 		    'threshhold': 0.90,					// 0.5 - 0.95
-		    'sortPlaylistsByName':'playlist', 	// playlist | channel
+		    'sortPlaylistsBySelected':'playlist',
 		    'markPrevious': true,
 		    'markNext': true,
 		    'skipWatched': false,
 		    'warnBeforeDelete': true,
 		    'showDesc': true,
-		    'afterNonsequentialFinishes': 'next' 		// next | random | close
+		    'afterNonsequentialFinishesSelected': 'next'
 		}
 	    } else {
-		this.config = data;
+		    this.config = data;
 	    }
-	    console.log('SHARED: NEXT IS CONFIG');
-	    console.log(this.config);
-            this.saveConfig();
+            this.saveConfig(this.config);
             
 	    //Set the always-on-top variable in the Main process to whatever is found on the config.
 	    this.electronService.ipcRenderer.send('always-on-top', this.config.alwaysontop);

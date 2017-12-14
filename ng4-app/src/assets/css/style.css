@@ -1,4 +1,6 @@
-* { -webkit-user-select: none;}
+* { 
+	-webkit-user-select: none;
+}
 body { -webkit-user-select: text;}
 .text-left 			{ text-align: left; }
 .text-right 		{ text-align: right; }
@@ -295,7 +297,6 @@ height: 100%;
 }
 
 .tab-wrapper {
-	position: fixed;
 	width: 100vw;
 	z-index: 100;
 }
@@ -303,6 +304,10 @@ height: 100%;
 	margin-top: 55px;
 }
 
+.flex-row {
+	display: flex;
+	flex-direction: row;
+}
 .green-bg { background-color: #008E09; }
 .red-bg { background-color: #FF0303; }
 .yellow-bg { background-color: #FFBF00; }

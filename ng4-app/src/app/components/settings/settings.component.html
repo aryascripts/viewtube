@@ -1,14 +1,14 @@
 <div class="tab-wrapper">
 	<div class="tab-group">
-	  <div ng-click="tabChange(0)" class="tab-item">
+	  <div (click)="tabChange(0)" class="tab-item" [ngClass]="{'active': activeTab === 0}">
 	    <span class="icon"></span>
 	    General
 	  </div>
-	  <div ng-click="tabChange(1)" class="tab-item">
+	  <div (click)="tabChange(1)" class="tab-item" [ngClass]="{'active': activeTab === 1}">
 	    <span class="icon"></span>
 	    Playlists
 	  </div>
-	  <div ng-click="tabChange(2)" class="tab-item">
+	  <div (click)="tabChange(2)" class="tab-item" [ngClass]="{'active': activeTab === 2}">
 	    <span class="icon"></span>
 	    Video Player
 	  </div>
@@ -25,7 +25,8 @@
 		<!-- THEME SETTING -->
 		<div class="tooltip form-group">
 			Theme
-			<select name="theme" id="theme">
+			<select (change)="updateConfig()" [(ngModel)]="data.themeSelected.id" name="theme" id="theme">
+				<option *ngFor="let theme of data.themeOptions" [ngValue]="theme.id" [selected]="data.themeSelected.id == theme.id">{{theme.name}}</option>
 			</select>
 
 			<span class="tooltiptext">No Restart Required</span>
@@ -34,7 +35,9 @@
 		<!-- PLAYLIST SORTING -->
 		<div class="tooltip form-group">
 			Sort Playlists By
-			<select name="sortPlaylistsBy" id="sortPlaylistsBy">
+			<select (change)="updateConfig()" [(ngModel)]="data.sortPlaylistsBySelected.id" name="sortPlaylistsBy" id="sortPlaylistsBy">
+				<option *ngFor="let opt of data.sortPlaylistsBy" [ngValue]="opt.id" [selected]="data.sortPlaylistsBySelected.id == opt.id">{{opt.name}}</option>
+
 			</select>
 			<span class="tooltiptext">All playlists change order real-time. Already watched</span>
 		</div>
@@ -42,7 +45,7 @@
 		<!-- SHOW DESCRIPTION  -->
 			<div class="tooltip item">
 				<p>Show Description</p>
-				<input value="data.showDesc" type="checkbox" id="showDesc" >
+				<input name="showDesc" [(ngModel)]="data.showDesc" (change)="updateConfig()" type="checkbox" id="showDesc" >
 				<div class="toggle">
 					<label for="showDesc"><i></i></label>
 				</div>
@@ -73,15 +76,17 @@
 		<!-- PLAYLIST TYPE -->
 		<div class="tooltip form-group">
 			Default Playlist Type
-			<select name="defaultType" id="defaultType">
+			<select [(ngModel)]="data.defaultTypeSelected.id" (change)="updateConfig()" name="defaultType" id="defaultType">
+				<option *ngFor="let type of data.defaultType" [ngValue]="type.id" [selected]="data.defaultTypeSelected.id == type.id">{{type.name}}</option>
 			</select>
 			<span class="tooltiptext">Adding new playlists are set to the default type. Existing playlists do not change type.</span>
 		</div>
 
 		<!-- RESTART PARTIALLY WATCHED -->
 		<div class="tooltip item">
-			<p>Restart Partially Watched</p>
-			<input value="data.restart" type="checkbox" id="restart" >
+			<input (change)="updateConfig()" [(ngModel)]="data.restart" name="restart" type="checkbox" id="restart" >
+			Restart Partially Watched
+			
 			<div class="toggle">
 				<label for="restart"><i></i></label>
 			</div>
@@ -94,7 +99,7 @@
 			<!-- MARK ALL PREVIOUS WATCHED -->
 				<div class="tooltip item">
 					<p>Mark All Previous Watched</p>
-					<input value="data.markPrevious" type="checkbox" id="markPrevious" >
+					<input name="markPrevious" [(ngModel)]="data.markPrevious" (change)="updateConfig()" type="checkbox" id="markPrevious" >
 					<div class="toggle">
 						<label for="markPrevious"><i></i></label>
 					</div>
@@ -104,7 +109,7 @@
 			<!-- MARK ALL NEXT UNWATCHED -->
 				<div class="tooltip item">
 					<p>Mark All Next Unwatched</p>
-					<input value="data.markNext" type="checkbox" id="markNext" >
+					<input name="markNext" [(ngModel)]="data.markNext" (change)="updateConfig()" type="checkbox" id="markNext" >
 					<div class="toggle">
 						<label for="markNext"><i></i></label>
 					</div>
@@ -115,7 +120,7 @@
 				<div class="tooltip item">
 					<p>Skip Watched Videos</p>
 
-					<input value="data.skipWatched" type="checkbox" id="skipWatched" >
+					<input name="skipWatched" [(ngModel)]="data.skipWatched" (change)="updateConfig()" type="checkbox" id="skipWatched" >
 					
 					<div class="toggle">
 						<label for="skipWatched"><i></i></label>
@@ -129,8 +134,8 @@
 			<!-- AFTER VIDEO FINISH -->
 				<div class="tooltip form-group">
 					After Video Finishes
-					<select name="afterNonsequentialFinishes" id="afterNonsequentialFinishes">
-
+					<select (change)="updateConfig()" [(ngModel)]="data.afterNonsequentialFinishesSelected.id" name="afterNonsequentialFinishes" id="afterNonsequentialFinishes">
+						<option *ngFor="let opt of data.afterNonsequentialFinishes" [ngValue]="opt.id" [selected]="data.afterNonsequentialFinishesSelected.id == opt.id">{{opt.name}}</option>
 					</select>
 					<span class="tooltiptext">1: Plays the very next video after current.<br/>2: Plays random unwatched video after current.<br/>3: Closes player after current video.</span>
 				</div>
@@ -152,7 +157,7 @@
 		<!-- PLAYER ON TOP  -->
 		<div class="tooltip item">
 			<p>Player Always-On-Top</p>
-			<input value="data.alwaysOnTop" type="checkbox" id="alwaysontop">
+			<input name="alwaysOnTop" [(ngModel)]="data.alwaysOnTop" (change)="updateConfig()" type="checkbox" id="alwaysontop">
 			<div class="toggle">
 				<label for="alwaysontop"><i></i></label>
 			</div>

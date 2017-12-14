@@ -6,8 +6,7 @@ import { SharedService } from './../../providers/shared.service/shared.service';
   templateUrl: './home.component.html',
   styleUrls: ['./../../../assets/css/style.css']
 })
-export class HomeComponent implements OnInit {
-
+export class HomeComponent implements OnInit {    
     
     constructor(private shared:SharedService) { 
     }

@@ -82,12 +82,12 @@ export class AppComponent {
         console.log(data);
         
         let plist = new Playlist(data);
-	plist.lastCompleted = last;
-	plist.watchingId = watchingId;
+    	plist.lastCompleted = last;
+    	plist.watchingId = watchingId;
         plist.sequential = seq;
-	plist.watchingTime = watchingTime;
-	plist.watched = watchedArr;
-	plist.partial = partialArr;
+    	plist.watchingTime = watchingTime;
+    	plist.watched = watchedArr;
+    	plist.partial = partialArr;
 
         this.shared.addingPlaylist(plist);
 

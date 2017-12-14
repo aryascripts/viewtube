@@ -28,8 +28,8 @@ export default class Main {
             show: false,
             width: 1280,
             height: 720,
-            'minWidth': 600,
-            'minHeight': 350,
+            'minWidth': 720,
+            'minHeight': 640,
             'acceptFirstMouse': true,
             'titleBarStyle': 'hidden'
         });
@@ -54,8 +54,8 @@ export default class Main {
             show: false,
             width: 750,
             height: 530,
-            'minWidth': 160,
-            'minHeight': 90,
+            'minWidth': 720,
+            'minHeight': 100,
             'acceptFirstMouse': true,
             'titleBarStyle': 'hidden',
             'alwaysOnTop': Main.alwaysontop
