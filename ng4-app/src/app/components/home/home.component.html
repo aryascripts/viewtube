@@ -1,7 +1,7 @@
 <div *ngFor="let p of shared.getPlaylists(); let i = index" class="playlist margin-b-12">
   <div class="heading-container gradient">
     
-    <a class="linkspace" href="#!playlist/{{p.index}}">
+    <a class="linkspace" [routerLink]="['/playlist', i]" >
       <span style="width: 60%;" class="bold plist-title heading-container-item playlist-title white">
         {{ p.title }}
       </span>

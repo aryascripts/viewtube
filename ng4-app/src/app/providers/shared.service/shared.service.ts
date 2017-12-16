@@ -27,7 +27,7 @@ export class SharedService {
         this.sortPlaylists();
         this.savePlaylists();
     }
-    
+
     savePlaylists() {
         console.log('SHARED: Saving playlists...');
         this.storage.savePlaylists(this.playlists)
@@ -78,31 +78,31 @@ export class SharedService {
     
     loadConfig() {
         console.log('SHARED: we are loading config!');
-	this.storage.get('config').then(data => {
+	    this.storage.get('config').then(data => {
             console.log('SHARED: Loaded CONFIG: ', data);
-	    if(this.isEmpty(data)) {
-		console.log('LOADING DEFAULT CONFIG');
-		
-		//This is the default config that is loaded in case there is no config.
-		this.config = {
-		    'themeSelected':'light', 					// light | dark
-		    'autoplay':false,
-		    'iFrame':true,
-		    'restart':false,
-		    'alwaysOnTop':false,
-		    'defaultTypeSelected': 'sequential',
-		    'threshhold': 0.90,					// 0.5 - 0.95
-		    'sortPlaylistsBySelected':'playlist',
-		    'markPrevious': true,
-		    'markNext': true,
-		    'skipWatched': false,
-		    'warnBeforeDelete': true,
-		    'showDesc': true,
-		    'afterNonsequentialFinishesSelected': 'next'
-		}
-	    } else {
-		    this.config = data;
-	    }
+    	    if(this.isEmpty(data)) {
+        		console.log('LOADING DEFAULT CONFIG');
+        		
+        		//This is the default config that is loaded in case there is no config.
+        		this.config = {
+        		    'themeSelected':{'id': 'light'}, 					// light | dark
+        		    'autoplay':false,
+        		    'iFrame':true,
+        		    'restart':false,
+        		    'alwaysOnTop':false,
+        		    'defaultTypeSelected': {'id':'sequential'},
+        		    'threshhold': 0.90,					// 0.5 - 0.95
+        		    'sortPlaylistsBySelected': { 'id':'playlist'},
+        		    'markPrevious': true,
+        		    'markNext': true,
+        		    'skipWatched': false,
+        		    'warnBeforeDelete': true,
+        		    'showDesc': true,
+        		    'afterNonsequentialFinishesSelected': {'id':'next'}
+        		}
+    	    } else {
+    		    this.config = data;
+    	    }
             this.saveConfig(this.config);
             
 	    //Set the always-on-top variable in the Main process to whatever is found on the config.
@@ -112,6 +112,18 @@ export class SharedService {
             
 	});
     }
+
+    setPlaylists(val) {
+            this.storage.savePlaylists(val)
+                .then(saved => {
+
+                })
+                .catch(error => {
+                    alert('There was a problem setting playlists');
+                })
+    }
+
+    getStoredPlaylists() { return this.storage.get('playlists'); }
     
     getPrefix()     { return this.prefix; }
     getConfig()     { return this.config; }

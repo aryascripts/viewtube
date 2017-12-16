@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { PlaylistComponent } from './components/playlist/playlist.component';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -21,7 +22,8 @@ import { SharedService } from './providers/shared.service/shared.service'
       AppComponent,
       HomeComponent,
       LoadingComponent,
-      SettingsComponent
+      SettingsComponent,
+      PlaylistComponent
   ],
   imports: [
       BrowserModule,
