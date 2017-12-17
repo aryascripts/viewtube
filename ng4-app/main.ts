@@ -89,13 +89,8 @@ export default class Main {
             Main.createVideoWindow(video);
             return;
         }
-        // console.log('file://' + __dirname
-        //     + '/components/video.html?id=' + video.id
-        //     + '&time='+ video.time);
-
-        Main.videoWindow.loadURL('file://' + __dirname
-            + '/components/video.html?id=' + video.id
-            + '&time='+ video.time);
+        
+        Main.videoWindow.loadURL('file://' + __dirname + '/index.html#/video/'+video.id+'/'+video.time);
     }
 
     static setAlwaysOnTop(value) {

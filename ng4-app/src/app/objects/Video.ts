@@ -81,6 +81,7 @@ export class Video {
 				}
 			}
 		}
+		this.percentage = 10;
 	}
 
 	public convertTime(duration) {

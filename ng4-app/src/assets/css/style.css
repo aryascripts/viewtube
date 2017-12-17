@@ -207,12 +207,6 @@ height: 100%;
 	padding: 0;
 }
 
-#player {
-	width: 100vw;
-	height: 100vh;
-	background-color: #000;
-}
-
 .settingsform {
 	padding: 0 40px;
 	/*background-color: #f2f2f2;*/
@@ -307,6 +301,10 @@ height: 100%;
 .flex-row {
 	display: flex;
 	flex-direction: row;
+}
+
+.video {
+	background-color: #b50505;
 }
 .green-bg { background-color: #008E09; }
 .red-bg { background-color: #FF0303; }

@@ -26,6 +26,7 @@ ipcMain.on('next-video', (event, data) => {
 
 ipcMain.on('video-closed', (event, data) => {
 	console.log('window closed');
+	console.log(data);
 	Main.mainWindow.webContents.send('calc-watch-time', data)
 });
 

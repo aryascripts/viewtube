@@ -11,6 +11,7 @@ let {dialog} = remote;
 export class ElectronService {
 
   ipcRenderer: typeof ipcRenderer;
+  remote: typeof remote;
   childProcess: typeof childProcess;
   electronDialog: any;
 
@@ -19,6 +20,7 @@ export class ElectronService {
     if (this.isElectron()) {
         this.ipcRenderer = window.require('electron').ipcRenderer;
         this.childProcess = window.require('child_process');
+        this.remote = window.require('electron').remote;
 
         this.electronDialog = dialog;
     }

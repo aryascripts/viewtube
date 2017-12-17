@@ -2,25 +2,28 @@
 
     <div class="heading-container gradient">
       <span style="width:55%" class="bold plist-title heading-container-item playlist-title white">
-        <!-- Title here -->
+        {{playlists[index].title}}
       </span>
       <span style="width:25%" class="channel-name heading-container-item white">
-      	<!-- by ChannelName -->
+      	by {{ playlists[index].channelName }}
       </span>
       <span style="width:10%" class="video-count text-right heading-container-item white">
-      	 <!-- Watched --> / <!-- Total -->
+      	 {{ playlists[index].watched.length }} / {{playlists[index].totalVideos}}
       </span>
     </div>
   <div class="playlist-content">
-    <div class="left-padding-4 thumbnail playlist-content-item"> <img width="120px" /> </div>
+    <div class="left-padding-4 thumbnail playlist-content-item"> <img width="120px" src="{{ playlists[index].getThumbnailUrl() }}" /> </div>
     <div class="left-padding-2 description playlist-content-item text-left">
-      <!-- {{ data.plist.description; }} --><br/>
-      <a class="link">View on YouTube.com</a>
+      {{playlists[index].description}}<br/>
+      <a class="link" >View on YouTube.com</a>
   
       <br>
+
       <div class="playlistType">
         Playlist is
         <select name="type" id="type">
+
+          <option *ngFor="let type of config.defaultType" [ngValue]="type.id" [selected]="playlists[index].type == type.id">{{type.name}}</option>
         </select>
       </div>
 
@@ -31,7 +34,7 @@
 </div>
 <div class="buttons-container">
 	<div ng-click="greenButton()" class="green-bg button">
-    <!-- ButtonText -->
+    <!-- ButtonText --> ButtonText
 	</div>
 </div>
 
@@ -42,14 +45,12 @@
 </div>
 
 <div
-class="bottom-margin-px windowWidth heading-container"
+class="bottom-margin-px windowWidth heading-container video"
+*ngFor="let video of playlists[index].videos"
+(click)="loadVideo(video.index)"
 >
-<!-- Watched or Unwatched -->
-
-<!-- style="{{ video.watching ? 'background: -webkit-linear-gradient(left, #6b6969 0%,#6b6969 '+ video.percentage +'%,#d82020 '+ video.percentage +'%,#d82020 '+ video.percentage +'%,#d82020 100%)' : '' }}" -->
-
-	<span style="width: 5%;" class="white heading-container-item"> Index + 1</span>
-	<span style="width: 70%;" class="white heading-container-item"> Title </span>
-	<span style="width: 14%;"class="white heading-container-item"> Duration </span>
+	<span style="width: 5%;" class="white heading-container-item"> {{video.index + 1}} </span>
+	<span style="width: 70%;" class="white heading-container-item"> {{video.title}} </span>
+	<span style="width: 14%;"class="white heading-container-item"> {{ video.duration }} </span>
 
 </div>
