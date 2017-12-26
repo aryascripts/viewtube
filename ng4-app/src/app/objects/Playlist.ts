@@ -19,8 +19,9 @@ export class Playlist {
 
 
 	sequential:boolean;
+	type:string;
 	watched: Array<string>;		//array of video IDs which is then used to set videos as watched upon loadVideos();
-	partial: Array<string>;
+	partial: any;
 
 	lastCompleted:number;
 	lastCompletedId:string;
@@ -45,7 +46,7 @@ export class Playlist {
 		this.description 	= plist['description'] || this.channelName + ' has not set a description for this playlist. Go bug them about it, not me!';
 		this.thumbnails 	= plist['thumbnails'];
 
-		this.sequential = true;
+		this.type = 'sequential';
 		this.watched = [];
 		this.partial = [];
 		this.watching = -1;
@@ -81,6 +82,10 @@ export class Playlist {
 				this.totalTime = ('0' + h).slice(-2) + ":" + ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
 				resolve();
 			});
+	}
+
+	public setType(ty:string) {
+		this.type = ty;
 	}
 
 }

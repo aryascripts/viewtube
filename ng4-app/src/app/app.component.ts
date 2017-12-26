@@ -78,13 +78,13 @@ export class AppComponent {
 	}
     }
 
-    addPlaylist(data, last = -1, watchingId = '', watchingTime = -1, watchedArr = [], partialArr = [], seq = this.shared.getConfig().sequential) {
+    addPlaylist(data, last = -1, watchingId = '', watchingTime = -1, watchedArr = [], partialArr = [], type = this.shared.getConfig().defaultTypeSelected.id) {
         console.log(data);
         
         let plist = new Playlist(data);
     	plist.lastCompleted = last;
     	plist.watchingId = watchingId;
-        plist.sequential = seq;
+        plist.setType(type);
     	plist.watchingTime = watchingTime;
     	plist.watched = watchedArr;
     	plist.partial = partialArr;
@@ -122,7 +122,7 @@ export class AppComponent {
 			            data['playlists'][i].watchingTime,
 			            data['playlists'][i].watched,
 			            data['playlists'][i].partial,
-                                    data['playlists'][i].sequential);
+                        data['playlists'][i].type);
                             });
                         
 			//adding playlists fro the storage

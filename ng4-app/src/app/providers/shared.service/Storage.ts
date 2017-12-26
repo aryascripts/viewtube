@@ -17,7 +17,7 @@ export class Storage {
 						'watchingTime': playlists[i].watchingTime,
 						'watchingId': playlists[i].watchingId,
 						'watched': playlists[i].watched,
-						'sequential': playlists[i].sequential
+						'type': playlists[i].type
 					});
 				}
 				//if resolved, it sends back the same playlists that came in

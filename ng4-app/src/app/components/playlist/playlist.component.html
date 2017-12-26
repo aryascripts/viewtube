@@ -21,8 +21,7 @@
 
       <div class="playlistType">
         Playlist is
-        <select name="type" id="type">
-
+        <select [(ngModel)]="playlist.type" (change)="savePlaylist()" name="type" id="type">
           <option *ngFor="let type of config.defaultType" [ngValue]="type.id" [selected]="playlists[index].type == type.id">{{type.name}}</option>
         </select>
       </div>
@@ -47,7 +46,8 @@
 <div
 class="bottom-margin-px windowWidth heading-container video"
 *ngFor="let video of playlists[index].videos"
-(click)="loadVideo(video.index)"
+(click)="loadFromIndex(video.index)"
+[style.background]="getStyle(video.index)"
 >
 	<span style="width: 5%;" class="white heading-container-item"> {{video.index + 1}} </span>
 	<span style="width: 70%;" class="white heading-container-item"> {{video.title}} </span>

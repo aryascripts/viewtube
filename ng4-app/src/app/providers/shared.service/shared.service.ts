@@ -29,7 +29,7 @@ export class SharedService {
     }
 
     savePlaylists() {
-        console.log('SHARED: Saving playlists...');
+        console.log('SHARED: Saving playlists...', this.playlists);
         this.storage.savePlaylists(this.playlists)
             .then(data => {
                 console.log('saved playlists ', data);
@@ -61,9 +61,9 @@ export class SharedService {
     sortPlaylists() {
         console.log('SHARED: Sorting playlists...');
         // this.playlists.sort(this.comparePlaylists);
-	for(let i = 0; i < this.playlists.length; i++) {
-	    this.playlists[i].index = i;
-	}
+    	for(let i = 0; i < this.playlists.length; i++) {
+    	    this.playlists[i].index = i;
+    	}
     }
     
     comparePlaylists(a, b) {
@@ -113,11 +113,13 @@ export class SharedService {
 	});
     }
 
+    setPlaylist(val:Playlist, index:number) {
+        this.playlists[index] = val;
+        this.savePlaylists();
+    }
+
     setPlaylists(val) {
             this.storage.savePlaylists(val)
-                .then(saved => {
-
-                })
                 .catch(error => {
                     alert('There was a problem setting playlists');
                 })

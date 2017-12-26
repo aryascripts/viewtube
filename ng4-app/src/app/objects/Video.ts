@@ -28,7 +28,11 @@ export class Video {
 		this.watched = val;
 		if(val) {
 			this.watching = !val;
-		}	
+			this.percentage = 100;
+		}
+		else {
+			this.percentage = 0;
+		}
 	}
 
 	setWatching = (val) => {
@@ -81,7 +85,6 @@ export class Video {
 				}
 			}
 		}
-		this.percentage = 10;
 	}
 
 	public convertTime(duration) {
