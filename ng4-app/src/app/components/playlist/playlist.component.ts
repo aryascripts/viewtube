@@ -18,13 +18,16 @@ export class PlaylistComponent {
 	playlists:Playlist[]
 	max:number;
 	config:any;
+	buttonText:string;
 
 	playlist:Playlist;
 
+	//private variables mostly come in from shared services
 	constructor(private sanitizer:DomSanitizer,
 				private shared:SharedService, 
 				private route:ActivatedRoute,
 				private electronService:ElectronService) {
+
 		this.index = this.route.snapshot.paramMap.get('id');
 		this.playlists = this.shared.getPlaylists();
 		this.playlist = this.shared.getPlaylists()[this.index];
@@ -41,14 +44,18 @@ export class PlaylistComponent {
 		});
 	}
 
+	//Called after the view is fully ready and loaded
 	ngAfterViewInit() {
 		this.populate();
 	}
 
+	//Helper method for saving playlist after certain actions
 	savePlaylist() {
 		this.shared.setPlaylist(this.playlist, this.index);
 	}
 
+	//loads a video in playlist.videos array
+	//at the particular index provided
 	loadVideo(val:number) {
 		console.log('loading video ', val);
 
@@ -71,6 +78,13 @@ export class PlaylistComponent {
 		);
 	}
 
+
+	//When the main process asks to open next video
+	//data:any has information from where this event was called
+	//if the video calling for next video is not the one being 
+	//watched currently, ignore the event.
+	//if playlist type is sequential, load next video if possible
+	//if plalyist type is non-sequential, call that method.
 	loadNextEvent(data:any) {
 		console.log('loading next video', data);
 		let watching = this.playlist.watching;
@@ -133,6 +147,8 @@ export class PlaylistComponent {
 		}
 	}
 
+	//Depending on the settings set by user,
+	//The next video is determined.
 	loadNonSequential(from:number) {
 		//check if this video is really non sequential
 		if(this.playlist.type == 'sequential') { 
@@ -156,6 +172,7 @@ export class PlaylistComponent {
 		}
 	}
 
+	//called when a user clicks on the video in playlist
 	loadFromIndex(index:number) {
 		//If config allows, restart the clicked video.
 		//If not, load the time left at (if not started, this was initialized to 0)
@@ -169,6 +186,9 @@ export class PlaylistComponent {
 				this.playlist.watched.splice(i,1);
 			}
 		}
+
+		console.log(this.playlist.type);
+		console.log('markPrevious', this.shared.getConfig().markPrevious);
 
 		//mark all previous watched if the setting allows it.
 		if(this.playlist.type == 'sequential' && this.shared.getConfig().markPrevious) {
@@ -186,6 +206,7 @@ export class PlaylistComponent {
 		this.loadVideo(index);
 	}
 
+	//Adds playlist to watched array (of IDs)
 	pushToWatched(id:string) {
 		console.log('pushing to watched ', id);
 
@@ -194,6 +215,7 @@ export class PlaylistComponent {
 		}
 	}
 
+	//Adds playlist to partially watched array
 	pushToPartiallyWatched(index:number, time:number) {
 		console.log('pushing to partially watched', index, time);
 		this.playlist.watchingTime = time;
@@ -219,6 +241,7 @@ export class PlaylistComponent {
 		}
 	}
 
+	//Loads a random unwatched video
 	loadRandomVideo() {
 		//all videos were watched, just load any video.
 		if(this.playlist.watched.length === this.playlist.totalVideos) {
@@ -283,7 +306,8 @@ export class PlaylistComponent {
 		this.savePlaylist();
 	}
 
-
+	//style is for partially watched videos
+	//simulates a progress bar with CSS
 	getStyle(i:number) {
 		let percentage:number = this.playlist.videos[i].watched ? 100 : this.playlist.videos[i].percentage;
 		return this.sanitizer.bypassSecurityTrustStyle('-webkit-linear-gradient(left, #6b6969 0%,#6b6969 '+percentage+'%,#d82020 '+percentage+'%,#d82020 100%)');
@@ -317,9 +341,58 @@ export class PlaylistComponent {
 		this.savePlaylist();
 	}
 
+	//Green button was pressed
+	//Based on the playlist type and state of playlist,
+	//It does different things
+	playButton() {
 
-	//*****************************************************************//
-	//	     ALL OF THESE ARE MEANT TO POPULATE CURRENT PLAYLIST      //
+		//If there is an unfinished video, load that.
+		if(this.playlist.watching > -1) {
+			this.loadVideo(this.playlist.watching);
+			return;
+		}
+
+		//Sequential playlist
+		if(this.playlist.type == 'sequential') {
+
+			//If no videos have been watched so far
+			if(this.playlist.watched.length === 0) {
+				this.loadVideo(0);
+			}
+
+			//If they have, load the one right after the last one that was completed
+			else {
+				//load next if the last completed was NOT the last video in playlist
+				if(this.playlist.lastCompleted !== this.playlist.videos.length - 1) {
+					this.loadNext(this.playlist.lastCompleted);
+				}
+
+				//if all videos have not been watched, load the first unwatched video you can find.
+				else if(this.playlist.totalVideos !== this.playlist.watched.length){
+					for(let i = 0; i < this.playlist.videos.length; i++) {
+						if(!this.playlist.videos[i].watched) {
+							this.loadVideo(i);
+						}
+					}
+				}
+
+				//If nothing works, just load the first video
+				else {
+					this.loadVideo(0);
+				}
+			}
+		}
+
+		//Non sequential playlist
+		else {
+			this.loadRandomVideo();
+		}
+	}
+
+
+	//*************************POPULATE*************************************//
+	// Following methods fetch data from YouTube server. The actual fetching 
+	// is abstracted out to another class ******************************** //
 	populate() {
 		if(this.playlist.videos.length < this.playlist.totalVideos) {
 			
@@ -425,6 +498,4 @@ export class PlaylistComponent {
 	} //fn
 	 //				POPULATE ENDS 				//
 	//*****************************************//
-
-
 }
