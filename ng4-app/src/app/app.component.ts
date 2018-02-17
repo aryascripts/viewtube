@@ -17,7 +17,8 @@ import { api_key } from './objects/api_key';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./../assets/css/photon.css',
-              './../assets/css/style.css']
+              './../assets/css/style.css',
+            './app.component.scss']
 })
 export class AppComponent {
 

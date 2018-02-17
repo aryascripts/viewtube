@@ -37,6 +37,9 @@ a 					{ text-decoration: none; }
 header {
 	-webkit-app-region: drag;
 	-webkit-user-select: none;
+	position: fixed;
+	width: 100%;
+	z-index: 2;
 }
 
 footer {
@@ -62,6 +65,7 @@ footer {
 
 .window-content {
 	display: flex;
+	padding-top: 50px;
 	flex-direction: column;
 	flex-wrap: nowrap;
 	justify-content: flex-start;
@@ -74,9 +78,8 @@ footer {
 }
 
 .playlist {
-	width: 100vw;
+	width: 100%;
 	background-color: #F7F3F3;
-
 	background: -webkit-linear-gradient(top, #f7f3f3 0%,#ededed 99%);
 	cursor: text;
 }

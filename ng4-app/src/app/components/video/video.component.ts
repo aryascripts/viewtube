@@ -3,6 +3,7 @@ import { SharedService } from './../../providers/shared.service/shared.service';
 import { ActivatedRoute } from '@angular/router';
 import { Playlist } from './../../objects/Playlist';
 import { ElectronService } from './../../providers/electron.service';
+import { OnInit } from '@angular/core';
 
 import YouTubePlayer from 'youtube-player';
 
@@ -12,7 +13,7 @@ import YouTubePlayer from 'youtube-player';
 	selector: 'youtube'
 })
 
-export class VideoComponent {
+export class VideoComponent implements OnInit {
 
 	player: YouTubePlayer;
 	sendOnUnload: boolean;
@@ -23,8 +24,6 @@ export class VideoComponent {
 				private shared:SharedService,
 				private route:ActivatedRoute) {
 		console.log('switching windows');
-		this.electron.remote.getCurrentWindow().webContents.executeJavaScript('document.getElementById(\'removeMe\').innerHTML = \'\'');
-		this.electron.remote.getCurrentWindow().webContents.insertCSS(`	::-webkit-scrollbar {display: none;}`);
 
 		this.sendOnUnload = true;
 
@@ -32,9 +31,6 @@ export class VideoComponent {
 
 		this.id = this.route.snapshot.paramMap.get('id');
 		this.time = this.route.snapshot.paramMap.get('time');
-
-
-
 	}
 
 	ngAfterViewInit() {
@@ -42,6 +38,11 @@ export class VideoComponent {
 		this.startPlayer();
 	}
 
+	ngOnInit() {
+		this.electron.remote.getCurrentWindow().webContents.executeJavaScript(`document.getElementById('removeMe').innerHTML = ''`);
+		this.electron.remote.getCurrentWindow().webContents.insertCSS(`	::-webkit-scrollbar {display: none;}`);
+	}
+	
 	startPlayer() {
 		this.player = YouTubePlayer('player',
 		{
