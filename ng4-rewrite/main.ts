@@ -21,8 +21,11 @@ function createWindow() {
   win = new BrowserWindow({
     x: 0,
     y: 0,
-    width: size.width,
-    height: size.height
+    width: 1600,
+    height: 720,
+    acceptFirstMouse: true,
+    minWidth: 720,
+    minHeight: 640
   });
 
   if (serve) {
