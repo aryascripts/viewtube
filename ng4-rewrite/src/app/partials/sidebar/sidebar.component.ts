@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { OAuthService } from './../../providers/oauth.service';
 
 @Component({
 	selector: 'app-sidebar',
@@ -12,6 +13,5 @@ export class SidebarComponent implements OnInit {
 
 	}
 	ngOnInit() {
-		
 	}
 }

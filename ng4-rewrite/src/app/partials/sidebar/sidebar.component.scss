@@ -1,7 +1,7 @@
 @import '../../scss/vars';
 
 .sidebar {
-	width: 150px;
+	width: $sidebar-width;
 	height: 100vh;
 	background-color: darken($yt-red, 15%);
 
@@ -9,7 +9,7 @@
 		font-family: 'Helvetica', 'Tahoma', 'Arial', sans-serif;
 		font-size: 18px;
 		font-weight: 100;
-		line-height: $header-height;
+		line-height: 40px;
 		transition: background-color 200ms;
 		color: lighten($yt-white, 25%);
 		cursor: pointer;
