@@ -1,9 +1,14 @@
 import { app, BrowserWindow, } from 'electron';
-import Main from './main';
 const {ipcMain} = require('electron');
 
+import Main from './main';
+import AuthService from './googleapi/authService';
+
+//Create main window
 Main.main(app, BrowserWindow);
 
-ipcMain.on('openAuthWindow', (event, url) => {
-	Main.openAuthWindow(url);
+//Send signal to authorize client
+ipcMain.on('authorize', (event) => {
+	AuthService.createAuthWindow();
 });
+

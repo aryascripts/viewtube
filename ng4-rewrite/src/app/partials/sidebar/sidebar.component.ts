@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OAuthService } from './../../providers/oauth.service';
+import { ElectronService } from '../../providers/electron.service';
 
 @Component({
 	selector: 'app-sidebar',
@@ -9,9 +10,12 @@ import { OAuthService } from './../../providers/oauth.service';
 export class SidebarComponent implements OnInit {
 	user: string = 'Aman Bhimani';
 
-	constructor() {
+	constructor(private electronService: ElectronService) {
 
 	}
-	ngOnInit() {
+	ngOnInit() { }
+
+	loginHandler() {
+		this.electronService.ipcRenderer.send('authorize');
 	}
 }

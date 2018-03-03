@@ -34,8 +34,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     HomeComponent,
     SidebarComponent,
-    WebviewDirective,
-    OAuthService
+    WebviewDirective
   ],
   imports: [
     BrowserModule,
@@ -50,7 +49,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [ElectronService],
+  providers: [ElectronService, OAuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
