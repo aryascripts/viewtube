@@ -36,9 +36,9 @@ export default class AuthService {
 		this.authWin = new BrowserWindow({
 			width: 600,
       height: 750,
-      'minWidth': 400,
-      'minHeight': 600,
-      'acceptFirstMouse': true,
+      minWidth: 400,
+      minHeight: 600,
+      acceptFirstMouse: true,
       alwaysOnTop: true //cannot escape
 		});
 
@@ -70,7 +70,6 @@ export default class AuthService {
 			const appCode = parsed.query.approvalCode;
 			if(appCode) {
 				this.token = await this.getToken(appCode);
-				console.log(this.token);
 			}
 		}
 	}
