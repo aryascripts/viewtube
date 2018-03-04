@@ -11,18 +11,43 @@ import { Playlist } from '../../models/Playlist';
 export class SidebarComponent implements OnInit {
 	sidebarHeader: string = 'Sign In With Google';
 	
-	playlist:Playlist = new Playlist({
-		title: 'Some playlist on YouTubewith Long title',
-		channelName: 'Aman Bhimani',
-		description: 'This is some description of the playlist listed here.'
-	});
+	playlists:Playlist[] = [];
 
 	constructor(private electronService: ElectronService) {
 
 	}
 	ngOnInit() {
-
-
+		this.playlists = [
+			new Playlist({
+			title: 'Some playlist on YouTubewith Long title',
+			channelName: 'Aman Bhimani',
+			description: 'This is some description of the playlist listed here.'
+		}),
+		new Playlist({
+			title: 'Another playlist',
+			channelName: 'Aman Bhimani',
+			description: 'This is some description of the playlist listed here.'	
+		}),
+		new Playlist({
+			title: 'Third playlist in this list',
+			channelName: 'Aman Bhimani',
+			description: 'This is some description of the playlist listed here.'	
+		}),
+		new Playlist({
+			title: 'Some playlist in here on Youtube similar to first',
+			channelName: 'Aman Bhimani',
+			description: 'This is some description of the playlist listed here.'	
+		}),
+		new Playlist({
+			title: 'Another playlist that I am adding',
+			channelName: 'Aman Bhimani',
+			description: 'This is some description of the playlist listed here.'	
+		}),
+		new Playlist({
+			title: 'You must be addicted to Youtube!',
+			channelName: 'Aman Bhimani',
+			description: 'This is some description of the playlist listed here.'	
+		})];
 	}
 
 	loginHandler() {

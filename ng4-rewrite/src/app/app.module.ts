@@ -16,13 +16,15 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ElectronService } from './providers/electron.service';
 
 import { WebviewDirective } from './directives/webview.directive';
+import { ResizeDirective } from './directives/resizable.directive';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './partials/home/home.component';
 import { SidebarComponent } from './partials/sidebar/sidebar.component';
-import { PlaylistItemComponent } from './components/playlist-item/playlistitem.component';
 
-import { ResizeDirective } from './directives/resizable.directive';
+import { PlaylistItemComponent } from './components/playlist-item/playlistitem.component';
+import { PlaylistListComponent } from './components/playlist-list/playlist-list.component';
+
 
 import { OAuthService } from './providers/oauth.service';
 
@@ -39,7 +41,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SidebarComponent,
     WebviewDirective,
     ResizeDirective,
-    PlaylistItemComponent
+    PlaylistItemComponent,
+    PlaylistListComponent
   ],
   imports: [
     BrowserModule,
