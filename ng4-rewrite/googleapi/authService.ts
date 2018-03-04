@@ -47,7 +47,7 @@ export default class AuthService {
 
 		//detects when the user has completed authorization
 		this.authWin.webContents.on('will-navigate', (event, url) => {
-			this.handleNavigate(url); //url goes to 
+			this.handleNavigate(url); //url of the window
 		});
 	}
 
@@ -70,8 +70,13 @@ export default class AuthService {
 			const appCode = parsed.query.approvalCode;
 			if(appCode) {
 				this.token = await this.oAuth2Client.getToken(appCode);
-				this.authWin.removeAllListeners('closed');
-				this.authWin.close();
+				if(this.token.res.status === 200) {
+					this.authWin.removeAllListeners('closed');
+					this.authWin.close();
+				}
+				else {
+					console.error('There was an error receiving authentication tokems from Google.' + this.token);
+				}
 			}
 		}
 	}
