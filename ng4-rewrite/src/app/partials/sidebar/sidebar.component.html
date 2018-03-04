@@ -1,7 +1,45 @@
-<div class="sidebar">
-	<div class="title" 
-		(click)="loginHandler()"> 
-		{{ user }} 
+<div #sidebarWrapper
+class="sidebar-wrapper">
+
+	<div class="sidebar">
+		<div class="title" 
+			(click)="loginHandler()"> 
+			{{ sidebarHeader }}
+		</div>
+
+		<div class="playlist-content">
+				Some other thing here/<br>
+				Some other thing here/Some other thing<br> 
+				here/Some other thing here/Some other thing h<br>e
+				re/Some other thing here/Some other thing he<br>r
+				e/Some other thing here/Some other thing here/Some other <br>
+				hing here/Some other thing here/Some other thi<br>
+				ng here/Some other thing here/Some other thing he<br>
+				re/Some other thing here/Some other thing here/Some othe<br>
+				r thing here/Some other thing here/Some other thing here/S<br>
+				ome other thing here/Some other thing here/Some o<br>
+				ther thing here/Some other thing here/So<br>
+				me other thing here/Some o<br>
+				ther thing here/Some other thing her<br>
+				e/Some other thing here/Some other thing here/<br>
+				Some other thing here/Some other thing here/S<br>
+				ome other thing here/Some other thing here/Some o<br>
+				ther thing here/Some other thing here/Som<br>
+				e other thing here/Some other thing here/<br>
+				Some other thing here/Some other thing here/Some <br>
+				other thing here/Some other thing here/Some ot<br>
+				her thing here/Some other thing here/Some other thing here/Som<br>
+				e other thing here/Some other thing he<br>
+		</div>
+
 	</div>
+
+	<div app-resize
+	[resizeMe]="sidebarWrapper"
+	[vertical]="true"
+	[minSize]="185"
+	[maxSize]="450"
+	[barWidth]="8"
+	class="sidebar-resize"> </div>
 
 </div>

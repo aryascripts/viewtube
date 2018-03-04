@@ -1,22 +1,45 @@
 @import '../../scss/vars';
 
-.sidebar {
-	width: $sidebar-width;
-	height: 100vh;
+$header-height: 40px;
+
+.sidebar-wrapper {
+
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	width: 225px;
+	overflow-y: scroll;
 	background-color: darken($yt-red, 15%);
+	height: 100vh;
 
-	.title {
-		font-family: 'Helvetica', 'Tahoma', 'Arial', sans-serif;
-		font-size: 18px;
-		font-weight: 100;
-		line-height: 40px;
-		transition: background-color 200ms;
-		color: lighten($yt-white, 25%);
-		cursor: pointer;
-		padding: 0 0 0 10px;
+	.sidebar {
+		flex-grow: 1;
+	
+		.title {
+			font-family: 'Helvetica', 'Tahoma', 'Arial', sans-serif;
+			font-size: 18px;
+			font-weight: 100;
+			line-height: $header-height;
+			transition: background-color 200ms;
+			color: lighten($yt-white, 25%);
+			cursor: pointer;
+			padding: 0 0 0 10px;
+			position: relative;
+			z-index: 100;
 
-		&:hover {
-			background-color: darken($yt-red, 10%);
+			&:hover {
+				background-color: darken($yt-red, 10%);
+			}
 		}
+
+	}
+
+	.sidebar-resize {
+		height: 100vh;
+		width: 8px;
+		background-color: lighten($yt-red, 10%);
 	}
 }
+
+
+

@@ -8,7 +8,7 @@ import { ElectronService } from '../../providers/electron.service';
 	styleUrls: ['sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-	user: string = 'Aman Bhimani';
+	sidebarHeader: string = 'Sign In With Google';
 
 	constructor(private electronService: ElectronService) {
 
