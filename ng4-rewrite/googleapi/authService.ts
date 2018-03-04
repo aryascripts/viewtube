@@ -69,16 +69,22 @@ export default class AuthService {
 			//Get and store refresh tokens
 			const appCode = parsed.query.approvalCode;
 			if(appCode) {
-				this.token = await this.oAuth2Client.getToken(appCode);
-				if(this.token.res.status === 200) {
-					this.authWin.removeAllListeners('closed');
-					this.authWin.close();
-				}
-				else {
-					console.error('There was an error receiving authentication tokems from Google.' + this.token);
-				}
+				this.token = await this.getToken(appCode);
+				console.log(this.token);
 			}
 		}
 	}
 
+	static async getToken(code:string) {
+			const token = await this.oAuth2Client.getToken(code);
+			if(token.res.status === 200) {
+				this.authWin.removeAllListeners('closed');
+				this.authWin.close();
+				return token;
+			}
+			else {
+				console.error('There was an error receiving authentication tokems from Google.' + this.token);
+				return null;
+			}
+	}
 }
