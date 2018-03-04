@@ -18,7 +18,7 @@ import { ElectronService } from './providers/electron.service';
 import { WebviewDirective } from './directives/webview.directive';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent } from './partials/home/home.component';
 import { SidebarComponent } from './partials/sidebar/sidebar.component';
 import { PlaylistItemComponent } from './components/playlist-item/playlistitem.component';
 
