@@ -11,9 +11,11 @@ $header-height: 40px;
 	overflow-y: scroll;
 	background-color: darken($yt-red, 15%);
 	height: 100vh;
+	overflow-x: hidden;
 
 	.sidebar {
 		flex-grow: 1;
+		width: 180px;
 	
 		.title {
 			font-family: 'Helvetica', 'Tahoma', 'Arial', sans-serif;
@@ -23,7 +25,7 @@ $header-height: 40px;
 			transition: background-color 200ms;
 			color: lighten($yt-white, 25%);
 			cursor: pointer;
-			padding: 0 0 0 10px;
+			padding: 0 0 0 $sidebar-left-padding;
 			position: relative;
 			z-index: 100;
 
