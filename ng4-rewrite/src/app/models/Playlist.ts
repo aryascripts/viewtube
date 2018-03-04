@@ -30,34 +30,40 @@ export class Playlist {
 
 	getThumbnailUrl = () => this.thumbnails['default'].url;
 
-	constructor(info:any) {
-		if(info['length'] < 1) {
-			return;
-		}
-		console.log(info);
-		this.videos 		= [];
-		this.obj 			= info;
-		this.totalVideos 	= info['items'][0]['contentDetails']['itemCount'];
+	// constructor(info:any) {
+	// 	if(info['length'] < 1) {
+	// 		return;
+	// 	}
+	// 	console.log(info);
+	// 	this.videos 		= [];
+	// 	this.obj 			= info;
+	// 	this.totalVideos 	= info['items'][0]['contentDetails']['itemCount'];
 
-		let plist 			= info['items'][0]['snippet'];
-		this.id 			= info['items']['0']['id'];
-		this.title 			= plist['title'];
-		this.channelName 	= plist['channelTitle'];
-		this.description 	= plist['description'] || this.channelName + ' has not set a description for this playlist. Go bug them about it, not me!';
-		this.thumbnails 	= plist['thumbnails'];
+	// 	let plist 			= info['items'][0]['snippet'];
+	// 	this.id 			= info['items']['0']['id'];
+	// 	this.title 			= plist['title'];
+	// 	this.channelName 	= plist['channelTitle'];
+	// 	this.description 	= plist['description'] || this.channelName + ' has not set a description for this playlist. Go bug them about it, not me!';
+	// 	this.thumbnails 	= plist['thumbnails'];
 
-		this.type = 'sequential';
-		this.watched = [];
-		this.partial = [];
-		this.watching = -1;
-		this.lastCompleted = -1;
-		this.lastCompletedId = '';
-		this.index = 0;
-		this.totalTime = '';
+	// 	this.type = 'sequential';
+	// 	this.watched = [];
+	// 	this.partial = [];
+	// 	this.watching = -1;
+	// 	this.lastCompleted = -1;
+	// 	this.lastCompletedId = '';
+	// 	this.index = 0;
+	// 	this.totalTime = '';
 
-		this.watchingId = '';
-	}
+	// 	this.watchingId = '';
+	// }
 
+	constructor(info) {
+		this.title = info.title;
+		this.channelName = info.channelName;
+		this.description = info.description;
+	 }
+	
     //// REMINDER: This is only adding 5 videos! Pagination or re-query is needed.
 	public addVideos(videos:any) {
 		let list = videos['items'];
