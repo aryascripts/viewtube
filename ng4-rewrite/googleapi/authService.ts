@@ -1,8 +1,7 @@
 const {OAuth2Client} = require('google-auth-library');
-import { app, BrowserWindow } from 'electron';
-const http = require('http');
 const url = require('url');
-const querystring = require('querystring');
+
+import { app, BrowserWindow } from 'electron';
 import { authKeys } from './auth';
 
 export default class AuthService {
