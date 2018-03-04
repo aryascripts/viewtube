@@ -20,9 +20,11 @@ import { WebviewDirective } from './directives/webview.directive';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { SidebarComponent } from './partials/sidebar/sidebar.component';
+
+import { ResizeDirective } from './directives/resizable.directive';
+
 import { OAuthService } from './providers/oauth.service';
 
-// import { OAuthService } from './providers/oauth.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -34,7 +36,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     HomeComponent,
     SidebarComponent,
-    WebviewDirective
+    WebviewDirective,
+    ResizeDirective
   ],
   imports: [
     BrowserModule,
