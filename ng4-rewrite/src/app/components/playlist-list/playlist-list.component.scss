@@ -1,0 +1,50 @@
+@import '../../scss/vars';
+
+.flex {
+	display: flex;
+	cursor: pointer;
+	margin-top: 10px;
+	transition: text-shadow 150ms;
+
+	&:hover {
+		text-shadow: 0 0 1px $yt-gray;
+	}
+
+	h1 {
+		font-size: 24px;
+		font-weight: 100;
+		color: darken($yt-gray, 10%);
+		padding: 0;
+		margin: 0 0 0 $sidebar-left-padding;
+	}
+
+
+	.caret {
+		position: relative;
+		transition: transform 50ms;
+		transform-origin: 50% 50%;
+		margin: 10px 0 0 5px;
+
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			border-top: 12px solid #ff0000;
+			border-left: 12px solid transparent;
+			border-right: 12px solid transparent;
+
+			transform: inherit;
+			transform-origin: inherit;
+			transition: transform 50ms;
+		}
+	}
+
+	.open {		
+		transform: rotate(-90deg);
+	}
+}
+
+.hide {
+	display: none;
+}

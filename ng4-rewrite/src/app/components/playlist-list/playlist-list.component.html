@@ -1,4 +1,18 @@
-<app-playlist-item
-	*ngFor="let playlist of playlists"
-	[plist]="playlist">
-</app-playlist-item>
+<div class="flex" (click)="toggleDropdown()">
+	<h1>My Playlists</h1>
+	
+	<div style="margin: 8px 0 0 5px">
+		<i class="caret"
+		[ngClass]="caretClass"></i>
+	</div>
+</div>
+
+<div class="list"
+[ngClass]="listClass">
+
+	<app-playlist-item
+		*ngFor="let playlist of playlists"
+		[plist]="playlist">
+	</app-playlist-item>
+</div>
+

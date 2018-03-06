@@ -8,11 +8,28 @@ import { Playlist } from './../../models/Playlist';
 })
 export class PlaylistListComponent implements OnInit {
 
+	closed:Boolean;
+	caretClass:{};
+	listClass:{};
 	@Input() playlists: Playlist[];
 
 	constructor() { }
 	ngOnInit() {
-
+		this.closed = true;
+		this.setClasses();
 	}
 
+	toggleDropdown() {
+		this.closed = !this.closed;
+		this.setClasses();
+	}
+
+	setClasses() {
+		this.caretClass = {
+			'open': !this.closed
+		}
+		this.listClass = {
+			'hide': !this.closed
+		}
+	}
 }

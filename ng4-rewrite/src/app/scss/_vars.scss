@@ -1,10 +1,13 @@
 // COLORS
 $yt-red: #EB2D30;
 $yt-red-light: #EB2D30;
-$yt-gray: #333333;
+$yt-gray: darken(#333333, 25%);
 $yt-gray-light: #878787;
-$yt-white: #F7F3F3;
+$yt-white: #fafafa;
 
 // MEASUREMENTS
 $sidebar-width: 200px;
 $sidebar-left-padding: 10px;
+$sidebar-bg: $yt-white;
+
+$white-text: lighten($yt-white, 25%);
