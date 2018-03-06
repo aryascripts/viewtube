@@ -26,7 +26,7 @@ import { PlaylistItemComponent } from './components/playlist-item/playlistitem.c
 import { PlaylistListComponent } from './components/playlist-list/playlist-list.component';
 
 
-import { OAuthService } from './providers/oauth.service';
+import { GoogleApiService } from './providers/googleapi.service';
 
 
 // AoT requires an exported function for factories
@@ -57,7 +57,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [ElectronService, OAuthService],
+  providers: [ElectronService, GoogleApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
