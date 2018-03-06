@@ -50,8 +50,6 @@ export class ResizeDirective implements OnInit {
 				newNum = this.startWidth + diff;
 				if(newNum > this.minSize && newNum < this.maxSize)
 					this.elementToResize.style.width = newNum + 'px';
-				
-				console.log(newNum);
 			}
 			else {
 				diff = event.clientY - this.startHeight;
