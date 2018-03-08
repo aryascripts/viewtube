@@ -27,7 +27,7 @@ import { PlaylistListComponent } from './components/playlist-list/playlist-list.
 
 
 import { GoogleApiService } from './providers/googleapi.service';
-
+import PlaylistsService from './providers/playlist.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -57,7 +57,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [ElectronService, GoogleApiService],
+  providers: [ElectronService, GoogleApiService, PlaylistsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

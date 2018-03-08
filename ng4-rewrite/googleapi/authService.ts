@@ -1,13 +1,14 @@
 const {OAuth2Client} = require('google-auth-library');
 const url = require('url');
 
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import { authKeys } from './auth';
 
 export default class AuthService {
 	
-	static token:any;
-	
+	static authorized: boolean;
+	static youtube:any;
+
 	static SCOPES:string[] = [
 		'https://www.googleapis.com/auth/youtube',
 		'https://www.googleapis.com/auth/youtube.readonly',
@@ -22,6 +23,17 @@ export default class AuthService {
 	
 	static authWin:BrowserWindow = null;
 	
+	static getOAuthClient() {
+		if(this.authorized) {
+			return this.oAuth2Client;
+		}
+		else {
+			this.createAuthWindow();
+			return 'not-authorized';
+		}
+
+	}
+
 	static getAuthUrl(client) {
 		// Generate the url that will be used for the consent dialog.
 		return this.oAuth2Client.generateAuthUrl({
@@ -69,7 +81,12 @@ export default class AuthService {
 			//Get and store refresh tokens
 			const appCode = parsed.query.approvalCode;
 			if(appCode) {
-				this.token = await this.getToken(appCode);
+				let tk = await this.getToken(appCode);
+				this.oAuth2Client.setCredentials(tk.tokens);
+				console.log('tokens acquired');
+				this.authorized = true;
+				
+				ipcMain.emit('create-youtube-service', this.oAuth2Client);
 			}
 		}
 	}
@@ -82,7 +99,7 @@ export default class AuthService {
 				return token;
 			}
 			else {
-				console.error('There was an error receiving authentication tokems from Google.' + this.token);
+				console.error('There was an error receiving authentication tokems from Google.' + token);
 				return null;
 			}
 	}

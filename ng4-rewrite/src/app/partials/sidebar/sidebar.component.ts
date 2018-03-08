@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { OAuthService } from './../../providers/oauth.service';
 import { ElectronService } from '../../providers/electron.service';
 import { Playlist } from '../../models/Playlist';
+import { GoogleApiService } from '../../providers/googleapi.service';
+import PlaylistsService from '../../providers/playlist.service';
 
 @Component({
 	selector: 'app-sidebar',
@@ -11,46 +12,24 @@ import { Playlist } from '../../models/Playlist';
 export class SidebarComponent implements OnInit {
 	sidebarHeader: string = 'Sign In With Google';
 	
-	playlists:Playlist[] = [];
+	playlists:Playlist[];
 
-	constructor(private electronService: ElectronService) {
+	constructor(private googleApiService: GoogleApiService,
+							private playlistsService: PlaylistsService) {
+								this.registerEvents();
 
-	}
+							}
+
 	ngOnInit() {
-		this.playlists = [
-			new Playlist({
-			title: 'Some playlist on YouTubewith Long title',
-			channelName: 'Aman Bhimani',
-			description: 'This is some description of the playlist listed here.'
-		}),
-		new Playlist({
-			title: 'Another playlist',
-			channelName: 'Aman Bhimani',
-			description: 'This is some description of the playlist listed here.'	
-		}),
-		new Playlist({
-			title: 'Third playlist in this list',
-			channelName: 'Aman Bhimani',
-			description: 'This is some description of the playlist listed here.'	
-		}),
-		new Playlist({
-			title: 'Some playlist in here on Youtube similar to first',
-			channelName: 'Aman Bhimani',
-			description: 'This is some description of the playlist listed here.'	
-		}),
-		new Playlist({
-			title: 'Another playlist that I am adding',
-			channelName: 'Aman Bhimani',
-			description: 'This is some description of the playlist listed here.'	
-		}),
-		new Playlist({
-			title: 'You must be addicted to Youtube!',
-			channelName: 'Aman Bhimani',
-			description: 'This is some description of the playlist listed here.'	
-		})];
+		
+	}
+
+	registerEvents() {
+		this.playlistsService.getMyPlaylists()
+			.subscribe(value => this.playlists = value);
 	}
 
 	loginHandler() {
-		this.electronService.ipcRenderer.send('authorize');
+		this.googleApiService.login();
 	}
 }
