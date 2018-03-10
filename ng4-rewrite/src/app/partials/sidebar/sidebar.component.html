@@ -8,13 +8,8 @@ class="sidebar-wrapper">
 		</div>
 
 		<div class="playlist-content">
-			<!-- <app-playlist-list [playlists]="playlists">
-			</app-playlist-list> -->
-			
-			<app-playlist-item
-				*ngFor="let playlist of playlistsService.getMyPlaylists() | async"
-				[plist]="playlist">
-			</app-playlist-item>
+			<app-playlist-list [playlists]="playlists">
+			</app-playlist-list>
 		</div>
 	</div>
 

@@ -1,20 +1,25 @@
 const {OAuth2Client} = require('google-auth-library');
 const url = require('url');
+const fs = require('fs');
 
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { authKeys } from './auth';
+
+const SCOPES:string[] = [
+		'https://www.googleapis.com/auth/youtube',
+		'https://www.googleapis.com/auth/youtube.readonly',
+		'https://www.googleapis.com/auth/youtube.upload'
+	];
+
+const TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
+									process.env.USERPROFILE) + '/.credentials/';
+const TOKEN_PATH = TOKEN_DIR + 'token.json'
 
 export default class AuthService {
 	
 	static authorized: boolean;
 	static youtube:any;
 
-	static SCOPES:string[] = [
-		'https://www.googleapis.com/auth/youtube',
-		'https://www.googleapis.com/auth/youtube.readonly',
-		'https://www.googleapis.com/auth/youtube.upload'
-	];
-	
 	static oAuth2Client:any = new OAuth2Client(
 		authKeys.client_id,
 		authKeys.client_secret,
@@ -31,14 +36,26 @@ export default class AuthService {
 			this.createAuthWindow();
 			return 'not-authorized';
 		}
+	}
 
+	static loadFromFile() {
+		return new Promise((resolve, reject) => {
+			fs.readFile(TOKEN_PATH, (err, token) => {
+				if (err) {
+					reject(err);
+				} else {
+					this.setOauthCredentials(JSON.parse(token), false);
+					resolve(this.oAuth2Client);
+				}
+			});
+		});
 	}
 
 	static getAuthUrl(client) {
 		// Generate the url that will be used for the consent dialog.
 		return this.oAuth2Client.generateAuthUrl({
 			access_type: 'offline',
-			scope: this.SCOPES
+			scope: SCOPES
 		});
 	}
 
@@ -82,13 +99,18 @@ export default class AuthService {
 			const appCode = parsed.query.approvalCode;
 			if(appCode) {
 				let tk = await this.getToken(appCode);
-				this.oAuth2Client.setCredentials(tk.tokens);
-				console.log('tokens acquired');
-				this.authorized = true;
-				
-				ipcMain.emit('create-youtube-service', this.oAuth2Client);
+				this.setOauthCredentials(tk.tokens);
 			}
 		}
+	}
+
+	private static setOauthCredentials(tokens, store:boolean = true) {
+		console.log(tokens);
+		if(store) 
+			this.storeToken(tokens);
+		this.oAuth2Client.setCredentials(tokens);
+		this.authorized = true;
+		// this.informCreation();
 	}
 
 	static async getToken(code:string) {
@@ -102,5 +124,24 @@ export default class AuthService {
 				console.error('There was an error receiving authentication tokems from Google.' + token);
 				return null;
 			}
+	}
+
+	private static storeToken(token: any) {
+		try {
+			fs.mkdirSync(TOKEN_DIR);
+		} catch (err) {
+			if (err.code != 'EEXIST') {
+				throw err;
+			}
+		}
+		
+		fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+			if (err) throw err;
+		});
+		console.log('Token stored to ' + TOKEN_PATH);
+	}
+
+	private static informCreation() {
+		ipcMain.emit('create-youtube-service', this.oAuth2Client);
 	}
 }

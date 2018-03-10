@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { ElectronService } from '../../providers/electron.service';
 import { Playlist } from '../../models/Playlist';
 import { GoogleApiService } from '../../providers/googleapi.service';
@@ -15,18 +15,20 @@ export class SidebarComponent implements OnInit {
 	playlists:Playlist[];
 
 	constructor(private googleApiService: GoogleApiService,
-							private playlistsService: PlaylistsService) {
-								this.registerEvents();
-
-							}
+							private playlistsService: PlaylistsService,
+							private zone:NgZone) { }
 
 	ngOnInit() {
-		
+		this.registerEvents();
 	}
 
 	registerEvents() {
-		this.playlistsService.getMyPlaylists()
-			.subscribe(value => this.playlists = value);
+		this.playlistsService.myPlaylists
+			.subscribe(value => {
+				this.zone.run(() => {
+					this.playlists = value
+				});
+			});
 	}
 
 	loginHandler() {

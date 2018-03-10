@@ -8,17 +8,25 @@ export class GoogleApiService {
 	constructor(private electronService: ElectronService,
 							private playlistService: PlaylistsService) {
 		this.createListeners();
+
+		this.electronService.ipcRenderer.send('check-client');
 	}
 
 	createListeners() {
-		console.log('creating listeners in GoogleApiService');
 		this.electronService.ipcRenderer.on('my-playlists', (sender, resp) => {
+			console.log(resp);
 			this.playlistService.addAccountPlaylists(resp);
 		});
 
-		this.electronService.ipcRenderer.on('client-created', (sender) => {
+		//After client creation, need to get the account playlists
+		this.electronService.ipcRenderer.on('client-created', () => {
+			console.log('received: client-created');
 			this.getMyPlaylists();
 		});
+
+		this.electronService.ipcRenderer.on('check-client', clientExists => {
+			if(clientExists) this.getMyPlaylists();
+		})
 	}
 
 	getMyPlaylists(nextPage:string = null) {

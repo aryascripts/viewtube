@@ -31,6 +31,7 @@ export default class Main {
         'minHeight': 640,
         'acceptFirstMouse': true
     });
+    Main.mainWin.webContents.openDevTools();
     
     Main.mainWin.on('closed', Main.mainOnClose);
     require('electron-reload')(__dirname, {});

@@ -4,14 +4,12 @@ export class YoutubeApiService {
 
 	oAuthClient: any;
 	youtube: any;
-	myChannelId: string;
 
 	constructor(client: any) {
 		this.youtube = google.youtube({
 			version: 'v3',
 			auth: client
 		});
-		this.myChannelId = null;
 	}
 
 	async getAccountPlaylists(nextPage:string = null) {
