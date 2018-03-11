@@ -25,6 +25,7 @@ export class ResizeDirective implements OnInit {
 
 	ngOnInit() {
 		this.el.nativeElement.style.cursor = 'col-resize';
+		this.el.nativeElement.style.width = this.barWidth + 'px';
 	}
 
 	@HostListener('mousedown', ['$event']) 
