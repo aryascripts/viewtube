@@ -23,6 +23,8 @@ export class ResizeDirective implements OnInit {
 	
 	constructor(private el:ElementRef) { }
 
+	//the barWidth property is deemed useless until this comment is removed
+	//css-grid controls the width of the bar (column)
 	ngOnInit() {
 		this.el.nativeElement.style.cursor = 'col-resize';
 		this.el.nativeElement.style.width = this.barWidth + 'px';
@@ -58,6 +60,5 @@ export class ResizeDirective implements OnInit {
 				if(newNum > this.minSize && newNum < this.maxSize)
 					this.elementToResize.style.height = newNum + 'px';
 			}
-		// }
 	}
 }
