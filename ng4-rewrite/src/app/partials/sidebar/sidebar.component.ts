@@ -11,7 +11,6 @@ import PlaylistsService from '../../providers/playlist.service';
 })
 export class SidebarComponent implements OnInit {
 	sidebarHeader: string = 'Sign In With Google';
-	
 	playlists:Playlist[];
 
 	constructor(private googleApiService: GoogleApiService,
@@ -19,7 +18,7 @@ export class SidebarComponent implements OnInit {
 							private zone:NgZone) { }
 
 	ngOnInit() {
-		this.registerEvents();
+		this.registerEvents()
 	}
 
 	registerEvents() {
@@ -27,11 +26,18 @@ export class SidebarComponent implements OnInit {
 			.subscribe(value => {
 				this.zone.run(() => {
 					this.playlists = value
-				});
-			});
+				})
+			})
+
+			this.playlistsService.myName
+				.subscribe(value => {
+					this.zone.run(() => {
+						this.sidebarHeader = value;
+					})
+				})
 	}
 
 	loginHandler() {
-		this.googleApiService.login();
+		this.googleApiService.login()
 	}
 }
