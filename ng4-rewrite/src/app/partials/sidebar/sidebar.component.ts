@@ -3,6 +3,7 @@ import { ElectronService } from '../../providers/electron.service';
 import { Playlist } from '../../models/Playlist';
 import { GoogleApiService } from '../../providers/googleapi.service';
 import PlaylistsService from '../../providers/playlist.service';
+import { UserService } from '../../providers/user.service';
 
 @Component({
 	selector: 'app-sidebar',
@@ -15,7 +16,8 @@ export class SidebarComponent implements OnInit {
 
 	constructor(private googleApiService: GoogleApiService,
 							private playlistsService: PlaylistsService,
-							private zone:NgZone) { }
+							private zone:NgZone,
+							private userService: UserService) { }
 
 	ngOnInit() {
 		this.registerEvents()
@@ -29,7 +31,7 @@ export class SidebarComponent implements OnInit {
 				})
 			})
 
-			this.playlistsService.myName
+			this.userService.name
 				.subscribe(value => {
 					this.zone.run(() => {
 						this.sidebarHeader = value;
