@@ -1,14 +1,30 @@
+@import './../../scss/vars';
+
 .search {
 	padding: 25px;
 
 	.input-area {
 		width: inherit;
+
 		display: grid;
 		grid-template-columns: 2fr 1fr;
+		grid-gap: 5px;
 
 		.input {
 			input {
 				width: 100%;
+				padding: 5px;
+				border:none;
+				border-bottom: 2px solid lighten($yt-red, 20%);
+				font-size: 20px;
+				font-weight: 100;
+
+				transition: border-bottom 200ms ease-out;
+
+				&:focus {
+					border-bottom: 3px solid $yt-red;
+					outline: none;
+				}
 			}
 		}
 	}
