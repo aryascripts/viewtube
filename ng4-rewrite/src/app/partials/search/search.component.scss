@@ -1,0 +1,15 @@
+.search {
+	padding: 25px;
+
+	.input-area {
+		width: inherit;
+		display: grid;
+		grid-template-columns: 2fr 1fr;
+
+		.input {
+			input {
+				width: 100%;
+			}
+		}
+	}
+}

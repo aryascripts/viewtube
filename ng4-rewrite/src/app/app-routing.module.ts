@@ -1,12 +1,11 @@
 import { HomeComponent } from './partials/home/home.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { SearchComponent } from './partials/search/search.component';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: HomeComponent
-    }
+    { path: '', component: HomeComponent },
+    { path: 'search', component: SearchComponent }
 ];
 
 @NgModule({
