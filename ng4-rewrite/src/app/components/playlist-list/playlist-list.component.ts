@@ -12,6 +12,7 @@ export class PlaylistListComponent implements OnInit {
 	caretClass:{};
 	listClass:{};
 	@Input() playlists: Playlist[];
+	@Input() title: string;
 
 	constructor() { }
 	ngOnInit() {
