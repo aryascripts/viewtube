@@ -18,14 +18,17 @@ import { ElectronService } from './providers/electron.service';
 import { WebviewDirective } from './directives/webview.directive';
 import { ResizeDirective } from './directives/resizable.directive';
 
+//Partials
 import { AppComponent } from './app.component';
 import { HomeComponent } from './partials/home/home.component';
 import { SidebarComponent } from './partials/sidebar/sidebar.component';
+import { SearchComponent } from './partials/search/search.component';
 
+//Components
 import { PlaylistItemComponent } from './components/playlist-item/playlistitem.component';
 import { PlaylistListComponent } from './components/playlist-list/playlist-list.component';
 
-
+//Services
 import { GoogleApiService } from './providers/googleapi.service';
 import PlaylistsService from './providers/playlist.service';
 import { UserService } from './providers/user.service';
@@ -43,7 +46,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     WebviewDirective,
     ResizeDirective,
     PlaylistItemComponent,
-    PlaylistListComponent
+    PlaylistListComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

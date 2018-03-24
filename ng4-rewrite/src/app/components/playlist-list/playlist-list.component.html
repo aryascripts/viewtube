@@ -1,7 +1,8 @@
 <div class="flex">
 	<div class="circle" 
 			*ngIf="additive"
-			(click)="handleAddPlaylist()">
+			(click)="handleAddPlaylist()"
+			[routerLink]="['/search']">
 		+
 	</div>
 
