@@ -17,7 +17,8 @@ export class SidebarComponent implements OnInit {
 	constructor(private googleApiService: GoogleApiService,
 							private playlistsService: PlaylistsService,
 							private zone:NgZone,
-							private userService: UserService) { }
+							private userService: UserService,
+							private electronService: ElectronService) { }
 
 	ngOnInit() {
 		this.registerEvents()

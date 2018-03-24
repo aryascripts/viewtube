@@ -8,9 +8,18 @@ class="sidebar-wrapper">
 		</div>
 
 		<div class="playlist-content">
-			<app-playlist-list [playlists]="playlists">
+			<app-playlist-list
+				[playlists]="playlists"
+				[title]="'My Playlists'">
+			</app-playlist-list>
+
+			<app-playlist-list
+				[playlists]=""
+				[title]="'Playlists'">
 			</app-playlist-list>
 		</div>
+
+
 	</div>
 
 	<div app-resize
