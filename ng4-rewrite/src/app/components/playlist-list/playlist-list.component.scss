@@ -20,20 +20,15 @@ $circle-size: 24px;
 		margin: 0 0 0 $sidebar-left-padding;
 		user-select: none;
 	}
-
-	&:hover {
-		text-shadow: 0 0 1px $yt-gray;
-	}
-
+	
 	h1 {
-		font-size: 24px;
-		font-weight: 100;
-		color: darken($yt-gray, 10%);
-		padding: 0;
 		margin: 0 0 0 $sidebar-left-padding;
 		text-align: right;
 	}
 
+	&:hover {
+		text-shadow: 0 0 1px $yt-gray;
+	}
 
 	.caret {
 		position: relative;

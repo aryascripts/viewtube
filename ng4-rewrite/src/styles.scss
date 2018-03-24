@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'app/scss/vars';
+
 html, body {
   margin: 0;
   padding: 0;
@@ -8,4 +10,12 @@ html, body {
 }
 *, *:before, *:after {
   box-sizing: inherit;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 100;
+  color: darken($yt-gray, 10%);
+  padding: 0;
+  margin: 0;
 }
