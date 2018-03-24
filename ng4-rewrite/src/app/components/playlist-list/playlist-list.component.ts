@@ -34,4 +34,8 @@ export class PlaylistListComponent implements OnInit {
 			'hide': !this.closed
 		}
 	}
+
+	handleAddPlaylist() {
+		
+	}
 }
