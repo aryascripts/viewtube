@@ -17,6 +17,7 @@ $circle-size: 24px;
 		text-align: center;
 		background: $yt-red;
 		margin: 0 0 0 $sidebar-left-padding;
+		user-select: none;
 	}
 
 	&:hover {
