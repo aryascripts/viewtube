@@ -1,10 +1,23 @@
 @import '../../scss/vars';
+$circle-size: 24px;
 
 .flex {
 	display: flex;
 	cursor: pointer;
 	margin-top: 10px;
 	transition: text-shadow 150ms;
+
+	.circle {
+		width: $circle-size;
+		height: $circle-size;
+		border-radius: $circle-size;
+		font-size: 20px;
+		color: #fff;
+		line-height: $circle-size;
+		text-align: center;
+		background: $yt-red;
+		margin: 0 0 0 $sidebar-left-padding;
+	}
 
 	&:hover {
 		text-shadow: 0 0 1px $yt-gray;
@@ -16,6 +29,7 @@
 		color: darken($yt-gray, 10%);
 		padding: 0;
 		margin: 0 0 0 $sidebar-left-padding;
+		text-align: right;
 	}
 
 

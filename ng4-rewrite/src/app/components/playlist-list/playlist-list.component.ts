@@ -13,6 +13,7 @@ export class PlaylistListComponent implements OnInit {
 	listClass:{};
 	@Input() playlists: Playlist[];
 	@Input() title: string;
+	@Input() additive: boolean;
 
 	constructor() { }
 	ngOnInit() {

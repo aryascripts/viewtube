@@ -1,7 +1,12 @@
-<div class="flex" (click)="toggleDropdown()">
-	<h1> {{title}} </h1>
+<div class="flex">
+	<div class="circle" *ngIf="additive">
+		+
+	</div>
+
+	<h1 (click)="toggleDropdown()"> {{title}} </h1>
 	
-	<div style="margin: 8px 0 0 5px">
+	<div style="margin: 8px 0 0 5px"
+		(click)="toggleDropdown()">
 		<i class="caret"
 		[ngClass]="caretClass"></i>
 	</div>
