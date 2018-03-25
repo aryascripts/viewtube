@@ -12,18 +12,20 @@ export class SearchComponent implements OnInit {
 	playlist:string
 	channel:string
 	nextPage:string
+	loading:boolean
 	current:{}
 
 	constructor(
 		private electronService: ElectronService,
-		private googleApi: GoogleApiService) { }
+		private googleApi: GoogleApiService) {}
 
 	ngOnInit() {
-		this.registerListeners();
+		this.registerListeners()
+		
 	}
 
 	registerListeners() {
-		this.electronService.ipcRenderer.on('search-params-results', this.receivedResults);
+		this.electronService.ipcRenderer.on('search-params-results', this.receivedResults)
 	}
 
 	handleSearch() {
@@ -37,9 +39,13 @@ export class SearchComponent implements OnInit {
 
 	private searchEvent(params) {
 		this.electronService.ipcRenderer.send('search-params', params)
+		this.loading = true
 	}
 
 	private receivedResults(event:any, response:any) {
-		console.log(event, response);
+		console.log(this.loading);
+		console.log(event, response)
+		this.loading = undefined
+		console.log(this.loading)
 	}
 }
