@@ -13,12 +13,15 @@ import { UserService } from '../../providers/user.service';
 export class SidebarComponent implements OnInit {
 	sidebarHeader: string = 'Sign In With Google';
 	playlists:Playlist[];
+	loading: boolean;
 
 	constructor(private googleApiService: GoogleApiService,
 							private playlistsService: PlaylistsService,
 							private zone:NgZone,
 							private userService: UserService,
-							private electronService: ElectronService) { }
+							private electronService: ElectronService) {
+		this.loading = false
+	}
 
 	ngOnInit() {
 		this.registerEvents()
@@ -38,9 +41,15 @@ export class SidebarComponent implements OnInit {
 						this.sidebarHeader = value;
 					})
 				})
+
+		this.electronService.ipcRenderer.on('login-cancelled', (event) => {
+			console.log(event);
+			this.loading = false
+		})
 	}
 
 	loginHandler() {
+		this.loading = true
 		this.googleApiService.login()
 	}
 }

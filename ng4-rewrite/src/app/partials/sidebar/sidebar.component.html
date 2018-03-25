@@ -7,8 +7,15 @@ class="sidebar-wrapper">
 			{{ sidebarHeader }}
 		</div>
 
-		<div class="playlist-content">
-			<app-playlist-list
+		<div 
+			class="loading"
+			*ngIf="loading; else playlistContent">
+			<app-loading> </app-loading>
+		</div>
+
+		<ng-template class="playlist-content" #playlistContent>
+			
+			<app-playlist-list #myPlaylists
 				[playlists]="playlists"
 				[title]="'My Playlists'">
 			</app-playlist-list>
@@ -18,7 +25,7 @@ class="sidebar-wrapper">
 				[title]="'Playlists'"
 				[additive]="true">
 			</app-playlist-list>
-		</div>
+		</ng-template>
 
 
 	</div>
