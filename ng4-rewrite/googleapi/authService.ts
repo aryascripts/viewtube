@@ -12,7 +12,7 @@ const SCOPES:string[] = [
 	];
 
 const TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
-									process.env.USERPROFILE) + '/.credentials/';
+									process.env.USERPROFILE) + '/.viewtube/';
 const TOKEN_PATH = TOKEN_DIR + 'token.json'
 
 export default class AuthService {
@@ -110,7 +110,7 @@ export default class AuthService {
 			this.storeToken(tokens);
 		this.oAuth2Client.setCredentials(tokens);
 		this.authorized = true;
-		// this.informCreation();
+		this.informCreation();
 	}
 
 	static async getToken(code:string) {

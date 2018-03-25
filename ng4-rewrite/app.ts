@@ -11,7 +11,6 @@ var youtube:YoutubeApiService = null
 Main.main(app, BrowserWindow)
 
 //Check for stored tokens
-
 AuthService.loadFromFile()
 .then(createYoutubeService)
 .catch((err) => {
@@ -22,22 +21,24 @@ AuthService.loadFromFile()
 ipcMain.on('authorize', (event) => {
 	console.log('authorize')
 	AuthService.createAuthWindow()
-	this.authEvent = event
 })
 
 ipcMain.on('create-youtube-service', (client) => {
 	console.log('create-youtube-service')
 	createYoutubeService(client)
-	// getAccountPlaylists()
-	// 	.then(resp => {
-	// 		Main.mainWin.webContents.send('my-playlists', resp);
-	// 	})
-	// 	.catch(err => {
-	// 		console.log(err);
-	// 	});
+	.then(resp => {
+		return getAccountPlaylists()
+	})
+	.then(resp => {
+		Main.sendMessage('my-playlists', resp);
+	})
+	.catch(err => {
+		console.log(err);
+	})
 });
 
 ipcMain.on('get-account-playlists', (event, nextPage:string = null) => {
+	console.log('get-account-plalists')
 	getAccountPlaylists(nextPage)
 		.then(resp => {
 			event.sender.send('my-playlists', resp)
@@ -78,17 +79,7 @@ function getAccountPlaylists(nextPage: string = null) {
 	console.log('get-account-playlists')
 	if(!youtube) {
 		ipcMain.emit('authorize')
-		return
 	}
 
-	return new Promise((resolve, reject) => {
-		youtube.getAccountPlaylists(nextPage)
-		.then((resp:any) => {
-			resolve(resp)
-		})
-		.catch((err: any) => {
-			reject(err)
-		})
-	})
-
+	return youtube.getAccountPlaylists(nextPage)
 }

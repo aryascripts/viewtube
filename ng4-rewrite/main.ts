@@ -44,4 +44,8 @@ export default class Main {
       Main.application.on('window-all-closed', Main.onWindowAllClosed);
       Main.application.on('ready', Main.mainOnReady);
   }
+
+  static sendMessage(name:string, data:any) {
+      Main.mainWin.webContents.send(name, data)
+  }
 }

@@ -18,14 +18,15 @@ export class GoogleApiService {
 			this.playlistService.addAccountPlaylists(resp);
 		});
 
-		//After client creation, need to get the account playlists
-		this.electronService.ipcRenderer.on('client-created', () => {
-			console.log('received: client-created');
-			this.getMyPlaylists();
-		});
+		// //After client creation, need to get the account playlists
+		// this.electronService.ipcRenderer.on('client-created', () => {
+		// 	console.log('received: client-created');
+		// 	this.getMyPlaylists();
+		// });
 
-		this.electronService.ipcRenderer.on('check-client', clientExists => {
-			if(clientExists) this.getMyPlaylists();
+		this.electronService.ipcRenderer.on('check-client', (event, clientExists) => {
+			if(clientExists)
+				this.getMyPlaylists()
 		})
 	}
 
