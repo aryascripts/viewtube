@@ -44,12 +44,22 @@ export class SidebarComponent implements OnInit {
 
 		this.electronService.ipcRenderer.on('login-cancelled', (event) => {
 			console.log(event);
-			this.loading = false
+			this.setLoading(true)
+		})
+
+		this.electronService.ipcRenderer.on('my-playlists', (event) => {
+			this.setLoading(false)
 		})
 	}
 
 	loginHandler() {
 		this.loading = true
 		this.googleApiService.login()
+	}
+
+	setLoading(val:boolean) {
+		this.zone.run(() => {
+			this.loading = val
+		})
 	}
 }
