@@ -1,11 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Playlist } from './../../models/Playlist';
 
 @Component({
 	selector: 'app-loading',
-	template: ``,
+	template: `
+		<section class='loading'>
+			<section class="text">{{ text }}</section>
+			<span class="loading-anim"></span>
+		</section>
+	`,
 	styleUrls: ['loading.component.scss']
 })
 export class LoadingComponent {
-	
+
+	@Input() text: string
+
+	constructor() { }
+
 }
