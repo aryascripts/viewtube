@@ -16,7 +16,6 @@ const TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
 const TOKEN_PATH = TOKEN_DIR + 'token.json'
 
 export default class AuthService {
-	
 	static authorized: boolean;
 	static youtube:any;
 
@@ -62,6 +61,7 @@ export default class AuthService {
 	//authorization popup and events/url navigation
 	static createAuthWindow() {
 		if(this.authWin) return; //window already exists.
+		console.log('opening...');
 		this.authWin = new BrowserWindow({
 			width: 600,
       height: 750,
@@ -72,7 +72,7 @@ export default class AuthService {
 		});
 
 		this.authWin.loadURL(this.getAuthUrl(this.oAuth2Client));
-		this.authWin.on('closed', this.onClose);
+		this.authWin.on('closed', this.onClose.bind(this));
 
 		//detects when the user has completed authorization
 		this.authWin.webContents.on('will-navigate', (event, url) => {
@@ -82,7 +82,9 @@ export default class AuthService {
 
 	static onClose() {
 		this.authWin = null;
+		ipcMain.emit('login-cancelled');
 		console.log('Authorization was cancalled by user.');
+		
 	}
 
 	static async handleNavigate(newUrl:string) {
@@ -90,10 +92,14 @@ export default class AuthService {
 		
 		if(parsed) {
 			if(parsed.error) { //unknown error
-				console.log(`Error: ${parsed.error}`);
-				return;
+				console.log(`Error: ${parsed.error}`)
+				return
 			}
-			
+			else if(parsed.query.response == 'error=access_denied') {
+				console.log('Authorization was cancelled.')
+				this.authWin.close();
+				return
+			}
 			//approval code exists - authorization is complete.
 			//Get and store refresh tokens
 			const appCode = parsed.query.approvalCode;

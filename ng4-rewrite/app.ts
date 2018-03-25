@@ -70,6 +70,10 @@ ipcMain.on('search-params', (event, params) => {
 		})
 })
 
+ipcMain.on('login-cancelled', (event) => {
+	Main.sendMessage('login-cancelled', null);
+})
+
 function createYoutubeService(client) {
 	if(!youtube) youtube = new YoutubeApiService(client)
 	return Promise.resolve(youtube)
