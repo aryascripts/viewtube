@@ -2,10 +2,14 @@
 
 	<div class="input-area">
 			<div class="input">
-					<input type="text" placeholder="playlist name">
+					<input [(ngModel)]="playlist" type="text" placeholder="playlist name">
 			</div>
 			<div class="input">
-					<input type="text" placeholder="by channel">
+					<input [(ngModel)]="channel" type="text" placeholder="by channel">
+			</div>
+
+			<div class="mag-wrap" (click)="handleSearch()">
+				<span class="mag-glass"></span>
 			</div>
 	</div>
 

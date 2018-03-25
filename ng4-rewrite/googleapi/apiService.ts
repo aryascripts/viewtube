@@ -30,4 +30,22 @@ export class YoutubeApiService {
 
 		})
 	}
+
+	async searchPlaylists(params:{playlist: string, channel: string, nextPage:string}) {
+		return new Promise((resolve, reject) => {
+			let request = {
+				part: 'snippet',
+				maxResults: 25,
+				headers: {},
+				q: params.playlist
+			}
+			if(params.nextPage) request['pageToken'] = params.nextPage
+
+			this.youtube.search.list(request, 
+				(err, res) => {
+					if(err) reject(err)
+					resolve(res)
+				})
+		})
+	}
 }

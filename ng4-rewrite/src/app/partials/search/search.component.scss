@@ -7,7 +7,7 @@
 		width: inherit;
 
 		display: grid;
-		grid-template-columns: 2fr 1fr;
+		grid-template-columns: 2fr 1fr auto;
 		grid-gap: 5px;
 
 		.input {
@@ -25,6 +25,37 @@
 					border-bottom: 3px solid $yt-red;
 					outline: none;
 				}
+			}
+		}
+
+		.mag-wrap {
+			padding-top: 5px;
+			opacity: 0.7;
+			transition: opacity 200ms ease-out;
+			cursor: pointer;
+
+			.mag-glass {
+				position:relative;
+				display:inline-block;
+				background: #fff;
+				border-radius: 30px;
+				height: 20px;
+				width: 20px;
+				border: 2px solid #888;
+				&:after {
+					content: "";
+					height: 2px;
+					width: 10px;
+					background: #888;
+					position:absolute;
+					top:18px;
+					left:13px;
+					transform: rotate(45deg);
+				}
+			}
+
+			&:hover {
+				opacity: 1;
 			}
 		}
 	}
