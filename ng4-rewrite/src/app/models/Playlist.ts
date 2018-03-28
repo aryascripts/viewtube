@@ -30,13 +30,14 @@ export class Playlist {
 
 	getThumbnailUrl = () => this.thumbnails['default'].url;
 
-	constructor(info:{}) {
+	constructor(info:any) {
+		console.log(info['snippet']);
 		if(info['length'] < 1) {
 			return;
 		}
 		this.videos 		= [];
 		this.obj 			= info;
-		this.totalVideos 	= info['contentDetails']['itemCount'];
+		// this.totalVideos 	= info['contentDetails']['itemCount'];
 
 		let plist 			= info['snippet'];
 		this.id 			= info['id'];

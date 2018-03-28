@@ -1,0 +1,37 @@
+@import './../../scss/vars';
+
+.playlist-detail {
+	display: flex;
+	margin-top: 20px;
+	transition: background-color 200ms ease-out;
+
+	&:hover {
+		background-color: lighten($yt-gray, 95%);
+		cursor: pointer;
+	}
+
+	.thumbnail {
+		img {
+			max-width: 200px;
+		}
+	}
+
+	.detail {
+		padding-left: 25px;
+
+		.title {
+			font-weight: 600;
+			padding-top: 10px;
+
+			.channel {
+				font-weight: 200;
+				font-size: 12px;
+			}
+		}
+
+		.description {
+			margin-top: 12px;
+		}
+
+	}
+}

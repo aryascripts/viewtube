@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input} from '@angular/core';
+import { Playlist } from '../../models/Playlist';
 
 @Component({
 	selector: 'app-playlist-detail',
@@ -7,7 +8,9 @@ import { Component } from '@angular/core';
 })
 export class PlaylistDetailComponent {
 
+	@Input() playlist: Playlist;
+
 	constructor() {
-		
+
 	}
 }

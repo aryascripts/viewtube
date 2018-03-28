@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ElectronService } from '../../providers/electron.service';
 import { GoogleApiService } from '../../providers/googleapi.service';
+import { Playlist } from '../../models/Playlist';
 
 @Component({
 	selector: 'app-search',
@@ -15,12 +16,52 @@ export class SearchComponent implements OnInit {
 	loading:boolean
 	current:{}
 
+	resp:string = `{
+		"etag": "RmznBCICv9YtgWaaa_nWDIH1_GM/xS7cgm5cCfSBf857_A4fQlhXtk4",
+		"id": {
+			"kind": "youtube#playlist",
+			"playlistId": "PLRqwX-V7Uu6ZiZxtDDRCi6uhfTH4FilpH"
+		},
+		"kind": "youtube#searchResult",
+		"snippet": {
+			"channelId": "UCvjgXvBlbQiydffZU7m1_aw",
+			"channelTitle": "The Coding Train",
+			"description": "Watch me take on some viewer submitted Coding Challenges in p5.js and Processing!",
+			"liveBroadcastContent": "none",
+			"publishedAt": "2016-04-13T03:10:47.000Z",
+			"thumbnails": {
+				"default": {
+					"height": 90,
+					"url": "https://i.ytimg.com/vi/17WoOqgXsRM/default.jpg",
+					"width": 120
+				},
+				"high": {
+					"height": 360,
+					"url": "https://i.ytimg.com/vi/17WoOqgXsRM/hqdefault.jpg",
+					"width": 480
+				},
+				"medium": {
+					"height": 180,
+					"url": "https://i.ytimg.com/vi/17WoOqgXsRM/mqdefault.jpg",
+					"width": 320
+				}
+			},
+			"title": "Coding Challenges"
+		}
+	}`;
+
+	
+
+	plist: Playlist = new Playlist(JSON.parse(this.resp));
+
 	constructor(
 		private electronService: ElectronService,
-		private googleApi: GoogleApiService) {}
+		private googleApi: GoogleApiService) {
+		}
 
 	ngOnInit() {
 		this.registerListeners()
+		
 		
 	}
 
@@ -44,8 +85,13 @@ export class SearchComponent implements OnInit {
 
 	private receivedResults(event:any, response:any) {
 		console.log(this.loading);
-		console.log(event, response)
+		console.log(JSON.stringify(response.res.data.items[0]));
+		console.log(response);
 		this.loading = undefined
 		console.log(this.loading)
+	}
+
+	private createPlaylist(s: string) {
+		return new Playlist(JSON.parse(s));
 	}
 }

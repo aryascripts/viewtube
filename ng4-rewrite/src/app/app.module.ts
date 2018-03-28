@@ -33,6 +33,7 @@ import { GoogleApiService } from './providers/googleapi.service';
 import PlaylistsService from './providers/playlist.service';
 import { UserService } from './providers/user.service';
 import { LoadingComponent } from './components/loading/loading.component';
+import { PlaylistDetailComponent } from './components/playlist-detail/playlist-detail.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -49,7 +50,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     PlaylistItemComponent,
     PlaylistListComponent,
     SearchComponent,
-    LoadingComponent
+    LoadingComponent,
+    PlaylistDetailComponent
   ],
   imports: [
     BrowserModule,
