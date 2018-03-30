@@ -18,6 +18,8 @@
 	</app-loading>
 
 	<app-playlist-detail
-	[playlist]="plist"></app-playlist-detail>
+		*ngFor="let plist of searchResults"
+		[playlist]="plist">
+	</app-playlist-detail>
 
 </div>

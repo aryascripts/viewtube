@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { ElectronService } from '../../providers/electron.service';
 import { GoogleApiService } from '../../providers/googleapi.service';
 import { Playlist } from '../../models/Playlist';
@@ -15,6 +15,8 @@ export class SearchComponent implements OnInit {
 	nextPage:string
 	loading:boolean
 	current:{}
+
+	searchResults: Playlist[]
 
 	resp:string = `{
 		"etag": "RmznBCICv9YtgWaaa_nWDIH1_GM/xS7cgm5cCfSBf857_A4fQlhXtk4",
@@ -56,7 +58,9 @@ export class SearchComponent implements OnInit {
 
 	constructor(
 		private electronService: ElectronService,
-		private googleApi: GoogleApiService) {
+		private googleApi: GoogleApiService,
+		private zone: NgZone) {
+			this.searchResults = []
 		}
 
 	ngOnInit() {
@@ -66,7 +70,7 @@ export class SearchComponent implements OnInit {
 	}
 
 	registerListeners() {
-		this.electronService.ipcRenderer.on('search-params-results', this.receivedResults)
+		this.electronService.ipcRenderer.on('search-params-results', this.receivedResults.bind(this));
 	}
 
 	handleSearch() {
@@ -80,15 +84,27 @@ export class SearchComponent implements OnInit {
 
 	private searchEvent(params) {
 		this.electronService.ipcRenderer.send('search-params', params)
-		this.loading = true
+		this.setLoading(true)
 	}
 
 	private receivedResults(event:any, response:any) {
-		console.log(this.loading);
-		console.log(JSON.stringify(response.res.data.items[0]));
-		console.log(response);
-		this.loading = undefined
-		console.log(this.loading)
+		if(response.status !== 200) {
+			alert('Something went wrong. Please see console');
+			console.error(response);
+		}
+		const playlists = response.res.data.items; // array of objects
+		Object.entries(playlists).forEach(
+			([key, info]) => {
+				this.searchResults.push(Playlist.fromSearchResults(info));
+			});
+		
+		this.setLoading(false)
+	}
+
+	private setLoading(val: boolean) {
+		this.zone.run(() => {
+			this.loading = val
+		})
 	}
 
 	private createPlaylist(s: string) {
