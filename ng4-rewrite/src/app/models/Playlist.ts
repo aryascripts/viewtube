@@ -30,23 +30,47 @@ export class Playlist {
 
 	getThumbnailUrl = () => this.thumbnails['default'].url;
 
-	constructor(info:any) {
-		console.log(info['snippet']);
+	constructor(info: {
+		totalVideos: null,
+		id: null,
+		title: null,
+		channelName: null,
+		description: null,
+		thumbnails: null,
+	}) {
+		this.totalVideos = info.totalVideos
+		this.id = info.id
+		this.title = info.title
+		this.channelName = info.channelName
+		this.description = info.description
+		this.thumbnails = info.thumbnails
+
+		this.setDefaults()
+	}
+	
+	static fromPlaylistsList(info: any) {
+		console.log(info);
 		if(info['length'] < 1) {
-			return;
+			return null;
 		}
-		this.videos 		= [];
-		this.obj 			= info;
-		// this.totalVideos 	= info['contentDetails']['itemCount'];
+		
+		let plist = info['snippet']
 
-		let plist 			= info['snippet'];
-		this.id 			= info['id'];
+		return new this({
+			totalVideos: info['contentDetails']['itemCount'],
+			id: info['id'],
+			title: plist['title'],
+			channelName: plist['channelTitle'],
+			description: plist['description'],
+			thumbnails: plist['thumbnails']
+		})
+	}
 
-		this.title 			= plist['title'];
-		this.channelName 	= plist['channelTitle'];
-		this.description 	= plist['description'] || this.channelName + ' has not set a description for this playlist. Go bug them about it, not me!';
-		this.thumbnails 	= plist['thumbnails'];
+	static fromSearchResults(info: any) {
+		console.log(info)
+	}
 
+	setDefaults() {
 		this.type = 'sequential';
 		this.watched = [];
 		this.partial = [];
@@ -55,7 +79,6 @@ export class Playlist {
 		this.lastCompletedId = '';
 		this.index = 0;
 		this.totalTime = '';
-
 		this.watchingId = '';
 	}
 

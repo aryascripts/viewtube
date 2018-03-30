@@ -27,7 +27,7 @@ export default class PlaylistsService {
 		let plists: Playlist[] = [];
 		Object.entries(lists).forEach(
 			([key, info]) => {
-				plists.push(new Playlist(info));
+				plists.push(Playlist.fromPlaylistsList(info));
 			});
 			this.myPlaylists.next(plists);
 	}
