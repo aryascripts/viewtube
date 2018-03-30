@@ -57,6 +57,7 @@ ipcMain.on('check-client', (event) => {
 ipcMain.on('search-params', (event, params) => {
 	youtube.searchPlaylists(params)
 		.then((res) => {
+			console.log('sending... search-params-results')
 			event.sender.send('search-params-results', {
 				'status': 200,
 				'params': params,

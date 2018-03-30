@@ -37,7 +37,8 @@ export class YoutubeApiService {
 				part: 'snippet',
 				maxResults: 25,
 				headers: {},
-				q: params.playlist
+				q: params.playlist,
+				type: 'playlist'
 			}
 			if(params.nextPage) request['pageToken'] = params.nextPage
 

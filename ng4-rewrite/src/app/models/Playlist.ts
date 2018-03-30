@@ -42,14 +42,13 @@ export class Playlist {
 		this.id = info.id
 		this.title = info.title
 		this.channelName = info.channelName
-		this.description = info.description
+		this.description = info.description || `${this.channelName} has not set a description for this playlist. Go bug them about it, not me!`
 		this.thumbnails = info.thumbnails
 
 		this.setDefaults()
 	}
 	
 	static fromPlaylistsList(info: any) {
-		console.log(info);
 		if(info['length'] < 1) {
 			return null;
 		}
@@ -67,7 +66,17 @@ export class Playlist {
 	}
 
 	static fromSearchResults(info: any) {
-		console.log(info)
+		
+		let plist = info['snippet']
+
+		return new this({
+			totalVideos: null,
+			id: info['id']['playlistId'],
+			title: plist['title'],
+			channelName: plist['channelTitle'],
+			description: plist['description'],
+			thumbnails: plist['thumbnails']
+		})
 	}
 
 	setDefaults() {

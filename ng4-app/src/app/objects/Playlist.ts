@@ -34,7 +34,6 @@ export class Playlist {
 		if(info['length'] < 1) {
 			return;
 		}
-		console.log(info);
 		this.videos 		= [];
 		this.obj 			= info;
 		this.totalVideos 	= info['items'][0]['contentDetails']['itemCount'];
