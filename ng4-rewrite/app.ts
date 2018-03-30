@@ -38,9 +38,10 @@ ipcMain.on('create-youtube-service', (client) => {
 });
 
 ipcMain.on('get-account-playlists', (event, nextPage:string = null) => {
-	console.log('get-account-plalists')
+	console.log('get-account-playlists')
 	getAccountPlaylists(nextPage)
 		.then(resp => {
+			console.log('sending... my-playlists')
 			event.sender.send('my-playlists', resp)
 		})
 		.catch(err => {
@@ -80,7 +81,6 @@ function createYoutubeService(client) {
 }
 
 function getAccountPlaylists(nextPage: string = null) {
-	console.log('get-account-playlists')
 	if(!youtube) {
 		ipcMain.emit('authorize')
 	}
