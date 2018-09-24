@@ -9,7 +9,7 @@ import { Playlist } from '../../models/Playlist';
 	styleUrls: ['search.component.scss']
 })
 export class SearchComponent implements OnInit {
-	
+
 	playlist:string
 	channel:string
 	nextPage:string
@@ -52,7 +52,7 @@ export class SearchComponent implements OnInit {
 		}
 	}`;
 
-	
+
 
 	plist: Playlist = new Playlist(JSON.parse(this.resp));
 
@@ -65,8 +65,8 @@ export class SearchComponent implements OnInit {
 
 	ngOnInit() {
 		this.registerListeners()
-		
-		
+
+
 	}
 
 	registerListeners() {
@@ -93,11 +93,9 @@ export class SearchComponent implements OnInit {
 			console.error(response);
 		}
 		const playlists = response.res.data.items; // array of objects
-		Object.entries(playlists).forEach(
-			([key, info]) => {
-				this.searchResults.push(Playlist.fromSearchResults(info));
-			});
-		
+		this.searchResults = playlists.map(info => Playlist.fromSearchResults(info));
+		console.log(this.searchResults);
+
 		this.setLoading(false)
 	}
 
