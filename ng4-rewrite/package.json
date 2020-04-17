@@ -14,7 +14,7 @@
     "youtube",
     "playlist"
   ],
-  "main": "app.js",
+  "main": "electron/dist/out-tsc/app.js",
   "private": true,
   "scripts": {
     "postinstall": "npx electron-builder install-app-deps",
@@ -23,10 +23,9 @@
     "build": "node hooks/environments/set_profile.js && ng build && npm run electron:tsc",
     "build:prod": "node hooks/environments/set_profile.js && ng build --prod && npm run electron:tsc",
     "ng:serve": "ng serve",
-    "electron:tsc": "tsc electron/main.ts && npm run electron:appts",
-    "electron:appts": "tsc app.ts",
+    "electron:tsc": "cd electron && tsc",
     "electron:serve": "wait-on http-get://localhost:4200/ && npm run electron:tsc && electron . --serve",
-    "electron:local": "npm run build:prod && electron .",
+    "electron:local": "npm run build:prod && electron ./electron",
     "electron:linux": "npm run build:prod && npx electron-builder build --linux",
     "electron:windows": "npm run build:prod && npx electron-builder build --windows",
     "electron:mac": "npm run build:prod && npx electron-builder build --mac",
