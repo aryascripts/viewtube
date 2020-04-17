@@ -1,8 +1,7 @@
+
+import {fromEvent as observableFromEvent, Subscription } from 'rxjs';
 import { Directive, ElementRef, HostListener, 
 	Input, Output, OnInit, EventEmitter} from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/fromEvent';
-import { Subscription } from 'rxjs/Subscription';
 
 @Directive({
 	selector: '[app-resize]'
@@ -36,7 +35,7 @@ export class ResizeDirective implements OnInit {
 		this.startWidth = this.elementToResize.clientWidth;
 		this.startHeight = this.elementToResize.clientHeight;
 
-		this.mousemoveEvent = Observable.fromEvent(document, 'mousemove')
+		this.mousemoveEvent = observableFromEvent(document, 'mousemove')
 															.subscribe(this.onMouseMove.bind(this));
 	}
 

@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ElectronService } from './electron.service';
-import PlaylistsService from './playlist.service';
 
 @Injectable()
 export class GoogleApiService {
 
-	constructor(private electronService: ElectronService,
-							private playlistService: PlaylistsService) {
+	constructor(private electronService: ElectronService) {
 		this.createListeners();
 
 		this.electronService.ipcRenderer.send('check-client');
@@ -15,7 +13,7 @@ export class GoogleApiService {
 	createListeners() {
 		this.electronService.ipcRenderer.on('my-playlists', (sender, resp) => {
 			console.log(resp);
-			this.playlistService.addAccountPlaylists(resp);
+			// this.playlistService.addAccountPlaylists(resp);
 		});
 
 		// //After client creation, need to get the account playlists

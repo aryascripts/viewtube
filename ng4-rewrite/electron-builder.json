@@ -4,21 +4,15 @@
     "output": "app-builds"
   },
   "win": {
-    "icon": "dist/favicon",
+    "icon": "src/icon.png",
     "target": [
       "portable"
     ]
   },
   "mac": {
-    "icon": "dist/favicon",
+    "icon": "src/icon.png",
     "target": [
       "dmg"
-    ]
-  },
-  "linux": {
-    "icon": "dist",
-    "target": [
-      "AppImage"
     ]
   }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { ElectronService } from '../../providers/electron.service';
 import { Playlist } from '../../models/Playlist';
 import { GoogleApiService } from '../../providers/googleapi.service';
-import PlaylistsService from '../../providers/playlist.service';
+import { PlaylistsService } from '../../providers/playlist.service';
 import { UserService } from '../../providers/user.service';
 
 @Component({

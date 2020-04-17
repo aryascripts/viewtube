@@ -29,7 +29,7 @@ export default class Main {
         height: 720,
         'minWidth': 720,
         'minHeight': 640,
-        'acceptFirstMouse': true
+        'acceptFirstMouse': true,
     });
     Main.mainWin.webContents.openDevTools();
     

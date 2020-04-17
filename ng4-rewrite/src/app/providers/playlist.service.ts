@@ -1,16 +1,15 @@
 import { Injectable, Inject} from '@angular/core';
 import { Playlist } from '../models/Playlist';
-import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs';
 import { UserService } from './user.service';
 
 @Injectable()
-export default class PlaylistsService {
+export class PlaylistsService {
 
 	public myPlaylists: ReplaySubject<Playlist[]>;
 	public myName: ReplaySubject<string>;
 
-	constructor(@Inject(UserService) private userService: UserService) {
+	constructor(private userService: UserService) {
 		this.myPlaylists = new ReplaySubject(1);
 		this.myName = new ReplaySubject(1);
 	}

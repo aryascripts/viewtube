@@ -13,8 +13,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { ElectronService } from './providers/electron.service';
-
 import { WebviewDirective } from './directives/webview.directive';
 import { ResizeDirective } from './directives/resizable.directive';
 
@@ -30,8 +28,11 @@ import { PlaylistListComponent } from './components/playlist-list/playlist-list.
 
 //Services
 import { GoogleApiService } from './providers/googleapi.service';
-import PlaylistsService from './providers/playlist.service';
+import { PlaylistsService } from './providers/playlist.service';
 import { UserService } from './providers/user.service';
+import { ElectronService } from './providers/electron.service';
+
+
 import { LoadingComponent } from './components/loading/loading.component';
 import { PlaylistDetailComponent } from './components/playlist-detail/playlist-detail.component';
 

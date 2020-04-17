@@ -3,12 +3,11 @@ const url = require('url');
 const fs = require('fs');
 
 import { app, BrowserWindow, ipcMain } from 'electron';
-import { authKeys } from './auth';
+
 
 const SCOPES:string[] = [
 		'https://www.googleapis.com/auth/youtube',
-		'https://www.googleapis.com/auth/youtube.readonly',
-		'https://www.googleapis.com/auth/youtube.upload'
+		'profile', 'email'
 	];
 
 const TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
@@ -19,11 +18,10 @@ export default class AuthService {
 	static authorized: boolean;
 	static youtube:any;
 
-	static oAuth2Client:any = new OAuth2Client(
-		authKeys.client_id,
-		authKeys.client_secret,
-		authKeys.redirect_uris[0]
-	);
+	static oAuth2Client:any = new OAuth2Client({
+		clientId: '820911348472-7q79l53ae1tt9ol0dvh8jcuc68ec4e4f.apps.googleusercontent.com',
+		redirectUri: 'urn:ietf:wg:oauth:2.0:oob'
+	});
 	
 	static authWin:BrowserWindow = null;
 	
@@ -71,7 +69,9 @@ export default class AuthService {
       alwaysOnTop: true //cannot escape
 		});
 
-		this.authWin.loadURL(this.getAuthUrl(this.oAuth2Client));
+		this.authWin.loadURL(this.getAuthUrl(this.oAuth2Client), {
+			userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) old-airport-include/1.0.0 Chrome Electron/7.1.7 Safari/537.36'
+		});
 		this.authWin.on('closed', this.onClose.bind(this));
 
 		//detects when the user has completed authorization
