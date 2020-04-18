@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AppElectronService } from './electron.service';
+import { YouTubeService } from './you-tube.service';
+
 
 @Injectable()
 export class GoogleApiService {
 
-	constructor(private electronService: AppElectronService) {
+	constructor(
+		private electronService: AppElectronService,
+		private youtubeService: YouTubeService
+						) {
 		this.createListeners();
+		// TODO - remove this fake call
+		this.youtubeService.getYoutubeClient();
 
 		this.electronService.ipcRenderer.send('check-client');
 	}

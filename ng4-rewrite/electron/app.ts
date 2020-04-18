@@ -3,7 +3,9 @@ const {ipcMain} = require('electron');
 
 import Main from './main';
 import AuthService from './googleapi/authService';
-import { YoutubeService } from './googleapi/apiService';
+import { YoutubeApiService } from './googleapi/apiService';
+
+var youtube:YoutubeApiService = null
 
 //Create main window
 Main.main(app, BrowserWindow)
@@ -12,7 +14,7 @@ Main.main(app, BrowserWindow)
 AuthService.loadFromFile()
 .then(createYoutubeService)
 .catch((err) => {
-	console.log('tokens not on filez')
+	console.log('tokens not on file')
 })
 
 //Send signal to authorize client
@@ -75,10 +77,14 @@ ipcMain.on('login-cancelled', (event) => {
 })
 
 function createYoutubeService(client) {
-	YoutubeService.setClient(client);
-	return Promise.resolve();
+	if(!youtube) youtube = new YoutubeApiService(client)
+	return Promise.resolve(youtube)
 }
 
 function getAccountPlaylists(nextPage: string = null) {
-	return YoutubeService.getAccountPlaylists(nextPage)
+	if(!youtube) {
+		ipcMain.emit('authorize')
+	}
+
+	return youtube.getAccountPlaylists(nextPage)
 }

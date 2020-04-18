@@ -3,6 +3,7 @@ const url = require('url');
 const fs = require('fs');
 
 import { app, BrowserWindow, ipcMain } from 'electron';
+import { sendNewClientCreds } from '../events';
 
 
 const SCOPES:string[] = [
@@ -149,5 +150,6 @@ export default class AuthService {
 
 	private static informCreation() {
 		ipcMain.emit('create-youtube-service', this.oAuth2Client);
+		sendNewClientCreds(this.oAuth2Client);
 	}
 }
