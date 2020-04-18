@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { ElectronService } from '../../providers/electron.service';
+import { AppElectronService } from '../../providers/electron.service';
 import { Playlist } from '../../models/Playlist';
 import { GoogleApiService } from '../../providers/googleapi.service';
 import { PlaylistsService } from '../../providers/playlist.service';
@@ -19,7 +19,7 @@ export class SidebarComponent implements OnInit {
 							private playlistsService: PlaylistsService,
 							private zone:NgZone,
 							private userService: UserService,
-							private electronService: ElectronService) {
+							private electronService: AppElectronService) {
 		this.loading = false
 	}
 
@@ -42,14 +42,14 @@ export class SidebarComponent implements OnInit {
 					})
 				})
 
-		this.electronService.ipcRenderer.on('login-cancelled', (event) => {
-			console.log(event);
-			this.setLoading(true)
-		})
+		// this.electronService.ipcRenderer.on('login-cancelled', (event) => {
+		// 	console.log(event);
+		// 	this.setLoading(true)
+		// })
 
-		this.electronService.ipcRenderer.on('my-playlists', (event) => {
-			this.setLoading(false)
-		})
+		// this.electronService.ipcRenderer.on('my-playlists', (event) => {
+		// 	this.setLoading(false)
+		// })
 	}
 
 	loginHandler() {

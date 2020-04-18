@@ -24,12 +24,15 @@ export default class Main {
     // this is a dependency we will have to live with
     // because we can't create BrowserWindow until
     // onReady fires.
-    Main.mainWin = new Main.BrowserWindow({
+    Main.mainWin = new BrowserWindow({
         width: 1280,
         height: 720,
-        'minWidth': 720,
-        'minHeight': 640,
-        'acceptFirstMouse': true,
+        minWidth: 720,
+        minHeight: 640,
+        acceptFirstMouse: true,
+        webPreferences: {
+          nodeIntegration: true
+        }
     });
     Main.mainWin.webContents.openDevTools();
     

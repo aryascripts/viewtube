@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { ElectronService } from '../../providers/electron.service';
+import { AppElectronService } from '../../providers/electron.service';
 import { GoogleApiService } from '../../providers/googleapi.service';
 import { Playlist } from '../../models/Playlist';
 
@@ -57,7 +57,7 @@ export class SearchComponent implements OnInit {
 	plist: Playlist = new Playlist(JSON.parse(this.resp));
 
 	constructor(
-		private electronService: ElectronService,
+		private electronService: AppElectronService,
 		private googleApi: GoogleApiService,
 		private zone: NgZone) {
 			this.searchResults = []
@@ -70,7 +70,7 @@ export class SearchComponent implements OnInit {
 	}
 
 	registerListeners() {
-		this.electronService.ipcRenderer.on('search-params-results', this.receivedResults.bind(this));
+		// this.electronService.ipcRenderer.on('search-params-results', this.receivedResults.bind(this));
 	}
 
 	handleSearch() {
@@ -83,7 +83,7 @@ export class SearchComponent implements OnInit {
 	}
 
 	private searchEvent(params) {
-		this.electronService.ipcRenderer.send('search-params', params)
+		// this.electronService.ipcRenderer.send('search-params', params)
 		this.setLoading(true)
 	}
 

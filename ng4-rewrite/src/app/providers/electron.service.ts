@@ -6,7 +6,7 @@ import { ipcRenderer } from 'electron';
 import * as childProcess from 'child_process';
 
 @Injectable()
-export class ElectronService {
+export class AppElectronService {
 
   ipcRenderer: typeof ipcRenderer;
   childProcess: typeof childProcess;
@@ -20,7 +20,7 @@ export class ElectronService {
   }
 
   isElectron = () => {
-    return window && window.process && window.process.type;
+    return window.require !== undefined
   }
 
 }
