@@ -75,7 +75,7 @@ export default class AuthService {
 		this.authWin.on('closed', this.onClose.bind(this));
 
 		//detects when the user has completed authorization
-		this.authWin.webContents.on('will-navigate', (event, url) => {
+		this.authWin.webContents.on('did-navigate', (event, url) => {
 			this.handleNavigate(url); //url of the window
 		});
 	}
