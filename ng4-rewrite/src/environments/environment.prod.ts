@@ -1,4 +1,4 @@
-export const CONF_PROD = {
+export const CONFIG = {
   production: true,
   environment: 'PROD'
 };

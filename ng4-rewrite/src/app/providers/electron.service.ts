@@ -15,6 +15,7 @@ export class AppElectronService {
     // Conditional imports
     if (this.isElectron()) {
       this.ipcRenderer = window.require('electron').ipcRenderer;
+      console.log(this.ipcRenderer);
       this.childProcess = window.require('child_process');
     }
   }
