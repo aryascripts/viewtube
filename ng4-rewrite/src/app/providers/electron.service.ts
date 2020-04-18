@@ -15,9 +15,16 @@ export class AppElectronService {
     // Conditional imports
     if (this.isElectron()) {
       this.ipcRenderer = window.require('electron').ipcRenderer;
-      console.log(this.ipcRenderer);
       this.childProcess = window.require('child_process');
     }
+  }
+
+  send(evt: string, obj: any) {
+    this.ipcRenderer.send(evt, obj)
+  }
+
+  getSync(evt: string, obj?: any) {
+    return this.ipcRenderer.sendSync(evt, obj);
   }
 
   isElectron = () => {

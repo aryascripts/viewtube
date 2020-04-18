@@ -5,7 +5,7 @@ export class YoutubeApiService {
 	oAuthClient: any;
 	youtube: any;
 
-	constructor(client: any) {
+	setClient(client: any) {
 		this.youtube = google.youtube({
 			version: 'v3',
 			auth: client
@@ -50,3 +50,6 @@ export class YoutubeApiService {
 		})
 	}
 }
+
+const YoutubeService = new YoutubeApiService();
+export {YoutubeService}

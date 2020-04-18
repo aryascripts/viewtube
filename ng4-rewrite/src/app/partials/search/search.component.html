@@ -11,11 +11,7 @@
 			<div class="mag-wrap" (click)="handleSearch()">
 				<span class="mag-glass"></span>
 			</div>
-	</div>
-
-	<div class="loading">
-		<app-loading *ngIf="loading"></app-loading>
-	</div>
+		</div>
 
 	<div *ngIf="!loading">
 		<app-playlist-detail
@@ -24,5 +20,8 @@
 		</app-playlist-detail>
 	</div>
 
+	<div class="loading">
+		<app-loading *ngIf="loading"></app-loading>
+	</div>
 
 </div>
