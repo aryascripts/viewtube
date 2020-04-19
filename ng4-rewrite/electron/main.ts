@@ -1,6 +1,5 @@
 import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
-import * as url from 'url';
 
 export default class Main {
   static mainWin: BrowserWindow;
@@ -34,11 +33,16 @@ export default class Main {
           nodeIntegration: true
         }
     });
-    Main.mainWin.webContents.openDevTools();
-    
+    if (process.defaultApp) {
+      require('electron-reload')(__dirname, {});
+      Main.mainWin.webContents.openDevTools();
+      Main.mainWin.loadURL('http://localhost:4200');
+    }
+    else {
+      Main.mainWin.loadFile(path.join(__dirname, './client/index.html'));
+    }
     Main.mainWin.on('closed', Main.mainOnClose);
-    require('electron-reload')(__dirname, {});
-    Main.mainWin.loadURL('http://localhost:4200');
+    // TODO - for prod, load from a file instead
   }
 
   static main(app: Electron.App, browserWindow: typeof BrowserWindow){

@@ -16,3 +16,18 @@ To run the program follow the following:
 1. cd viewtube/ng4-rewrite/
 2. npm i
 3. npm start
+
+
+## TODO List
+[x] Development mode IPC communication
+[x] Production mode index.html loading
+[ ] Production mode scripts for mac, windows, linux
+[ ] Create icon for release
+[ ] Get account name for top left box
+[ ] Refresh tokens in backend
+[ ] Google api package in ng app
+[ ] pass on OAuth2 Client to FE, and use as-is
+[ ] Get account playlists
+[ ] Search for playlists
+[ ] Google Drive backup integration
+[ ] Save files to 'Documents/viewtube'
