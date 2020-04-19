@@ -21,19 +21,18 @@ export default class AuthService {
 	static youtube:any;
 
 	static async createWindowIfNotAuth() {
-		const oAuth2Client = this.loadFromFile();
-		if (oAuth2Client) {
-			YouTubeService.client = oAuth2Client;
-			// TODO - don't hard code this one
-			Main.sendMessage('name', 'Aman Bhimani')
+		try {
+			// const tokens = await this.loadFromFile();
+			// if (tokens) this.setOauthCredentials(tokens);
+			this.createAuthWindow();
 		}
-		else {
+		catch (e) {
 			this.createAuthWindow();
 		}
 	}
 
 	static oAuth2Client:any = new OAuth2Client({
-		clientId: '820911348472-7q79l53ae1tt9ol0dvh8jcuc68ec4e4f.apps.googleusercontent.com',
+		clientId: '554340134389-g7v56ull5nd1f2q6s4khj7du7gu4novr.apps.googleusercontent.com',
 		redirectUri: 'urn:ietf:wg:oauth:2.0:oob'
 	});
 	
@@ -73,6 +72,7 @@ export default class AuthService {
 	//authorization popup and events/url navigation
 	static createAuthWindow() {
 		if(this.authWin) return; //window already exists.
+		this.storeToken(''); // clear token
 		this.authWin = new BrowserWindow({
 			width: 600,
       height: 750,
@@ -123,12 +123,11 @@ export default class AuthService {
 	}
 
 	private static setOauthCredentials(tokens, store:boolean = true) {
-		console.log(tokens);
 		if(store) 
 			this.storeToken(tokens);
 		this.oAuth2Client.setCredentials(tokens);
 		this.authorized = true;
-		this.informCreation();
+		YouTubeService.client = this.oAuth2Client;
 	}
 
 	static async getToken(code:string) {
@@ -157,9 +156,5 @@ export default class AuthService {
 			if (err) throw err;
 		});
 		console.log('Token stored to ' + TOKEN_PATH);
-	}
-
-	private static informCreation() {
-		sendNewClientCreds(this.oAuth2Client);
 	}
 }

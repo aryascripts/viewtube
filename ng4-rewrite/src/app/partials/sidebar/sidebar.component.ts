@@ -30,17 +30,13 @@ export class SidebarComponent implements OnInit {
 	registerEvents() {
 		this.playlistsService.myPlaylists
 			.subscribe(value => {
-				this.zone.run(() => {
-					this.playlists = value
-				})
+					this.playlists = value;
 			})
 
-			this.userService.name
-				.subscribe(value => {
-					this.zone.run(() => {
-						this.sidebarHeader = value;
-					})
-				})
+		this.userService.name
+			.subscribe(value => {
+				this.sidebarHeader = value;
+			})
 
 		// this.electronService.ipcRenderer.on('login-cancelled', (event) => {
 		// 	console.log(event);

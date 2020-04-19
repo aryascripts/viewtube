@@ -21,6 +21,7 @@ To run the program follow the following:
 ## TODO List
 [x] Development mode IPC communication
 [x] Production mode index.html loading
+[ ] Read existing tokens from file
 [ ] Production mode scripts for mac, windows, linux
 [ ] Create icon for release
 [ ] Get account name for top left box

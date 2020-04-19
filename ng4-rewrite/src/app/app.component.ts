@@ -12,6 +12,6 @@ import { UserService } from './providers/user.service';
 export class AppComponent {
   constructor(private userService: UserService) {
     console.log('AppConfig', AppConfig);
-    userService.login();
+    this.userService.login();
   }
 }

@@ -16,7 +16,6 @@ export class UserService {
 		}
 
 	setMyName(event: string, data: any) {
-		console.log(event, data);
 		this.name.next(data);
 	}
 

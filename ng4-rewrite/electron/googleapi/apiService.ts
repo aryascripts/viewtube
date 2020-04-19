@@ -7,6 +7,7 @@ export class YoutubeApiService {
 
 	set client(client: any) {
 		this.oAuthClient = client;
+		console.log('received client in api service', JSON.stringify(client.credentials));
 		this.youtube = google.youtube({
 			version: 'v3',
 			auth: client
@@ -44,6 +45,7 @@ export class YoutubeApiService {
 			}
 			if(params.nextPage) request['pageToken'] = params.nextPage
 
+			
 			this.youtube.search.list(request, 
 				(err, res) => {
 					if(err) reject(err)
