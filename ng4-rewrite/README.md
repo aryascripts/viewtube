@@ -31,3 +31,5 @@ To run the program follow the following:
 [ ] Search for playlists
 [ ] Google Drive backup integration
 [ ] Save files to 'Documents/viewtube'
+[ ] Decode ID JTW token to get name and email
+[ ] Add logout option

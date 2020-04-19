@@ -21,7 +21,6 @@ export class PlaylistsService {
 			return;
 		}
 
-		this.userService.setMyName(resp.data.items[0].snippet.channelTitle);
 		const lists:{} = resp['data']['items'];
 		let plists: Playlist[] = [];
 		Object.entries(lists).forEach(

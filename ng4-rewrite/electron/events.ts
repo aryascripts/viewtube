@@ -1,10 +1,11 @@
 import Main from './main';
+import AuthService from './googleapi/authService';
+import { YouTubeService } from './googleapi/apiService';
+
 
 export const eventHandlers = {
-
-}
-
-
-export function sendNewClientCreds(credentials) {
-	Main.sendMessage('oauth2-client', credentials);
+	'login': async (event) => {
+		console.log('login');
+		await AuthService.createWindowIfNotAuth();
+	}
 }

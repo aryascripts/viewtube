@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AppElectronService } from './providers/electron.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from './app.config';
+import { UserService } from './providers/user.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,8 @@ import { AppConfig } from './app.config';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(public electronService: AppElectronService) {
+  constructor(private userService: UserService) {
     console.log('AppConfig', AppConfig);
+    userService.login();
   }
 }

@@ -31,7 +31,6 @@ import { GoogleApiService } from './providers/googleapi.service';
 import { PlaylistsService } from './providers/playlist.service';
 import { UserService } from './providers/user.service';
 import { AppElectronService } from './providers/electron.service';
-import { YouTubeService } from './providers/you-tube.service';
 
 import { LoadingComponent } from './components/loading/loading.component';
 import { PlaylistDetailComponent } from './components/playlist-detail/playlist-detail.component';
@@ -67,7 +66,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [AppElectronService, GoogleApiService, UserService, PlaylistsService, YouTubeService],
+  providers: [AppElectronService, GoogleApiService, UserService, PlaylistsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,20 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AppElectronService } from './electron.service';
-import { YouTubeService } from './you-tube.service';
 
 
 @Injectable()
 export class GoogleApiService {
 
 	constructor(
-		private electronService: AppElectronService,
-		private youtubeService: YouTubeService
+		private electronService: AppElectronService
 						) {
 		this.createListeners();
-		// TODO - remove this fake call
-		this.youtubeService.getYoutubeClient();
-
-		this.electronService.ipcRenderer.send('check-client');
 	}
 
 	createListeners() {
@@ -36,10 +30,10 @@ export class GoogleApiService {
 	}
 
 	getMyPlaylists(nextPage:string = null) {
-		this.electronService.ipcRenderer.send('get-account-playlists', nextPage);
+		this.electronService.send('get-account-playlists', nextPage);
 	}
 
 	login() {
-		this.electronService.ipcRenderer.send('authorize');
+		this.electronService.send('login');
 	}
 }

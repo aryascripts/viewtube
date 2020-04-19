@@ -3,7 +3,8 @@ const url = require('url');
 const fs = require('fs');
 
 import { app, BrowserWindow, ipcMain } from 'electron';
-import { sendNewClientCreds } from '../events';
+import { YouTubeService } from './apiService';
+import Main from './../main';
 
 
 const SCOPES:string[] = [
@@ -18,6 +19,18 @@ const TOKEN_PATH = TOKEN_DIR + 'token.json'
 export default class AuthService {
 	static authorized: boolean;
 	static youtube:any;
+
+	static async createWindowIfNotAuth() {
+		const oAuth2Client = this.loadFromFile();
+		if (oAuth2Client) {
+			YouTubeService.client = oAuth2Client;
+			// TODO - don't hard code this one
+			Main.sendMessage('name', 'Aman Bhimani')
+		}
+		else {
+			this.createAuthWindow();
+		}
+	}
 
 	static oAuth2Client:any = new OAuth2Client({
 		clientId: '820911348472-7q79l53ae1tt9ol0dvh8jcuc68ec4e4f.apps.googleusercontent.com',
@@ -60,7 +73,6 @@ export default class AuthService {
 	//authorization popup and events/url navigation
 	static createAuthWindow() {
 		if(this.authWin) return; //window already exists.
-		console.log('opening...');
 		this.authWin = new BrowserWindow({
 			width: 600,
       height: 750,
@@ -85,7 +97,6 @@ export default class AuthService {
 		this.authWin = null;
 		ipcMain.emit('login-cancelled');
 		console.log('Authorization was cancalled by user.');
-		
 	}
 
 	static async handleNavigate(newUrl:string) {
@@ -149,7 +160,6 @@ export default class AuthService {
 	}
 
 	private static informCreation() {
-		ipcMain.emit('create-youtube-service', this.oAuth2Client);
 		sendNewClientCreds(this.oAuth2Client);
 	}
 }

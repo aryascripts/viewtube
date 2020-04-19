@@ -19,7 +19,7 @@ export class AppElectronService {
     }
   }
 
-  send(evt: string, obj: any) {
+  send(evt: string, obj?: any) {
     this.ipcRenderer.send(evt, obj)
   }
 

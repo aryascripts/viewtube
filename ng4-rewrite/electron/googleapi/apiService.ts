@@ -5,7 +5,8 @@ export class YoutubeApiService {
 	oAuthClient: any;
 	youtube: any;
 
-	constructor(client: any) {
+	set client(client: any) {
+		this.oAuthClient = client;
 		this.youtube = google.youtube({
 			version: 'v3',
 			auth: client
@@ -24,7 +25,8 @@ export class YoutubeApiService {
 
 			this.youtube.playlists.list(request,
 				(err, res) => {
-					if(err) reject(err); 
+          if(err) reject(err); 
+          console.log(res);
 					resolve(res);
 				});
 
@@ -50,3 +52,6 @@ export class YoutubeApiService {
 		})
 	}
 }
+
+const YouTubeService = new YoutubeApiService();
+export {YouTubeService};
