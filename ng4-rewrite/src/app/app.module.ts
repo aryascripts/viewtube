@@ -36,6 +36,7 @@ import { PlaylistDetailComponent } from './components/playlist-detail/playlist-d
 import { SharedComponentsModule } from './modules/shared-components/shared-components.module';
 import { DataStoreService } from './providers/data-store.service';
 import { PlaylistViewComponent } from './partials/playlist-view/playlist-view.component';
+import { HeaderComponent } from './components/header/header.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -54,6 +55,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SearchComponent,
     PlaylistDetailComponent,
     PlaylistViewComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,

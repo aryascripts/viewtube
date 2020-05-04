@@ -1,1 +1,6 @@
-<p>playlist-view works!</p>
+
+<div *ngIf="playlist">
+	<app-playlist-detail
+		[playlist]="playlist">
+	</app-playlist-detail>
+</div>

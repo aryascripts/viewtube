@@ -11,3 +11,21 @@ $sidebar-left-padding: 10px;
 $sidebar-bg: $yt-white;
 
 $white-text: lighten($yt-white, 25%);
+
+$header-height: 40px;
+%header-text {
+	font-family: 'Helvetica', 'Tahoma', 'Arial', sans-serif;
+	font-size: 18px;
+	font-weight: 100;
+	line-height: $header-height;
+	transition: background-color 200ms;
+	color: $white-text;
+	cursor: pointer;
+	padding: 0 0 0 $sidebar-left-padding;
+	position: relative;
+	background-color: $yt-red;
+
+	&:hover {
+		background-color: darken($yt-red, 10%);
+	}
+}

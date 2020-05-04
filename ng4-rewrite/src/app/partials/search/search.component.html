@@ -1,10 +1,10 @@
 <div class="search">
 	<div class="input-area">
 			<div class="input">
-					<input [(ngModel)]="playlist" type="text" placeholder="playlist name">
-			</div>
-			<div class="input">
-					<input [(ngModel)]="channel" type="text" placeholder="by channel">
+					<input type="text"
+						[(ngModel)]="playlist"
+						placeholder="playlist name"
+						(keyup.enter)="handleSearch()">
 			</div>
 
 			<div class="mag-wrap" (click)="handleSearch()">

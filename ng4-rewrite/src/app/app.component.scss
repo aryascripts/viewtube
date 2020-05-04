@@ -2,3 +2,7 @@
 	display: grid;
 	grid-template-columns: auto 1fr;
 }
+
+.router-outlet {
+	padding: 20px;
+}

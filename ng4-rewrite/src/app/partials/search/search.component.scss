@@ -1,13 +1,11 @@
 @import './../../scss/vars';
 
 .search {
-	padding: 25px;
-
 	.input-area {
 		width: inherit;
 
 		display: grid;
-		grid-template-columns: 2fr 1fr auto;
+		grid-template-columns: 1fr auto;
 		grid-gap: 5px;
 
 		.mag-wrap {

@@ -11,6 +11,7 @@ export class PlaylistsService {
 	public myPlaylists: BehaviorSubject<Playlist[]>;
 	public customPlaylists: BehaviorSubject<Playlist[]>;
 	public myName: ReplaySubject<string>;
+	public lastPlaylistId: string;
 
 	constructor(
 		private electronService: AppElectronService,
@@ -55,7 +56,15 @@ export class PlaylistsService {
 	}
 
 	getCachedPlaylistById(id: string): Playlist {
+		this.lastPlaylistId = id;
 		return this.myPlaylists.value.find(p => p.id === id) ||
 					 this.customPlaylists.value.find(p => p.id === id);
+	}
+
+	get lastPlaylist() {
+		if (this.lastPlaylistId) {
+			return this.myPlaylists.value.find(p => p.id === this.lastPlaylistId) ||
+			this.customPlaylists.value.find(p => p.id === this.lastPlaylistId);
+		}
 	}
 }
