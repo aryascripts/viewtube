@@ -1,5 +1,6 @@
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, Output} from '@angular/core';
 import { Playlist } from './../../models/Playlist';
+import { EventEmitter } from '@angular/core';
 
 @Component({
 	selector: 'app-playlist-list',
@@ -8,30 +9,34 @@ import { Playlist } from './../../models/Playlist';
 })
 export class PlaylistListComponent implements OnInit {
 
-	closed:Boolean;
-	caretClass:{};
-	listClass:{};
+	caretClass: any;
+	listClass: any;
 	@Input() playlists: Playlist[];
 	@Input() title: string;
 	@Input() additive: boolean;
+	@Input() open: boolean;
+	@Input() loading: boolean;
+
+	@Output() openChanged: EventEmitter<boolean> = new EventEmitter();
 
 	constructor() { }
 	ngOnInit() {
-		this.closed = true;
 		this.setClasses();
 	}
 
 	toggleDropdown() {
-		this.closed = !this.closed;
+		this.open = !this.open
+		this.openChanged.emit(this.open);
 		this.setClasses();
 	}
 
 	setClasses() {
 		this.caretClass = {
-			'open': !this.closed
+			'closed': !this.open
 		}
+		console.log(this.caretClass);
 		this.listClass = {
-			'hide': !this.closed
+			'hide': !this.open
 		}
 	}
 

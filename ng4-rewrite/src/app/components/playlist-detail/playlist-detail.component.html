@@ -1,4 +1,5 @@
 <div class="playlist-detail">
+
 	<div class="thumbnail">
 			<img [src]="playlist.thumbnails.medium.url" alt="">
 	</div>
@@ -9,6 +10,10 @@
 		</div>
 		<div class="description">
 			{{ playlist.description }}
+		<div class="buttons">
+			<button (click)="addToMyPlaylists()" [class]="btnClass">
+				{{content}}
+			</button>
 		</div>
 	</div>
 </div>

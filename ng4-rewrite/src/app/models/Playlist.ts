@@ -1,4 +1,10 @@
 import { Video } from './Video';
+
+export enum PlaylistType {
+	CUSTOM = 'custom',
+	ACCOUNT = 'account'
+}
+
 export class Playlist {
 
 	title:string;
@@ -8,19 +14,19 @@ export class Playlist {
 	channelName:string;
 	thumbnails:object;
 	description:string;
+
+	type: PlaylistType;
 	
 	totalVideos:number;
 
+	watched: Array<string>;		//array of video IDs which is then used to set videos as watched upon loadVideos();
 	watching:number;			//used only when there is an unwatched last video
 	watchingId:string;
 	watchingTime:number;
 
 	index:number;
 
-
 	sequential:boolean;
-	type:string;
-	watched: Array<string>;		//array of video IDs which is then used to set videos as watched upon loadVideos();
 	partial: any;
 
 	lastCompleted:number;
@@ -80,7 +86,6 @@ export class Playlist {
 	}
 
 	setDefaults() {
-		this.type = 'sequential';
 		this.watched = [];
 		this.partial = [];
 		this.watching = -1;
@@ -89,40 +94,5 @@ export class Playlist {
 		this.index = 0;
 		this.totalTime = '';
 		this.watchingId = '';
-	}
-
-	// constructor(info) {
-	// 	this.title = info.title;
-	// 	this.channelName = info.channelName;
-	// 	this.description = info.description;
-	//  }
-	
-    //// REMINDER: This is only adding 5 videos! Pagination or re-query is needed.
-	// public addVideos(videos:any) {
-	// 	let list = videos['items'];
-	// 	for(let i = 0; i < list.length; i++) {
-	// 		this.videos.push(new Video(list[i], false));
-	// 	}
-	// }
-
-	// public playlistDuration() {
-	// 	return new Promise(
-	// 		(resolve, reject) => {
-	// 			let secs = 0;
-	// 			for(let i = 0; i < this.videos.length; i++) {
-	// 				secs += this.videos[i].durationSec;
-	// 			}
-
-	// 			let h = Math.floor(secs / 3600);
-	// 			let m = Math.floor(secs % 3600 / 60);
-	// 			let s = Math.floor(secs % 3600 % 60);
-
-	// 			this.totalTime = ('0' + h).slice(-2) + ":" + ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
-	// 			resolve();
-	// 		});
-	// }
-
-	public setType(ty:string) {
-		this.type = ty;
 	}
 }

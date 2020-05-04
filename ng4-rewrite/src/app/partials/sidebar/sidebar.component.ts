@@ -4,6 +4,7 @@ import { Playlist } from '../../models/Playlist';
 import { GoogleApiService } from '../../providers/googleapi.service';
 import { PlaylistsService } from '../../providers/playlist.service';
 import { UserService } from '../../providers/user.service';
+import {EventType} from './../../models/Events';
 
 @Component({
 	selector: 'app-sidebar',
@@ -13,14 +14,15 @@ import { UserService } from '../../providers/user.service';
 export class SidebarComponent implements OnInit {
 	sidebarHeader: string = 'Sign In With Google';
 	playlists:Playlist[];
-	loading: boolean;
+	loading: { account: boolean, custom: boolean };
+	customPlaylists: Playlist[];
 
 	constructor(private googleApiService: GoogleApiService,
 							private playlistsService: PlaylistsService,
 							private zone:NgZone,
 							private userService: UserService,
 							private electronService: AppElectronService) {
-		this.loading = false
+		this.loading = { account: false, custom: false }
 	}
 
 	ngOnInit() {
@@ -28,34 +30,29 @@ export class SidebarComponent implements OnInit {
 	}
 
 	registerEvents() {
-		this.playlistsService.myPlaylists
-			.subscribe(value => {
+		this.playlistsService.myPlaylists.subscribe(value => {
+					this.loading.account = false;
 					this.playlists = value;
-			})
+			});
 
-		this.userService.name
-			.subscribe(value => {
-				this.sidebarHeader = value;
-			})
+		this.userService.name.subscribe(value => {
+			this.sidebarHeader = value;
+		});
 
-		// this.electronService.ipcRenderer.on('login-cancelled', (event) => {
-		// 	console.log(event);
-		// 	this.setLoading(true)
-		// })
-
-		// this.electronService.ipcRenderer.on('my-playlists', (event) => {
-		// 	this.setLoading(false)
-		// })
+		this.playlistsService.customPlaylists.subscribe(value => {
+			console.log('value', value);
+			this.customPlaylists = value;
+		})
 	}
 
 	loginHandler() {
-		this.loading = true
 		this.googleApiService.login()
 	}
 
-	setLoading(val:boolean) {
-		this.zone.run(() => {
-			this.loading = val
-		})
+	handleOpenChanged(open: boolean) {
+		if (open && !this.playlists) {
+			this.loading.account = true;
+			this.electronService.send(EventType.ACCOUNT_PLAYLISTS);
+		}
 	}
 }

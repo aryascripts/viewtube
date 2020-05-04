@@ -1,4 +1,5 @@
 @import './../../scss/vars';
+$thumbnail-width: 200px;
 
 .playlist-detail {
 	display: flex;
@@ -11,9 +12,14 @@
 	}
 
 	.thumbnail {
+		position: relative;
 		img {
-			max-width: 200px;
+			max-width: $thumbnail-width;
 		}
+	}
+
+	.full-width {
+		width: 100%;
 	}
 
 	.detail {
@@ -30,8 +36,26 @@
 		}
 
 		.description {
-			margin-top: 12px;
+			margin-top: 4px;
 		}
+	}
+}
 
+.add {
+	color: white;
+	line-height: 116px;
+	font-size: 50px;
+	text-align: center;
+	width: 30px;
+	position: absolute;
+	opacity: 0.40;
+	background-color: lighten($yt-gray, 5%);
+	transition: background-color 200ms ease-in-out, width 200ms ease-in-out;
+	height: 100%;
+	width: 100%;
+	max-width: $thumbnail-width;
+
+	&:hover {
+		background-color: $yt-red;
 	}
 }

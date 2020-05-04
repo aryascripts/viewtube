@@ -32,8 +32,10 @@ import { PlaylistsService } from './providers/playlist.service';
 import { UserService } from './providers/user.service';
 import { AppElectronService } from './providers/electron.service';
 
-import { LoadingComponent } from './components/loading/loading.component';
 import { PlaylistDetailComponent } from './components/playlist-detail/playlist-detail.component';
+import { SharedComponentsModule } from './modules/shared-components/shared-components.module';
+import { DataStoreService } from './providers/data-store.service';
+import { PlaylistViewComponent } from './partials/playlist-view/playlist-view.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -50,14 +52,15 @@ export function HttpLoaderFactory(http: HttpClient) {
     PlaylistItemComponent,
     PlaylistListComponent,
     SearchComponent,
-    LoadingComponent,
-    PlaylistDetailComponent
+    PlaylistDetailComponent,
+    PlaylistViewComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
+    SharedComponentsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -66,7 +69,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [AppElectronService, GoogleApiService, UserService, PlaylistsService],
+  providers: [AppElectronService, GoogleApiService, UserService, PlaylistsService, DataStoreService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

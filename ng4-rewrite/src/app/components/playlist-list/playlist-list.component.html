@@ -1,26 +1,21 @@
 <div class="flex">
-	<div class="circle" 
-			*ngIf="additive"
-			(click)="handleAddPlaylist()"
-			[routerLink]="['/search']">
-		+
-	</div>
+  <div
+    class="circle"
+    *ngIf="additive"
+    [routerLink]="['/search']">+</div>
 
-	<h1 (click)="toggleDropdown()"> {{title}} </h1>
-	
-	<div style="margin: 8px 0 0 5px"
-		(click)="toggleDropdown()">
-		<i class="caret"
-		[ngClass]="caretClass"></i>
-	</div>
+  <h1 (click)="toggleDropdown()">{{ title }}</h1>
+
+  <div style="margin: 8px 0 0 5px;" (click)="toggleDropdown()">
+    <i class="caret" [ngClass]="caretClass"></i>
+  </div>
 </div>
 
-<div class="list"
-[ngClass]="listClass">
-
-	<app-playlist-item
-		*ngFor="let playlist of playlists"
-		[plist]="playlist">
-	</app-playlist-item>
+<div *ngIf="loading" class="loading">
+  <app-loading> </app-loading>
 </div>
 
+<div class="list" *ngIf="!loading" [ngClass]="listClass">
+  <app-playlist-item *ngFor="let playlist of playlists" [plist]="playlist">
+  </app-playlist-item>
+</div>

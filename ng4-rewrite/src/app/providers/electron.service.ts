@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 
 // If you import a module but never use any of the imported values other than as TypeScript types,
 // the resulting javascript file will look as if you never imported the module at all.
@@ -11,7 +11,7 @@ export class AppElectronService {
   ipcRenderer: typeof ipcRenderer;
   childProcess: typeof childProcess;
 
-  constructor() {
+  constructor(private ngZone: NgZone) {
     // Conditional imports
     if (this.isElectron()) {
       this.ipcRenderer = window.require('electron').ipcRenderer;
@@ -20,6 +20,7 @@ export class AppElectronService {
   }
 
   send(evt: string, obj?: any) {
+    console.log('sending ', evt);
     this.ipcRenderer.send(evt, obj)
   }
 
@@ -32,7 +33,12 @@ export class AppElectronService {
   }
 
   listen(evt: string, fn: (event: IpcRendererEvent, ...args: any[]) => void) {
-    this.ipcRenderer.on(evt, fn);
+    // Run this in ngZone since ipcRenderer.on can update at any time.
+    this.ipcRenderer.on(evt, (event, data) => {
+      this.ngZone.run(() => {
+        fn(event, data);
+      })
+    });
   }
 
 }

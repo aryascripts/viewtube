@@ -2,6 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { AppElectronService } from '../../providers/electron.service';
 import { GoogleApiService } from '../../providers/googleapi.service';
 import { Playlist } from '../../models/Playlist';
+import { EventType } from './../../models/Events';
 
 @Component({
 	selector: 'app-search',
@@ -31,7 +32,7 @@ export class SearchComponent implements OnInit {
 	}
 
 	registerListeners() {
-		this.electronService.listen('search-playlists-reply', this.receivedResults.bind(this));
+		this.electronService.listen(EventType.SEARCH_REPLY, this.receivedResults.bind(this));
 	}
 
 	handleSearch() {
@@ -39,22 +40,23 @@ export class SearchComponent implements OnInit {
 		this.searchEvent(this.current)
 	}
 
+	handleInputChange(event) {
+		console.log(event);
+	}
+
 	private searchEvent(params) {
 		this.setLoading(true)
-		console.log(params);
 		this.electronService.send('search-playlists', params);
 	}
 
 	private receivedResults(event:any, response:any) {
-		console.log(response);
 		if(response.status !== 200) {
 			alert('Something went wrong. Please see console');
 			console.error(response);
 		}
+		console.log(response);
 		const playlists = response.data.items; // array of objects
 		this.searchResults = playlists.map(info => Playlist.fromSearchResults(info));
-		console.log(this.searchResults);
-
 		this.setLoading(false)
 	}
 
@@ -62,9 +64,5 @@ export class SearchComponent implements OnInit {
 		this.zone.run(() => {
 			this.loading = val
 		})
-	}
-
-	private createPlaylist(s: string) {
-		return new Playlist(JSON.parse(s));
 	}
 }

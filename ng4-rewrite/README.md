@@ -21,12 +21,11 @@ To run the program follow the following:
 ## TODO List
 [x] Development mode IPC communication
 [x] Production mode index.html loading
-[ ] Read existing tokens from file
-[ ] Production mode scripts for mac, windows, linux
+[x] Read existing tokens from file
+[x] Refresh the token if it has expired
+[x] Production mode scripts for mac, windows, linux
 [ ] Create icon for release
-[ ] Get account name for top left box
-[ ] Refresh tokens in backend
-[ ] Google api package in ng app
+[x] Get account name for top left box
 [ ] pass on OAuth2 Client to FE, and use as-is
 [ ] Get account playlists
 [ ] Search for playlists
@@ -34,3 +33,5 @@ To run the program follow the following:
 [ ] Save files to 'Documents/viewtube'
 [ ] Decode ID JTW token to get name and email
 [ ] Add logout option
+[ ] Get account playlists
+[ ] Store playlist in JSON form in neDB

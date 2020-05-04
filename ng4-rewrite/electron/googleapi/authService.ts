@@ -2,9 +2,9 @@ const {OAuth2Client} = require('google-auth-library');
 const url = require('url');
 const fs = require('fs');
 
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { BrowserWindow, ipcMain } from 'electron';
 import { YouTubeService } from './apiService';
-import Main from './../main';
+import {ReplyEvents} from './../events';
 
 
 const SCOPES:string[] = [
@@ -22,9 +22,13 @@ export default class AuthService {
 
 	static async createWindowIfNotAuth() {
 		try {
-			// const tokens = await this.loadFromFile();
-			// if (tokens) this.setOauthCredentials(tokens);
-			this.createAuthWindow();
+			const token = await this.loadFromFile();
+			if (token) {
+				this.setOauthCredentials(token, false);
+			}
+			else {
+				this.createAuthWindow();
+			}
 		}
 		catch (e) {
 			this.createAuthWindow();
@@ -54,8 +58,7 @@ export default class AuthService {
 				if (err) {
 					reject(err);
 				} else {
-					this.setOauthCredentials(JSON.parse(token), false);
-					resolve(this.oAuth2Client);
+					resolve(JSON.parse(token));
 				}
 			});
 		});
@@ -126,8 +129,18 @@ export default class AuthService {
 		if(store) 
 			this.storeToken(tokens);
 		this.oAuth2Client.setCredentials(tokens);
-		this.authorized = true;
+		if (this.oAuth2Client.isTokenExpiring()) {
+			this.oAuth2Client.refreshToken(tokens.refresh_token)
+				.catch(err => {
+					console.log('failed refresh');
+					this.authorized = false;
+					this.createAuthWindow();
+					ReplyEvents.sendUsername('Sign In With Google')
+				});
+		}
 		YouTubeService.client = this.oAuth2Client;
+		// TODO - make this one dynamic from jtw
+		ReplyEvents.sendUsername('Aman Bhimani')
 	}
 
 	static async getToken(code:string) {

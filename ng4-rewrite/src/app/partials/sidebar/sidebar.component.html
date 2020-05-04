@@ -1,41 +1,35 @@
-<div #sidebarWrapper
-class="sidebar-wrapper">
+<div #sidebarWrapper class="sidebar-wrapper">
+  <div class="sidebar">
+    <div class="title" (click)="loginHandler()">
+      {{ sidebarHeader }}
+    </div>
 
-	<div class="sidebar">
-		<div class="title"
-			(click)="loginHandler()"> 
-			{{ sidebarHeader }}
-		</div>
+    <app-playlist-list
+      [playlists]="customPlaylists"
+			[open]="true"
+			[loading]="loading.custom"
+      [title]="'Playlists'"
+      [additive]="true">
+    </app-playlist-list>
 
-		<div 
-			class="loading"
-			*ngIf="loading; else playlistContent">
-			<app-loading> </app-loading>
-		</div>
+    <app-playlist-list
+      #myPlaylists
+			(openChanged)="handleOpenChanged($event)"
+			[loading]="loading.account"
+      [playlists]="playlists"
+      [open]="false"
+      [title]="'My Playlists'"
+    >
+    </app-playlist-list>
+  </div>
 
-		<ng-template class="playlist-content" #playlistContent>
-			
-			<app-playlist-list #myPlaylists
-				[playlists]="playlists"
-				[title]="'My Playlists'">
-			</app-playlist-list>
-
-			<app-playlist-list
-				[playlists]=""
-				[title]="'Playlists'"
-				[additive]="true">
-			</app-playlist-list>
-		</ng-template>
-
-
-	</div>
-
-	<div app-resize
-	[resizeMe]="sidebarWrapper"
-	[vertical]="true"
-	[minSize]="200"
-	[maxSize]="450"
-	[barWidth]="20"
-	class="sidebar-resize"> </div>
-
+  <div
+    app-resize
+    [resizeMe]="sidebarWrapper"
+    [vertical]="true"
+    [minSize]="200"
+    [maxSize]="450"
+    [barWidth]="20"
+    class="sidebar-resize"
+  ></div>
 </div>

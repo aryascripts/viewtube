@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { AppElectronService } from './electron.service';
+import { EventType } from '../models/Events';
 
 @Injectable({
 	providedIn: 'root'
@@ -12,10 +13,11 @@ export class UserService {
 	constructor(
 		private electronService: AppElectronService
 		) {
-			this.electronService.listen('name', this.setMyName.bind(this))
+			this.electronService.listen(EventType.USERS_NAME, this.setMyName.bind(this)) 
 		}
 
 	setMyName(event: string, data: any) {
+		console.log('received users-name', data);
 		this.name.next(data);
 	}
 
@@ -26,5 +28,4 @@ export class UserService {
 	login() {
 		this.electronService.send('login');
 	}
-
 }
