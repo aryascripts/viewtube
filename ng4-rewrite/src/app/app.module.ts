@@ -39,6 +39,7 @@ import { PlaylistViewComponent } from './partials/playlist-view/playlist-view.co
 import { HeaderComponent } from './components/header/header.component';
 import { PlayButtonComponent } from './components/play-button/play-button.component';
 import { PlaylistPreviewComponent } from './components/playlist-preview/playlist-preview.component';
+import { VideoListComponent } from './components/video-list/video-list.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -60,6 +61,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HeaderComponent,
     PlayButtonComponent,
     PlaylistPreviewComponent,
+    VideoListComponent,
   ],
   imports: [
     BrowserModule,

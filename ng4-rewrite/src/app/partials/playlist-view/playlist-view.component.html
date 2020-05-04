@@ -23,8 +23,10 @@
 
 
 	<!-- VIDEOS LIST -->
-	<div class="videos">
-		
+	<div *ngIf="paged" class="videos">
+		<app-video-list [videos]="paged.videos">
+
+		</app-video-list>
 	</div>
 
 </div>

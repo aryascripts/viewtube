@@ -50,6 +50,7 @@ export class PlaylistViewComponent implements OnInit {
     if (!value.videos.length) {
       this.playlistService.getVideosForPlaylist(playlistId);
     }
+    this.paged = value;
   }
 
   handleResume() {

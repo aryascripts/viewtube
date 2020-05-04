@@ -53,6 +53,7 @@ export class Video {
 		this.channelName 	= vid['channelTitle'];
 		this.date 			= vid['publishedAt'];
 		this.description 	= vid['description'];
+		this.thumbnails = vid['thumbnails'];
 
 		this.percentage = 0;
 		this.watched = false;
