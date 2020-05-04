@@ -1,5 +1,5 @@
 import AuthService from './googleapi/authService';
-import { YouTubeService } from './googleapi/apiService';
+import { YouTubeService, YoutubeApiService } from './googleapi/apiService';
 import Main from './main';
 import {EventType} from './../src/app/models/Events';
 
@@ -14,6 +14,9 @@ export const eventHandlers = {
 	},
 	[EventType.ACCOUNT_PLAYLISTS]: (event, data) => {
 		ReplyEvents.sendAccountPlaylists();
+	},
+	[EventType.GET_PLIST_VIDEOS]: async (event, data) => {
+		ReplyEvents.sendPlaylistVideos(data);
 	}
 }
 
@@ -28,8 +31,12 @@ export const ReplyEvents = {
 	},
 
 	sendAccountPlaylists: async (list?: any) => {
-		console.log('sending account playlists...');
 		if (!list) list = await YouTubeService.getAccountPlaylists();
 		Main.sendMessage(EventType.ACCOUNT_PLAYLISTS, list);
+	},
+
+	sendPlaylistVideos: async (data) => {
+		const videos = await YouTubeService.getPlaylistVideos(data);
+		Main.sendMessage(EventType.GET_PLIST_VIDEOS_REPLY, videos);
 	}
 }

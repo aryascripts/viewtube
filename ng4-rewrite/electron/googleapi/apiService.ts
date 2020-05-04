@@ -7,7 +7,6 @@ export class YoutubeApiService {
 
 	set client(client: any) {
 		this.oAuthClient = client;
-		console.log('received client in api service', JSON.stringify(client.credentials));
 		this.youtube = google.youtube({
 			version: 'v3',
 			auth: client
@@ -27,7 +26,6 @@ export class YoutubeApiService {
 			this.youtube.playlists.list(request,
 				(err, res) => {
           if(err) reject(err); 
-          console.log(res);
 					resolve(res);
 				});
 
@@ -36,7 +34,7 @@ export class YoutubeApiService {
 
 	async searchPlaylists(params:{playlist: string, channel: string, nextPage:string}) {
 		return new Promise((resolve, reject) => {
-			let request = {
+			const request = {
 				part: 'snippet',
 				maxResults: 25,
 				headers: {},
@@ -51,6 +49,20 @@ export class YoutubeApiService {
 					if(err) reject(err)
 					resolve(res)
 				})
+		})
+	}
+
+	async getPlaylistVideos(params: {playlistId: string, pageToken: string}) {
+		return new Promise((resolve, reject) => {
+			const request = {
+				part: 'snippet',
+				maxResults: 25,
+				...params
+			};
+			this.youtube.playlistItems.list(request, (err, res) => {
+				if (err) reject(err);
+				resolve(res);
+			})
 		})
 	}
 }

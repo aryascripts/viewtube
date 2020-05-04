@@ -4,6 +4,8 @@ import { ReplaySubject, BehaviorSubject } from 'rxjs';
 import { AppElectronService } from './electron.service';
 import { EventType } from '../models/Events';
 import { DataStoreService } from './data-store.service';
+import { Video } from '../models/Video';
+import { PagedVideos } from '../models/PagedVideos';
 
 @Injectable()
 export class PlaylistsService {
@@ -13,6 +15,8 @@ export class PlaylistsService {
 	public myName: ReplaySubject<string>;
 	public lastPlaylistId: string;
 
+	public videosMap: {[playlistid: string]: BehaviorSubject<PagedVideos> };
+
 	constructor(
 		private electronService: AppElectronService,
 		private database: DataStoreService
@@ -20,8 +24,11 @@ export class PlaylistsService {
 		this.myPlaylists = new BehaviorSubject([]);
 		this.customPlaylists = new BehaviorSubject([]);
 		this.myName = new ReplaySubject(1);
+		this.videosMap = {};
 
 		this.electronService.listen(EventType.ACCOUNT_PLAYLISTS, this.addAccountPlaylists.bind(this));
+		this.electronService.listen(EventType.GET_PLIST_VIDEOS_REPLY, this.updateVideosMap.bind(this));
+
 		this.getCustomPlaylists();
 	}
 
@@ -66,5 +73,31 @@ export class PlaylistsService {
 			return this.myPlaylists.value.find(p => p.id === this.lastPlaylistId) ||
 			this.customPlaylists.value.find(p => p.id === this.lastPlaylistId);
 		}
+	}
+
+	getVideosForPlaylist(id: string) {
+		const data: any = { playlistId: id };
+		if (this.videosMap[id] && this.videosMap[id].value.nextPage) {
+			data.nextPage = this.videosMap[id].value.nextPage
+		}
+		this.electronService.send(EventType.GET_PLIST_VIDEOS, data);
+	}
+
+	updateVideosMap(event, response) {
+		if (response.status === 200) {
+			const playlistId: string = response.config.params.playlistId;
+			const current: PagedVideos = this.videosMap[playlistId].value;
+
+			current.addVideos(response.data.items.map(item => new Video(item)));
+			this.videosMap[playlistId].next(current);
+			console.log(current);
+		}
+	}
+
+	getPlaylistVideosSubject(id: string) {
+		if (!this.videosMap[id]) {
+			this.videosMap[id] = new BehaviorSubject<PagedVideos>(new PagedVideos());;
+		}
+		return this.videosMap[id];
 	}
 }

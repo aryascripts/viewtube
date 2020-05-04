@@ -41,7 +41,7 @@ export class Video {
 		this.watched = false;
 	}
 
-	constructor(video:any, wahtchedList:any) {
+	constructor(video:any) {
 		if(video['length'] < 1) {
 			return;
 		}
