@@ -35,3 +35,10 @@ To run the program follow the following:
 [ ] Add logout option
 [ ] Get account playlists
 [ ] Store playlist in JSON form in neDB
+
+
+## SETTINGS TO ADD - 
+[ ] Default playlist type (random, sequential)
+[ ] auto-play videos
+[ ] Backup data to file
+[ ] restore data from file

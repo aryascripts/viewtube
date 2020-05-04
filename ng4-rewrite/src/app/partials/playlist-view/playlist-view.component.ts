@@ -33,5 +33,11 @@ export class PlaylistViewComponent implements OnInit {
     }
   }
 
+  handleResume() {
+    console.log('resuming...');
+  }
+
+
+
 
 }

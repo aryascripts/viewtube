@@ -3,4 +3,28 @@
 	<app-playlist-detail
 		[playlist]="playlist">
 	</app-playlist-detail>
+
+	<!-- RESUME BUTTON -->
+	<div class="resume flex nowrap">
+		<app-play-button class="play-button" 
+			[title]="'Resume'"
+			(click)="handleResume()"></app-play-button>
+
+		<app-playlist-preview class="grow" [playlist]="playlist">
+		</app-playlist-preview>
+
+	</div>
+
+
+	<!-- SETTINGS LIST -->
+	<div class="settings">
+
+	</div>
+
+
+	<!-- VIDEOS LIST -->
+	<div class="videos">
+
+	</div>
+
 </div>

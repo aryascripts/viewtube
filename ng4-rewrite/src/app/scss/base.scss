@@ -27,3 +27,8 @@ button.secondary {
 		background: rgba(172, 172, 172, 1);
 	}
 }
+
+.flex { display: flex; }
+.flex-c { @extend .flex; flex-direction: column; }
+.nowrap {flex-wrap: nowrap; }
+.grow { flex-grow: 1; }
