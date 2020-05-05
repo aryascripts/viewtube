@@ -4,7 +4,7 @@ const electron = require('electron');
 let id;
 
 window.addEventListener('popstate', handleUrlChange);
-window.addEventListener('beforeunload', handleWindowClose);
+window.addEventListener('beforeunload', sendUpdateTime);
 
 handleUrlChange(window.location.href);
 function handleUrlChange(href) {
@@ -13,6 +13,8 @@ function handleUrlChange(href) {
 	player.loadVideoById(id, +searchParams.time);
 	player.playVideo();
 	player.getVideoUrl();
+
+	setInterval(sendUpdateTime, 30000);
 }
 
 function getSearchParams() {
@@ -26,7 +28,7 @@ function getSearchParams() {
 	return obj;
 }
 
-function handleWindowClose() {
+function sendUpdateTime() {
 	player.getCurrentTime()
 		.then(data => {
 			electron.ipcRenderer.send('update-time', {time: data, videoId: id});
