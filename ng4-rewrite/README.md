@@ -17,8 +17,7 @@ To run the program follow the following:
 2. npm i
 3. npm start
 
-
-## TODO List
+## MVP List
 [x] Development mode IPC communication
 [x] Production mode index.html loading
 [x] Read existing tokens from file
@@ -26,16 +25,25 @@ To run the program follow the following:
 [x] Production mode scripts for mac, windows, linux
 [ ] Create icon for release
 [x] Get account name for top left box
-[ ] pass on OAuth2 Client to FE, and use as-is
-[ ] Get account playlists
-[ ] Search for playlists
-[ ] Google Drive backup integration
-[ ] Save files to 'Documents/viewtube'
-[ ] Decode ID JTW token to get name and email
+[x] pass on OAuth2 Client to FE, and use as-is
+[x] Search for playlists
+[x] Save files to 'Documents/viewtube'
+[x] Decode ID JTW token to get name and email
 [ ] Add logout option
-[ ] Get account playlists
-[ ] Store playlist in JSON form in neDB
+[x] Get account playlists
+[x] Store playlist in JSON form in neDB
+[ ] Store watched videos in NEDB (playlistId, videoId, watchedPercentage)
+[ ] Display watched percentages on the UI (playlist-view)
+[ ] Sequential Playlists - load next video automatically
+		- Handle the following: 
+		- Mark videos watched with for ones before
+		- Mark videos next as unwatched
+		- Load next video at stopped time when Resumed
+[ ] Playlist summary next to resume
 
+## Nice to Have list
+[ ] Google Drive backup integration
+[ ] Cache youtube calls
 
 ## SETTINGS TO ADD - 
 [ ] Default playlist type (random, sequential)
