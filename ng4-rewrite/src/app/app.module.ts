@@ -31,6 +31,7 @@ import { GoogleApiService } from './providers/googleapi.service';
 import { PlaylistsService } from './providers/playlist.service';
 import { UserService } from './providers/user.service';
 import { AppElectronService } from './providers/electron.service';
+import {VideoService} from './providers/video.service';
 
 import { PlaylistDetailComponent } from './components/playlist-detail/playlist-detail.component';
 import { SharedComponentsModule } from './modules/shared-components/shared-components.module';

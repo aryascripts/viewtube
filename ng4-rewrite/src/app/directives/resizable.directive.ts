@@ -27,6 +27,8 @@ export class ResizeDirective implements OnInit {
 	ngOnInit() {
 		this.el.nativeElement.style.cursor = 'col-resize';
 		this.el.nativeElement.style.width = this.barWidth + 'px';
+		this.el.nativeElement.style.left = `${this.elementToResize.clientWidth}px`;
+		this.el.nativeElement.style.position = 'absolute';
 	}
 
 	@HostListener('mousedown', ['$event']) 
@@ -37,6 +39,7 @@ export class ResizeDirective implements OnInit {
 
 		this.mousemoveEvent = observableFromEvent(document, 'mousemove')
 															.subscribe(this.onMouseMove.bind(this));
+		this.el.nativeElement.style.left = `${this.elementToResize.clientWidth}px`;
 	}
 
 	@HostListener('document:mouseup') 
@@ -52,12 +55,14 @@ export class ResizeDirective implements OnInit {
 				newNum = this.startWidth + diff;
 				if(newNum > this.minSize && newNum < this.maxSize)
 					this.elementToResize.style.width = newNum + 'px';
+				this.el.nativeElement.style.left = `${this.elementToResize.clientWidth}px`;
 			}
 			else {
 				diff = event.clientY - this.startHeight;
 				newNum = this.startHeight + diff;
 				if(newNum > this.minSize && newNum < this.maxSize)
 					this.elementToResize.style.height = newNum + 'px';
+					this.el.nativeElement.style.top = `${this.elementToResize.clientHeight}px`;
 			}
 	}
 }

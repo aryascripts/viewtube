@@ -1,0 +1,26 @@
+html {
+	box-sizing: border-box;
+}
+* {
+	box-sizing: inherit;
+}
+
+body {
+	-webkit-app-region: drag;
+	width: 100vw;
+	height: 100vh;
+	background-color: black;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.player {
+	width: 100%;
+	height: 100%;
+}
+
+iframe#player {
+	width: 100vw;
+	height: 100vh;
+}

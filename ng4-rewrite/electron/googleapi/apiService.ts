@@ -52,12 +52,13 @@ export class YoutubeApiService {
 		})
 	}
 
-	async getPlaylistVideos(params: {playlistId: string, pageToken: string}) {
+	async getPlaylistVideos(params: {playlistId: string, nextPage: string}) {
 		return new Promise((resolve, reject) => {
 			const request = {
 				part: 'snippet',
 				maxResults: 25,
-				...params
+				playlistId: params.playlistId,
+				pageToken: params.nextPage
 			};
 			this.youtube.playlistItems.list(request, (err, res) => {
 				if (err) reject(err);

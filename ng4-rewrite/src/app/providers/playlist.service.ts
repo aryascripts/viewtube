@@ -80,6 +80,7 @@ export class PlaylistsService {
 		if (this.videosMap[id] && this.videosMap[id].value.nextPage) {
 			data.nextPage = this.videosMap[id].value.nextPage
 		}
+		console.log(this.videosMap[id].value);
 		this.electronService.send(EventType.GET_PLIST_VIDEOS, data);
 	}
 

@@ -3,6 +3,8 @@ import { Playlist } from './../../models/Playlist';
 import { PlaylistsService } from './../../providers/playlist.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { PagedVideos } from './../../models/PagedVideos';
+import {Video} from './../../models/Video';
+import { VideoService } from './../../providers/video.service';
 
 @Component({
   selector: 'app-playlist-view',
@@ -13,6 +15,7 @@ export class PlaylistViewComponent implements OnInit {
 
   constructor(    
     private playlistService: PlaylistsService,
+    private videoService: VideoService,
     private route: ActivatedRoute) { }
 
   playlist: Playlist;
@@ -38,6 +41,7 @@ export class PlaylistViewComponent implements OnInit {
     if (!this.playlist || (this.playlist && this.playlist.id !== playlistId)) {
       this.playlist = this.playlistService.getCachedPlaylistById(playlistId);
     }
+
 
     if (!this.sub || (this.playlist && (this.playlist.id !== playlistId))) {
       this.sub = this.playlistService.getPlaylistVideosSubject(playlistId)
@@ -65,5 +69,9 @@ export class PlaylistViewComponent implements OnInit {
 
   showLoadingButton(): boolean {
     return !this.loading && (this.paged.videos.length < this.paged.totalCount);
+  }
+
+  playVideo(video: Video) {
+    this.videoService.playVideo(video);
   }
 }

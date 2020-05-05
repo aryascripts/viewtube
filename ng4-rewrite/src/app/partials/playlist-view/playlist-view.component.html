@@ -24,7 +24,9 @@
 
 	<!-- VIDEOS LIST -->
 	<div *ngIf="paged" class="videos">
-		<app-video-list [videos]="paged.videos">
+		<app-video-list 
+			(videoClicked)="playVideo($event)"
+			[videos]="paged.videos">
 		</app-video-list>
 
 		<button (click)="loadMore()" class="primary"
@@ -32,7 +34,7 @@
 			Load More
 		</button>
 
-		<app-loading *ngIf="!showLoadingButton()">
+		<app-loading *ngIf="loading && !showLoadingButton()">
 		</app-loading>
 	</div>
 

@@ -17,6 +17,9 @@ export const eventHandlers = {
 	},
 	[EventType.GET_PLIST_VIDEOS]: async (event, data) => {
 		ReplyEvents.sendPlaylistVideos(data);
+	},
+	[EventType.PLAY_VIDEO]: (event, data) => {
+		Main.createVideoWindow(data);
 	}
 }
 

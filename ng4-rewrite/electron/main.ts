@@ -4,9 +4,12 @@ import * as path from 'path';
 export default class Main {
   static mainWin: BrowserWindow;
   static authWin: BrowserWindow;
+  static videoWindow: BrowserWindow;
 
   static application: Electron.App;
   static BrowserWindow;
+
+  static readonly videoUrl = `file:///${__dirname}/video/index.html`;
 
   static onWindowAllClosed() {
     if (process.platform !== 'darwin')
@@ -54,5 +57,45 @@ export default class Main {
 
   static sendMessage(name:string, data:any) {
       Main.mainWin.webContents.send(name, data)
+  }
+
+  static createVideoWindow(params: {videoId: string, time: string}) {
+
+    if (Main.videoWindow) {
+      Main.changeVideoUrl(params);
+      return;
+    }
+    
+    Main.videoWindow = new BrowserWindow({
+        show: true,
+        width: 750,
+        height: 530,
+        'minWidth': 720,
+        'minHeight': 100,
+        'acceptFirstMouse': true,
+        'titleBarStyle': 'hidden',
+        'alwaysOnTop': true,
+        webPreferences: {
+          nodeIntegration: true
+        }
+    });
+    Main.changeVideoUrl(params);
+
+    Main.videoWindow.once('ready-to-show', () => {
+        Main.videoWindow.show();
+    });
+
+    Main.videoWindow.on('closed', () => {
+        Main.videoWindow = null;
+    });
+
+    Main.videoWindow.webContents.on('new-window', function(e, url) {
+      e.preventDefault();
+      require('electron').shell.openExternal(url);
+    });
+  }
+
+  static changeVideoUrl(params: {videoId: string, time: string}) {
+    Main.videoWindow.loadURL(Main.videoUrl + `?videoId=${params.videoId}&time=${params.time}`);
   }
 }
