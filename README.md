@@ -32,7 +32,7 @@ To run the program follow the following:
 - [ ] Add logout option
 - [x] Get account playlists
 - [x] Store playlist in JSON form in neDB
-- [ ] Store watched videos in NEDB (playlistId, videoId, watchedPercentage)
+- [x] Store watched videos in NEDB (playlistId, videoId, watchedPercentage)
 - [ ] Display watched percentages on the UI (playlist-view)
 - [ ] Sequential Playlists - load next video automatically
 	- [ ] Handle the following: 
