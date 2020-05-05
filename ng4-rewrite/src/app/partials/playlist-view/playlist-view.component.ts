@@ -5,6 +5,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { PagedVideos } from './../../models/PagedVideos';
 import {Video} from './../../models/Video';
 import { VideoService } from './../../providers/video.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-playlist-view',
@@ -20,7 +21,7 @@ export class PlaylistViewComponent implements OnInit {
 
   playlist: Playlist;
   loading: boolean;
-  sub: any;
+  sub: Subscription;
 
   paged: PagedVideos;
 
@@ -38,16 +39,16 @@ export class PlaylistViewComponent implements OnInit {
     // We only nede to get the playlist when its
     // undefined or not the one we want from route
     const playlistId = params.id;
-    if (!this.playlist || (this.playlist && this.playlist.id !== playlistId)) {
-      this.playlist = this.playlistService.getCachedPlaylistById(playlistId);
-    }
-
 
     if (!this.sub || (this.playlist && (this.playlist.id !== playlistId))) {
+      if (this.sub) this.sub.unsubscribe();
       this.sub = this.playlistService.getPlaylistVideosSubject(playlistId)
                   .subscribe(this.handleVideosAddedChanged.bind(this, playlistId))
     }
-    
+
+    if (!this.playlist || (this.playlist && this.playlist.id !== playlistId)) {
+      this.playlist = this.playlistService.getCachedPlaylistById(playlistId);
+    }
   }
 
   handleVideosAddedChanged(playlistId: string, value: PagedVideos) {
