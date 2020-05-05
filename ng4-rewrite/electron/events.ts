@@ -20,6 +20,9 @@ export const eventHandlers = {
 	},
 	[EventType.PLAY_VIDEO]: (event, data) => {
 		Main.createVideoWindow(data);
+	},
+	[EventType.UPDATE_TIME]: (event, data) => {
+		Main.sendMessage(EventType.UPDATE_TIME, data);
 	}
 }
 

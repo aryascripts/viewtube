@@ -39,7 +39,17 @@ To run the program follow the following:
 		- Mark videos watched with for ones before
 		- Mark videos next as unwatched
 		- Load next video at stopped time when Resumed
+		- Load next page if next video is not available
+[ ] Random Playlists - 
+		- Handle loading from current page
+		- After exhaustion, load from next page
 [ ] Playlist summary next to resume
+[ ] Add settings page
+		- Default playlist type (sequential or random)
+		- Export data to file
+		- Import data from file
+		- Mark videos watched after x percentage
+		- Logout option
 
 ## Nice to Have list
 [ ] Google Drive backup integration

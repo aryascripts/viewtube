@@ -44,10 +44,12 @@ export class PlaylistViewComponent implements OnInit {
       if (this.sub) this.sub.unsubscribe();
       this.sub = this.playlistService.getPlaylistVideosSubject(playlistId)
                   .subscribe(this.handleVideosAddedChanged.bind(this, playlistId))
+      this.playlistService.loadWatchedVideosFromDb(playlistId);
     }
 
     if (!this.playlist || (this.playlist && this.playlist.id !== playlistId)) {
       this.playlist = this.playlistService.getCachedPlaylistById(playlistId);
+      
     }
   }
 

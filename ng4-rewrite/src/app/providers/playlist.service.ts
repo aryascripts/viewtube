@@ -6,6 +6,7 @@ import { EventType } from '../models/Events';
 import { DataStoreService } from './data-store.service';
 import { Video } from '../models/Video';
 import { PagedVideos } from '../models/PagedVideos';
+import { VideoMetadata } from '../models/VideoMetadata';
 
 @Injectable()
 export class PlaylistsService {
@@ -16,6 +17,8 @@ export class PlaylistsService {
 	public lastPlaylistId: string;
 
 	public videosMap: {[playlistid: string]: BehaviorSubject<PagedVideos> };
+
+	public watchedVideos: {[id: string]: VideoMetadata} = {};
 
 	constructor(
 		private electronService: AppElectronService,
@@ -29,7 +32,7 @@ export class PlaylistsService {
 		this.electronService.listen(EventType.ACCOUNT_PLAYLISTS, this.addAccountPlaylists.bind(this));
 		this.electronService.listen(EventType.GET_PLIST_VIDEOS_REPLY, this.updateVideosMap.bind(this));
 
-		this.getCustomPlaylists();
+		this.loadFromDatabase();
 	}
 
 	addAccountPlaylists(event: any, resp: any) {
@@ -56,10 +59,23 @@ export class PlaylistsService {
 		}
 	}
 
-	async getCustomPlaylists() {
+	async loadFromDatabase() {
 		const playlists = (await this.database.getCustomPlaylists())
 												.map(item => new Playlist(item));
 		this.customPlaylists.next(playlists);
+	}
+
+	async loadWatchedVideosFromDb(playlistId: string) {
+		const documents: any[] = await this.database.getWatchedVideosForPlaylist(playlistId);
+		console.log(documents);
+		const newDocuments = {};
+		documents.forEach(doc => {
+			newDocuments[doc.videoId] = doc
+		});
+		this.watchedVideos = {
+			...this.watchedVideos,
+			...newDocuments
+		}
 	}
 
 	getCachedPlaylistById(id: string): Playlist {
@@ -102,5 +118,27 @@ export class PlaylistsService {
 			this.videosMap[id] = new BehaviorSubject<PagedVideos>(new PagedVideos());;
 		}
 		return this.videosMap[id];
+	}
+
+	async updateVideoTime(id: string, time: number) {
+		 this.watchedVideos[id] = this.watchedVideos[id] ? this.watchedVideos[id] : {
+			 videoId: id,
+			 playlistId: this.getPlaylistIdFromVideoId(id)
+		 };
+		 this.watchedVideos[id].seconds = Math.floor(time) - 10;
+		 return this.database.saveWatchedVideo(this.watchedVideos[id]);
+	}
+
+	getPlaylistIdFromVideoId(videoId: string) {
+		let playlistId;
+		Object.keys(this.videosMap)
+			.forEach(playlist => {
+				const current = this.videosMap[playlist].value;
+				console.log(current);
+				if (current.videos.some(v => v.id === videoId)) {
+					playlistId = playlist;
+				}
+			});
+		return playlistId;
 	}
 }

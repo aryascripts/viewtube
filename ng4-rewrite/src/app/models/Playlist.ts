@@ -1,12 +1,14 @@
 import { Video } from './Video';
+import { DatabaseObject } from './DatabaseObject';
 
 export enum PlaylistType {
 	CUSTOM = 'custom',
 	ACCOUNT = 'account'
 }
 
-export class Playlist {
+export class Playlist extends DatabaseObject {
 
+	documentType: string;
 	title:string;
 	id:string;	
 	videos: Array<Video>;
@@ -44,6 +46,7 @@ export class Playlist {
 		description: null,
 		thumbnails: null,
 	}) {
+		super();
 		this.totalVideos = info.totalVideos
 		this.id = info.id
 		this.title = info.title
