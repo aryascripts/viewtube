@@ -29,7 +29,7 @@ export class PlaylistDetailComponent implements OnChanges {
 	checkForAlreadyAdded(playlists: Playlist[]) {
 		const ids = playlists.map(playlist => playlist.id);
 		if (this.playlist && ids.includes(this.playlist.id)) {
-			this.content = 'ADDED!';
+			this.content = 'ADDED TO PLAYLISTS';
 			this.btnClass = 'secondary'
 		}
 		else {

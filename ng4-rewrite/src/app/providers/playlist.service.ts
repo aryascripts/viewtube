@@ -89,8 +89,10 @@ export class PlaylistsService {
 			const current: PagedVideos = this.videosMap[playlistId].value;
 
 			current.addVideos(response.data.items.map(item => new Video(item)));
+			current.totalCount = response.data.pageInfo.totalResults;
+			current.nextPage = response.data.nextPageToken;
+
 			this.videosMap[playlistId].next(current);
-			console.log(current);
 		}
 	}
 

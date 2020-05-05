@@ -1,6 +1,11 @@
+<h1 class="section-title">Videos</h1>
+
 <div *ngFor="let video of videos" class="flex nowrap video">
 	<div class="thumbnail">
 		<img [src]="video.thumbnails?.default?.url" alt="">
-</div>
+	</div>
 
+	<div class="content">
+		<div class="title">{{video.title}}</div> 
+	</div>
 </div>

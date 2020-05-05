@@ -2,3 +2,20 @@
 	height: 70px;
 	align-items: center;
 }
+
+.videos {
+	display: flex;
+	flex-direction: column;
+
+	button {
+		align-self: center;
+		&:active {
+			border: none;
+			outline: none;
+		}
+	}
+}
+
+.playlist-view {
+	padding-bottom: 25px;
+}

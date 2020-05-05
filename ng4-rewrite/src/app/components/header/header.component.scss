@@ -14,11 +14,14 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
     overflow: hidden;
-    word-break: break-word;
-	}
+		word-break: break-word;
+		min-width: 112px;
+		text-align: center;
 
-	.item.grow {
-		flex-grow: 1;
+		&.grow {
+			flex-grow: 1;
+			text-align: left;
+		}
 	}
 	
 }

@@ -1,5 +1,5 @@
 
-<div *ngIf="playlist">
+<div *ngIf="playlist" class="playlist-view">
 	<app-playlist-detail
 		[playlist]="playlist">
 	</app-playlist-detail>
@@ -25,8 +25,15 @@
 	<!-- VIDEOS LIST -->
 	<div *ngIf="paged" class="videos">
 		<app-video-list [videos]="paged.videos">
-
 		</app-video-list>
+
+		<button (click)="loadMore()" class="primary"
+			*ngIf="showLoadingButton()">
+			Load More
+		</button>
+
+		<app-loading *ngIf="!showLoadingButton()">
+		</app-loading>
 	</div>
 
 </div>

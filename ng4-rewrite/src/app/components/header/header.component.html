@@ -1,7 +1,7 @@
 <div class="nav-container">
 	<div class="item" [routerLink]="['/']">Home</div>
 	<div class="item" [routerLink]="['/search']">Search</div>
-	<div class="item grow" *ngIf="playlistService.lastPlaylist" [routerLink]="['/playlist', playlistService.lastPlaylist.id]">
+	<div class="item grow left" *ngIf="playlistService.lastPlaylist" [routerLink]="['/playlist', playlistService.lastPlaylist.id]">
 		{{playlistService.lastPlaylist.title}}, by {{playlistService.lastPlaylist.channelName}}
 	</div>
 </div>

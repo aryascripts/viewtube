@@ -22,6 +22,7 @@ export class PlaylistViewComponent implements OnInit {
   paged: PagedVideos;
 
   ngOnInit() {
+    this.loading = true;
     this.route.params
       .subscribe(this.handleRouteParams.bind(this));
     this.playlistService.customPlaylists
@@ -39,7 +40,6 @@ export class PlaylistViewComponent implements OnInit {
     }
 
     if (!this.sub || (this.playlist && (this.playlist.id !== playlistId))) {
-      console.log('subscribing...');
       this.sub = this.playlistService.getPlaylistVideosSubject(playlistId)
                   .subscribe(this.handleVideosAddedChanged.bind(this, playlistId))
     }
@@ -51,9 +51,19 @@ export class PlaylistViewComponent implements OnInit {
       this.playlistService.getVideosForPlaylist(playlistId);
     }
     this.paged = value;
+    this.loading = false;
   }
 
   handleResume() {
     console.log('resuming...');
+  }
+
+  loadMore() {
+    this.loading = true;
+    this.playlistService.getVideosForPlaylist(this.playlist.id);
+  }
+
+  showLoadingButton(): boolean {
+    return !this.loading && (this.paged.videos.length < this.paged.totalCount);
   }
 }
