@@ -2,14 +2,17 @@
 
 <div 
 	*ngFor="let video of videos" 
-	class="flex nowrap video"
 	(click)="handleVideoClick(video)">
-	<div class="thumbnail">
-		<img [src]="video.thumbnails?.default?.url" alt="">
+	<div class="flex nowrap video">
+		<div class="thumbnail">
+			<img [src]="video.thumbnails?.default?.url" alt="">
+		</div>
+	
+		<div class="content">
+			<div class="title">{{video.title}}</div>
+		</div>
 	</div>
-
-	<div class="content">
-		<div class="title">{{video.title}}</div>
-		<div>{{getVideoTime(video.id)}}</div>
+	<div class="line">
+		<div class="red-bar" [ngStyle]="{width: getVideoPercentage(video)}"></div>
 	</div>
 </div>

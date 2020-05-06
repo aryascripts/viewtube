@@ -26,4 +26,13 @@ export class VideoListComponent implements OnInit {
     return metadata ? metadata.seconds : 0;
   }
 
+  getVideoPercentage(video: Video) {
+    const metadata = this.playlistService.watchedVideos[video.id];
+    const seconds = this.getVideoTime(video.id);
+    if (metadata && seconds) {
+      return `${Math.floor((seconds / metadata.totalSeconds) * 100)}%`;
+    }
+    return '0';
+  }
+
 }

@@ -149,7 +149,7 @@ export class PlaylistsService {
 	 * @param id 
 	 * @param time 
 	 */
-	async updateVideoTime(data) {
+	async updateVideoTime(event, data) {
 		const id = data.videoId;
 		const time = data.time;
 		const duration = data.duration;
