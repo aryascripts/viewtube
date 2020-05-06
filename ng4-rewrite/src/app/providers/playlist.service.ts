@@ -213,11 +213,12 @@ export class PlaylistsService {
 		const id = data.videoId;
 		this.watchedVideos[id] = {
 			...this.watchedVideos[id],
+			videoId: id,
 			watched: true,
 			totalSeconds: data.duration,
 			seconds: data.duration
 		};
-		if (this.watchedVideos[id].playlistId) 
+		if (!this.watchedVideos[id].playlistId) 
 			this.watchedVideos[id].playlistId = this.getPlaylistIdFromVideoId(id);
 
 		const videoPages = this.videosMap[this.watchedVideos[id].playlistId].value;
@@ -233,7 +234,41 @@ export class PlaylistsService {
 			this.playVideo(videoPages.videos[index + 1]);
 		}
 
+		console.log('saveWatchedToDb', this.watchedVideos[id]);
 		this.database.saveWatchedVideo(this.watchedVideos[id]);
+	}
+
+	handlePlaylistResume(playlist: Playlist) {
+		switch(playlist.order) {
+			case PlaylistOrder.SEQUENTIAL:
+				this.playNextSequential(playlist)
+			break;
+			case PlaylistOrder.RANDOM: 
+				console.log('random is not built')
+			break;
+		}
+	}
+
+	playNextSequential(playlist: Playlist) {
+		const id = playlist.id;
+		const sub = this.videosMap[id].subscribe((value: PagedVideos) => {
+			const videos = value.videos;
+			// Video does not exist in 'watched'
+			// or it is partially 'watched'
+			const index = videos.findIndex(v => {
+				return (!this.watchedVideos[v.id]) || 
+						    this.watchedVideos[v.id] && !this.watchedVideos[v.id].watched;
+			});
+			console.log(index, videos);
+
+			if (index > -1) {
+				this.playVideo(videos[index]);
+				sub.unsubscribe();
+			}
+			else {
+				this.getVideosForPlaylist(playlist.id);
+			}
+		});
 	}
 
 }

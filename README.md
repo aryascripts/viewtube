@@ -33,17 +33,16 @@ To run the program follow the following:
 - [x] Get account playlists
 - [x] Store playlist in JSON form in neDB
 - [x] Store watched videos in NEDB (playlistId, videoId, watchedPercentage)
-- [ ] Display watched percentages on the UI (playlist-view)
+- [x] Display watched percentages on the UI (playlist-view)
 - [ ] Sequential Playlists - load next video automatically
-	- [ ] Handle the following: 
-	- [ ] Mark videos watched with for ones before
+	- [ ] Mark videos watched with for ones before (based on settings)
 	- [ ] Mark videos next as unwatched
-	- [ ] Load next video at stopped time when Resumed
-	- [ ] Load next page if next video is not available
+	- [x] Load next video at stopped time when Resumed
+	- [x] Load next page if next video is not available
 - [ ] Random Playlists - 
 	- [ ] Handle loading from current page
 	- [ ] After exhaustion, load from next page
-- [ ] Playlist summary next to resume
+- [x] Playlist summary next to resume
 - [ ] Add settings page
 	- [ ] Default playlist type (sequential or random)
 	- [ ] Export data to file
@@ -51,8 +50,8 @@ To run the program follow the following:
 	- [ ] Mark videos watched after x percentage
 	- [ ] Logout option
 - [ ] Remove Playlists from Custom
-- [ ] Mark videos watched
-- [ ] Mark videos unwatched
+- [ ] Mark videos watched (manually)
+- [ ] Mark videos unwatched (manually)
 
 ## Nice to Have list
 - [ ] Google Drive backup integration

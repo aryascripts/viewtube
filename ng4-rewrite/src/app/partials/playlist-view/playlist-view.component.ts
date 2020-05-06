@@ -61,7 +61,7 @@ export class PlaylistViewComponent implements OnInit {
   }
 
   handleResume() {
-    console.log('resuming...');
+    this.playlistService.handlePlaylistResume(this.playlist);
   }
 
   loadMore() {

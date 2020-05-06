@@ -27,14 +27,7 @@ export class Playlist extends DatabaseObject {
 
 	getThumbnailUrl = () => this.thumbnails['default'].url;
 
-	constructor(info: {
-		totalVideos: null,
-		id: null,
-		title: null,
-		channelName: null,
-		description: null,
-		thumbnails: null,
-	}) {
+	constructor(info) {
 		super();
 		this.totalVideos = info.totalVideos
 		this.id = info.id
@@ -42,6 +35,7 @@ export class Playlist extends DatabaseObject {
 		this.channelName = info.channelName
 		this.description = info.description || `${this.channelName} has not set a description for this playlist. Go bug them about it, not me!`
 		this.thumbnails = info.thumbnails
+		this.order = info.order;
 	}
 	
 	static fromPlaylistsList(info: any) {
