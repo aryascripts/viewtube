@@ -19,8 +19,9 @@ export class PlaylistsService {
 	public lastPlaylistId: string;
 
 	public videosMap: {[playlistid: string]: BehaviorSubject<PagedVideos> };
-
 	public watchedVideos: {[id: string]: VideoMetadata} = {};
+
+	private playNextVideoFor: string;
 
 	constructor(
 		private electronService: AppElectronService,
@@ -115,7 +116,6 @@ export class PlaylistsService {
 		if (this.videosMap[id] && this.videosMap[id].value.nextPage) {
 			data.nextPage = this.videosMap[id].value.nextPage
 		}
-		console.log(this.videosMap[id].value);
 		this.electronService.send(EventType.GET_PLIST_VIDEOS, data);
 	}
 
@@ -124,10 +124,15 @@ export class PlaylistsService {
 			const playlistId: string = response.config.params.playlistId;
 			const current: PagedVideos = this.videosMap[playlistId].value;
 
-			current.addVideos(response.data.items.map(item => new Video(item)));
+			const newVideos = response.data.items.map(item => new Video(item));
+			current.addVideos(newVideos);
 			current.totalCount = response.data.pageInfo.totalResults;
 			current.nextPage = response.data.nextPageToken;
 
+			if (this.playNextVideoFor === playlistId) {
+				this.playVideo(newVideos[0]);
+				this.playNextVideoFor = undefined;
+			}
 			this.videosMap[playlistId].next(current);
 		}
 	}
@@ -212,12 +217,15 @@ export class PlaylistsService {
 			totalSeconds: data.duration,
 			seconds: data.duration
 		};
+		if (this.watchedVideos[id].playlistId) 
+			this.watchedVideos[id].playlistId = this.getPlaylistIdFromVideoId(id);
 
 		const videoPages = this.videosMap[this.watchedVideos[id].playlistId].value;
 		const index = videoPages.videos.findIndex(v => v.id === id);
 		// TODO - load more pages if this is the last one in the page
-		if (index === videoPages.videos.length - 1) {
-
+		if (index >= videoPages.videos.length - 1) {
+			this.playNextVideoFor = this.watchedVideos[id].playlistId;
+			this.getVideosForPlaylist(this.watchedVideos[id].playlistId)
 		}
 		// Load next video in the list
 		else {
