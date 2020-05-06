@@ -74,6 +74,6 @@ export class PlaylistViewComponent implements OnInit {
   }
 
   playVideo(video: Video) {
-    this.playlistService.playVideo(video);
+    this.playlistService.playVideo(video, this.playlist.id);
   }
 }

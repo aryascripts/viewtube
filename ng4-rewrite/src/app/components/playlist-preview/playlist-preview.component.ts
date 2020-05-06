@@ -26,7 +26,7 @@ export class PlaylistPreviewComponent {
   }
 
   getPlaylistType() {
-    return this.playlist.order === PlaylistOrder.SEQUENTIAL ? 'Sequential' : 'Random';
+    return this.playlist.settings.order === PlaylistOrder.SEQUENTIAL ? 'Sequential' : 'Random';
   }
 
 }

@@ -1,5 +1,6 @@
 import { Injectable, Inject} from '@angular/core';
-import { Playlist, PlaylistType } from '../models/Playlist';
+import { Playlist } from '../models/Playlist';
+import { PlaylistType } from '../models/AppConfig';
 import { ReplaySubject, BehaviorSubject } from 'rxjs';
 import { AppElectronService } from './electron.service';
 import { EventType } from '../models/Events';
@@ -9,6 +10,7 @@ import { PagedVideos } from '../models/PagedVideos';
 import { VideoMetadata } from '../models/VideoMetadata';
 import { PlaylistOrder } from '../models/AppConfig';
 import { AppConfigService } from './app-config.service';
+import {takeWhile} from 'rxjs/operators';
 
 @Injectable()
 export class PlaylistsService {
@@ -58,15 +60,18 @@ export class PlaylistsService {
 	}
 
 	addCustomPlaylist(playlist: Playlist) {
-		const sub = this.appConfig.config.subscribe(value => {
-			if (!this.customPlaylists.value.some(p => playlist.id === p.id)) {
-				playlist.order = value.defaultType;
-				this.database.savePlaylist(playlist, PlaylistType.CUSTOM);
-				this.customPlaylists.next([...this.customPlaylists.value, playlist]);
-				console.log(playlist);
-			}
-			sub.unsubscribe();
-		});
+		this.appConfig.config
+			.pipe(takeWhile((value) => {
+				return value !== undefined;
+			}, true))
+			.subscribe(value => {
+				if (!this.customPlaylists.value.some(p => playlist.id === p.id)) {
+					playlist.settings.order = value.defaultType;
+					playlist.settings.type = PlaylistType.CUSTOM;
+					this.database.savePlaylist(playlist);
+					this.customPlaylists.next([...this.customPlaylists.value, playlist]);
+				}
+			});
 	}
 
 	async loadFromDatabase() {
@@ -74,6 +79,15 @@ export class PlaylistsService {
 												.map(item => new Playlist(item));
 		this.customPlaylists.next(playlists);
 	}
+
+	async updatePlaylist(playlist: Playlist) {
+		const current = this.customPlaylists.value;
+		const index = current.findIndex(p => p.id === playlist.id);
+		current[index] = playlist;
+		this.customPlaylists.next(current);
+		await this.database.savePlaylist(playlist);
+	}
+
 
 	async loadWatchedVideosFromDb(playlistId: string) {
 		const documents: any[] = await this.database.getWatchedVideosForPlaylist(playlistId);
@@ -101,13 +115,17 @@ export class PlaylistsService {
 		}
 	}
 
-  playVideo(video: Video) {
+  async playVideo(video: Video, playlistId: string) {
     const lastPlayTime = this.watchedVideos[video.id] 
-    ? this.watchedVideos[video.id].seconds : 0;
+												 ? this.watchedVideos[video.id].seconds : 0;
     this.electronService.send(EventType.PLAY_VIDEO, {
       videoId:  video.id,
       time: lastPlayTime
-    });
+		});
+
+		const playlist: Playlist = this.customPlaylists.value.find(p => p.id === playlistId);
+		playlist.lastWatchedVideoId = video.id;
+		await this.updatePlaylist(playlist);
   }
 
 
@@ -130,7 +148,7 @@ export class PlaylistsService {
 			current.nextPage = response.data.nextPageToken;
 
 			if (this.playNextVideoFor === playlistId) {
-				this.playVideo(newVideos[0]);
+				this.playVideo(newVideos[0], playlistId);
 				this.playNextVideoFor = undefined;
 			}
 			this.videosMap[playlistId].next(current);
@@ -231,15 +249,14 @@ export class PlaylistsService {
 		}
 		// Load next video in the list
 		else {
-			this.playVideo(videoPages.videos[index + 1]);
+			this.playVideo(videoPages.videos[index + 1], this.watchedVideos[id].playlistId);
 		}
 
-		console.log('saveWatchedToDb', this.watchedVideos[id]);
 		this.database.saveWatchedVideo(this.watchedVideos[id]);
 	}
 
 	handlePlaylistResume(playlist: Playlist) {
-		switch(playlist.order) {
+		switch(playlist.settings.order) {
 			case PlaylistOrder.SEQUENTIAL:
 				this.playNextSequential(playlist)
 			break;
@@ -251,24 +268,35 @@ export class PlaylistsService {
 
 	playNextSequential(playlist: Playlist) {
 		const id = playlist.id;
-		const sub = this.videosMap[id].subscribe((value: PagedVideos) => {
-			const videos = value.videos;
-			// Video does not exist in 'watched'
-			// or it is partially 'watched'
-			const index = videos.findIndex(v => {
-				return (!this.watchedVideos[v.id]) || 
-						    this.watchedVideos[v.id] && !this.watchedVideos[v.id].watched;
-			});
-			console.log(index, videos);
+		let played = false;
+		this.videosMap[id]
+			.pipe(
+				takeWhile((value) => {
+					const index = value.videos.findIndex(v => {
+						return (!this.watchedVideos[v.id]) || 
+										this.watchedVideos[v.id] && !this.watchedVideos[v.id].watched;
+					});
 
-			if (index > -1) {
-				this.playVideo(videos[index]);
-				sub.unsubscribe();
-			}
-			else {
-				this.getVideosForPlaylist(playlist.id);
-			}
-		});
+					console.log(!played, index < 0);
+					return !played || index < 0;
+			}, false))
+			.subscribe((value: PagedVideos) => {
+				const videos = value.videos;
+				// Video does not exist in 'watched'
+				// or it is partially 'watched'
+				const index = videos.findIndex(v => {
+					return (!this.watchedVideos[v.id]) || 
+									this.watchedVideos[v.id] && !this.watchedVideos[v.id].watched;
+				});
+
+				if (index > -1) {
+					this.playVideo(videos[index], id);
+					played = true;
+				}
+				else {
+					this.getVideosForPlaylist(playlist.id);
+				}
+			});
 	}
 
 }

@@ -16,3 +16,34 @@ export const defaultConfig: AppConfig = {
 	defaultType: PlaylistOrder.SEQUENTIAL,
 	watchedAfter: 0.95
 };
+
+export enum PlaylistType {
+	CUSTOM = 'custom',
+	ACCOUNT = 'account'
+}
+
+
+
+/**
+ * SETTINGS PER PLAYLIST
+ */
+export interface PlaylistSettings {
+	type: PlaylistType;
+	order: PlaylistOrder;
+	resumeBehavior: ResumeBehavior;
+	markPreviousWatched: boolean;
+	markNextUnwatched: boolean;
+}
+
+export enum ResumeBehavior {
+	LAST_PLAYED = 'last-played',
+	FIRST_UNWATCHED = 'first-unwatched'
+}
+
+export const defaultPlaylistSettings: PlaylistSettings = {
+	type: PlaylistType.CUSTOM,
+	order: PlaylistOrder.SEQUENTIAL,
+	resumeBehavior: ResumeBehavior.FIRST_UNWATCHED,
+	markPreviousWatched: true,
+	markNextUnwatched: false
+}

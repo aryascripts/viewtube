@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import DataStore from  'nedb';
-import { Playlist, PlaylistType } from '../models/Playlist';
-import { resolve } from 'url';
+import { Playlist } from '../models/Playlist';
+import {PlaylistType} from './../models/AppConfig';
 import { VideoMetadata } from '../models/VideoMetadata';
 import { AppConfig, defaultConfig } from '../models/AppConfig';
 
@@ -24,19 +24,38 @@ export class DataStoreService {
     // this.database.remove({}, {multi: true}, (err, docs) => {});
   }
 
-  savePlaylist(playlist: Playlist, type: PlaylistType) {
-    playlist.type = type;
-    playlist.documentType = DocumentType.PLAYLIST;
-    this.database.insert(playlist, (err, newDocs) => {
-      console.log('inserted one', newDocs);
+  savePlaylist(playlist: Playlist) {
+    return new Promise(async (resolve, reject) => {
+      playlist.documentType = DocumentType.PLAYLIST;
+      const existing: any[] = await this.findPlaylistById(playlist.id);
+      if (existing.length) {
+        // Update playlist
+        const old = existing[0];
+        this.database.update({id: playlist.id}, playlist, {}, (err, docs) => {
+          if (err) reject(err);
+          resolve(docs);
+          console.log('updated playlist', docs);
+        });
+  
+      }
+      else {
+        this.database.insert(playlist, (err, newDocs) => {
+          if (err) reject(err);
+          resolve(newDocs);
+        });
+      }
     });
+
   }
 
   getCustomPlaylists(): Promise<any[]> {
     return new Promise((resolve, reject) => {
-      this.database.find({type: PlaylistType.CUSTOM}, (err, docs) => {
-        if (err) reject(err);
-        resolve(docs);
+      this.database.find({
+          documentType: DocumentType.PLAYLIST, 
+          "settings.type": PlaylistType.CUSTOM}, 
+        (err, docs) => {
+          if (err) reject(err);
+          resolve(docs);
       });
     })
   }
@@ -82,6 +101,17 @@ export class DataStoreService {
       })
     });
   }
+
+
+  findPlaylistById(id: string): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      this.database.find({id: id, documentType: DocumentType.PLAYLIST}, (err, docs) => {
+        if (err) reject(err);
+        resolve(docs);
+      })
+    });
+  }
+
 
   insert(document) {
     return new Promise((resolve, reject) => {

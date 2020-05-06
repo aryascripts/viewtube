@@ -1,11 +1,6 @@
 import { Video } from './Video';
 import { DatabaseObject } from './DatabaseObject';
-import { PlaylistOrder } from './AppConfig';
-
-export enum PlaylistType {
-	CUSTOM = 'custom',
-	ACCOUNT = 'account'
-}
+import { PlaylistSettings, defaultPlaylistSettings } from './AppConfig';
 
 export class Playlist extends DatabaseObject {
 
@@ -18,24 +13,20 @@ export class Playlist extends DatabaseObject {
 	thumbnails:object;
 	description:string;
 
-	type: PlaylistType;
-	order: PlaylistOrder;
-	
-	totalVideos:number;
+	settings: PlaylistSettings;
 
-	totalTime:string;
+	lastWatchedVideoId: string;
 
 	getThumbnailUrl = () => this.thumbnails['default'].url;
 
 	constructor(info) {
 		super();
-		this.totalVideos = info.totalVideos
 		this.id = info.id
 		this.title = info.title
 		this.channelName = info.channelName
 		this.description = info.description || `${this.channelName} has not set a description for this playlist. Go bug them about it, not me!`
 		this.thumbnails = info.thumbnails
-		this.order = info.order;
+		this.settings = {...defaultPlaylistSettings};
 	}
 	
 	static fromPlaylistsList(info: any) {
