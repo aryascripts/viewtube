@@ -21,6 +21,7 @@ export class DataStoreService {
   constructor() {
     this.database = new DataStore({filename: './database-viewtube.db'});
     this.database.loadDatabase();
+    // this.database.remove({}, {multi: true}, (err, docs) => {});
   }
 
   savePlaylist(playlist: Playlist, type: PlaylistType) {
@@ -96,8 +97,12 @@ export class DataStoreService {
       this.database.find({documentType: DocumentType.APP_CONFIG}, async (err, docs) => {
         if (err) reject(err)
         if (!docs.length) {
-          await this.insert(defaultConfig);
-          resolve(defaultConfig);
+          const config = {
+            ...defaultConfig,
+            documentType: DocumentType.APP_CONFIG
+          };
+          await this.insert(config);
+          resolve(config);
         }
         else {
           resolve(docs[0]);

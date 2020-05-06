@@ -4,4 +4,6 @@ export interface VideoMetadata extends DatabaseObject {
 	videoId: string;
 	playlistId: string;
 	seconds?: number;
+	totalSeconds: number;
+	watched: boolean; 
 }

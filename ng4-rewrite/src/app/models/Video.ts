@@ -19,23 +19,7 @@ export class Video {
 		this.percentage = Math.floor((time / this.durationSec)*100);
 		this.watchingTime = Math.floor(time);
 	}
-
-	setWatched = (val) => {
-		this.watched = val;
-		if(val) {
-			this.watching = !val;
-			this.percentage = 100;
-		}
-		else {
-			this.percentage = 0;
-		}
-	}
-
-	setWatching = (val) => {
-		this.watching = val;
-		this.watched = !val; 
-	}
-
+	
 	clearWatchedWatching = () => {
 		this.watching = false;
 		this.watched = false;
@@ -60,28 +44,6 @@ export class Video {
 
 		this.watching = false;
 		this.watchingTime = 0;
-	}
-
-	public setData(data, watchedList, watchingList) {
-		let dur = this.convertTime(data['items'][0]['contentDetails']['duration']);
-		this.durationSec = dur.seconds;
-		this.duration = dur.string;
-
-		if(watchedList.includes(this.id)) {
-			this.watched = true;
-		}
-
-		//A video cannot be made both 'watched' and 'watching'
-		else {
-			for(let i = 0; i < watchingList.length; i++) {
-				if(watchingList[i].id === this.id) {
-					this.watching = true;
-					this.watchingTime = watchingList[i].time
-					this.percentage = Math.floor(watchingList[i].time / this.durationSec * 100);
-					break;
-				}
-			}
-		}
 	}
 
 	public convertTime(duration) {

@@ -14,6 +14,10 @@ function handleUrlChange(href) {
 	player.playVideo();
 	player.getVideoUrl();
 
+	player.on('stateChange', handleStateChange);
+
+	console.log(player);
+
 	setInterval(sendUpdateTime, 30000);
 }
 
@@ -28,9 +32,23 @@ function getSearchParams() {
 	return obj;
 }
 
-function sendUpdateTime() {
-	player.getCurrentTime()
-		.then(data => {
-			electron.ipcRenderer.send('update-time', {time: data, videoId: id});
-		})
+async function getVideoData() {
+	const currentTime = await player.getCurrentTime();
+	const duration = await player.getDuration();
+	return {
+		time: currentTime,
+		duration: duration,
+		videoId: id
+	};
+}
+
+async function sendUpdateTime() {
+	electron.ipcRenderer.send('update-time', await getVideoData());
+}
+
+async function handleStateChange(state) {
+	// Once video ends, play next
+	if (state.data === 0) {
+		electron.ipcRenderer.send('play-next', await getVideoData());
+	}
 }

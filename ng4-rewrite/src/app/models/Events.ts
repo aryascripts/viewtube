@@ -8,5 +8,6 @@ export enum EventType {
 	GET_PLIST_VIDEOS_REPLY = 'get-plist-videos-r',
 
 	PLAY_VIDEO = 'play-video',
-	UPDATE_TIME = 'update-time'
+	UPDATE_TIME = 'update-time',
+	PLAY_NEXT = 'play-next',
 }

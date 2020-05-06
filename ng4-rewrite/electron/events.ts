@@ -23,6 +23,9 @@ export const eventHandlers = {
 	},
 	[EventType.UPDATE_TIME]: (event, data) => {
 		Main.sendMessage(EventType.UPDATE_TIME, data);
+	},
+	[EventType.PLAY_NEXT]: (event, data) => {
+		Main.sendMessage(EventType.PLAY_NEXT, data);
 	}
 }
 
