@@ -1,5 +1,6 @@
 import { Video } from './Video';
 import { DatabaseObject } from './DatabaseObject';
+import { PlaylistOrder } from './AppConfig';
 
 export enum PlaylistType {
 	CUSTOM = 'custom',
@@ -18,21 +19,9 @@ export class Playlist extends DatabaseObject {
 	description:string;
 
 	type: PlaylistType;
+	order: PlaylistOrder;
 	
 	totalVideos:number;
-
-	watched: Array<string>;		//array of video IDs which is then used to set videos as watched upon loadVideos();
-	watching:number;			//used only when there is an unwatched last video
-	watchingId:string;
-	watchingTime:number;
-
-	index:number;
-
-	sequential:boolean;
-	partial: any;
-
-	lastCompleted:number;
-	lastCompletedId:string;
 
 	totalTime:string;
 
@@ -53,8 +42,6 @@ export class Playlist extends DatabaseObject {
 		this.channelName = info.channelName
 		this.description = info.description || `${this.channelName} has not set a description for this playlist. Go bug them about it, not me!`
 		this.thumbnails = info.thumbnails
-
-		this.setDefaults()
 	}
 	
 	static fromPlaylistsList(info: any) {
@@ -86,16 +73,5 @@ export class Playlist extends DatabaseObject {
 			description: plist['description'],
 			thumbnails: plist['thumbnails']
 		})
-	}
-
-	setDefaults() {
-		this.watched = [];
-		this.partial = [];
-		this.watching = -1;
-		this.lastCompleted = -1;
-		this.lastCompletedId = '';
-		this.index = 0;
-		this.totalTime = '';
-		this.watchingId = '';
 	}
 }

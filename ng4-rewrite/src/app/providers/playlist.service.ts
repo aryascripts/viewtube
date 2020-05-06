@@ -7,6 +7,8 @@ import { DataStoreService } from './data-store.service';
 import { Video } from '../models/Video';
 import { PagedVideos } from '../models/PagedVideos';
 import { VideoMetadata } from '../models/VideoMetadata';
+import { PlaylistOrder } from '../models/AppConfig';
+import { AppConfigService } from './app-config.service';
 
 @Injectable()
 export class PlaylistsService {
@@ -22,7 +24,8 @@ export class PlaylistsService {
 
 	constructor(
 		private electronService: AppElectronService,
-		private database: DataStoreService
+		private database: DataStoreService,
+		private appConfig: AppConfigService
 		) {
 		this.myPlaylists = new BehaviorSubject([]);
 		this.customPlaylists = new BehaviorSubject([]);
@@ -36,7 +39,6 @@ export class PlaylistsService {
 	}
 
 	addAccountPlaylists(event: any, resp: any) {
-		console.log('account playlists', resp);
 		//TODO: Check for nulls and error responses better in the future
 		if(resp.status != 200 || resp.data.pageInfo.resultsPerPage <= 0) {
 			console.error('Error. We were unable to receive data from YouTube.', resp);
@@ -53,10 +55,15 @@ export class PlaylistsService {
 	}
 
 	addCustomPlaylist(playlist: Playlist) {
-		if (!this.customPlaylists.value.some(p => playlist.id === p.id)) {
-			this.database.savePlaylist(playlist, PlaylistType.CUSTOM);
-			this.customPlaylists.next([...this.customPlaylists.value, playlist]);
-		}
+		const sub = this.appConfig.config.subscribe(value => {
+			if (!this.customPlaylists.value.some(p => playlist.id === p.id)) {
+				playlist.order = value.defaultType;
+				this.database.savePlaylist(playlist, PlaylistType.CUSTOM);
+				this.customPlaylists.next([...this.customPlaylists.value, playlist]);
+				console.log(playlist);
+			}
+			sub.unsubscribe();
+		});
 	}
 
 	async loadFromDatabase() {

@@ -50,6 +50,9 @@ To run the program follow the following:
 	- [ ] Import data from file
 	- [ ] Mark videos watched after x percentage
 	- [ ] Logout option
+- [ ] Remove Playlists from Custom
+- [ ] Mark videos watched
+- [ ] Mark videos unwatched
 
 ## Nice to Have list
 - [ ] Google Drive backup integration

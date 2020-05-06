@@ -3,6 +3,7 @@ import DataStore from  'nedb';
 import { Playlist, PlaylistType } from '../models/Playlist';
 import { resolve } from 'url';
 import { VideoMetadata } from '../models/VideoMetadata';
+import { AppConfig, defaultConfig } from '../models/AppConfig';
 
 export enum DocumentType {
   PLAYLIST = 'playlist',
@@ -79,5 +80,29 @@ export class DataStoreService {
         resolve(docs);
       })
     });
+  }
+
+  insert(document) {
+    return new Promise((resolve, reject) => {
+      this.database.insert(document, (err, docs) => {
+        if(err) reject(err);
+        resolve(docs);
+      });
+    });
+  }
+
+  getAppConfig(): Promise<AppConfig> {
+    return new Promise((resolve, reject) => {
+      this.database.find({documentType: DocumentType.APP_CONFIG}, async (err, docs) => {
+        if (err) reject(err)
+        if (!docs.length) {
+          await this.insert(defaultConfig);
+          resolve(defaultConfig);
+        }
+        else {
+          resolve(docs[0]);
+        }
+      });
+    })
   }
 }
