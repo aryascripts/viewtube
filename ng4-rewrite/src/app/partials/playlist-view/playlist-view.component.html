@@ -10,7 +10,9 @@
 			[title]="'Resume'"
 			(click)="handleResume()"></app-play-button>
 
-		<app-playlist-preview class="grow" [playlist]="playlist">
+		<app-playlist-preview
+			[paged]="paged"
+			[playlist]="playlist">
 		</app-playlist-preview>
 
 	</div>

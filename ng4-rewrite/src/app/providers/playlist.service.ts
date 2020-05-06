@@ -222,7 +222,8 @@ export class PlaylistsService {
 
 		const videoPages = this.videosMap[this.watchedVideos[id].playlistId].value;
 		const index = videoPages.videos.findIndex(v => v.id === id);
-		// TODO - load more pages if this is the last one in the page
+		
+		// load more pages if this is the last one in the page
 		if (index >= videoPages.videos.length - 1) {
 			this.playNextVideoFor = this.watchedVideos[id].playlistId;
 			this.getVideosForPlaylist(this.watchedVideos[id].playlistId)

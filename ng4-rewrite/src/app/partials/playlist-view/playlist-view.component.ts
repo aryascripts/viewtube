@@ -16,7 +16,6 @@ export class PlaylistViewComponent implements OnInit {
 
   constructor(    
     private playlistService: PlaylistsService,
-    private videoService: VideoService,
     private route: ActivatedRoute) { }
 
   playlist: Playlist;
