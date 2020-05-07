@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import '../polyfills';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
@@ -41,6 +41,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { PlayButtonComponent } from './components/play-button/play-button.component';
 import { PlaylistPreviewComponent } from './components/playlist-preview/playlist-preview.component';
 import { VideoListComponent } from './components/video-list/video-list.component';
+import { PlaylistSettingsComponent } from './components/playlist-settings/playlist-settings.component';
+import { CaretComponent } from './components/caret/caret.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -63,12 +65,15 @@ export function HttpLoaderFactory(http: HttpClient) {
     PlayButtonComponent,
     PlaylistPreviewComponent,
     VideoListComponent,
+    PlaylistSettingsComponent,
+    CaretComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     SharedComponentsModule,
     TranslateModule.forRoot({
       loader: {

@@ -32,3 +32,4 @@ button.secondary {
 .flex-c { @extend .flex; flex-direction: column; }
 .nowrap {flex-wrap: nowrap; }
 .grow { flex-grow: 1; }
+.space-between { @extend .flex; justify-content: space-between }

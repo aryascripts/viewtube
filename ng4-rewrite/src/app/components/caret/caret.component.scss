@@ -1,0 +1,24 @@
+.caret {
+	position: relative;
+	transition: transform 50ms;
+	transform-origin: 50% 50%;
+	margin: 10px 0 0 5px;
+
+	&:before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		border-top: 12px solid #ff0000;
+		border-left: 12px solid transparent;
+		border-right: 12px solid transparent;
+
+		transform: inherit;
+		transform-origin: inherit;
+		transition: transform 50ms;
+	}
+}
+
+.closed {		
+	transform: rotate(-90deg);
+}

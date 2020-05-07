@@ -6,9 +6,7 @@
 
   <h1 (click)="toggleDropdown()">{{ title }}</h1>
 
-  <div style="margin: 8px 0 0 5px;" (click)="toggleDropdown()">
-    <i class="caret" [ngClass]="caretClass"></i>
-  </div>
+  <app-caret [open]="open" (click)="toggleDropdown()"></app-caret>
 </div>
 
 <div *ngIf="loading" class="loading">

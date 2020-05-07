@@ -22,6 +22,11 @@ h1 {
   margin: 0;
 }
 
+h2 {
+  @extend h1;
+  font-size: 20px;
+}
+
 input {
   width: 100%;
   padding: 5px;

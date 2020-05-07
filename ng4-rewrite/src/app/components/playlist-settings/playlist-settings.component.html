@@ -1,0 +1,61 @@
+<div class="settings" 
+		 [ngClass]="{open: settingsOpen}">
+	<div 
+		(click)="toggleSettings()"
+		class="header flex space-between">
+		<h2>Settings</h2>
+		<app-caret
+			[open]="settingsOpen"
+			[caretStyle]="{margin: '0 0 0 -24px'}"></app-caret>
+	</div>
+
+	<form [formGroup]="settingsForm">
+		<table>
+			<tbody>
+				<tr>
+					<!-- PLAYLIST TYPE -->
+					<td>
+						<label for="ptype">Playlist Type</label>
+					</td>
+					<td>
+						<select formControlName="playlistOrder" id="ptype">
+							<option value="sequential">Sequential</option>
+							<option value="random" disabled>Random</option>
+						</select>
+					</td>
+
+					<!-- MARK NEXT UNWATCHED -->
+					<td><label for="markNext">Mark Next Unwatched</label></td>
+					<td>
+						<select formControlName="markNext" id="markNext">
+							<option [value]="true">Yes</option>
+							<option [value]="false">No</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<!-- RESUME BEHAVIOR -->
+					<td>
+						<label for="resumeB">Resume Behavior</label>
+					</td>
+					<td>
+						<select formControlName="resumeBehavior" id="resumeB">
+							<option value="last-played">Last Played</option>
+							<option value="first-unwatched">First Unwatched</option>
+						</select>
+					</td>
+
+					<td><label for="markPrevious">Mark Previous Watched</label></td>
+					<td>
+						<select formControlName="markPrevious" id="markPrevious">
+							<option [value]="true">Yes</option>
+							<option [value]="false">No</option>
+						</select>
+					</td>
+
+				</tr>
+
+			</tbody>
+		</table>
+	</form>
+</div>

@@ -30,11 +30,9 @@ export class DataStoreService {
       const existing: any[] = await this.findPlaylistById(playlist.id);
       if (existing.length) {
         // Update playlist
-        const old = existing[0];
         this.database.update({id: playlist.id}, playlist, {}, (err, docs) => {
           if (err) reject(err);
           resolve(docs);
-          console.log('updated playlist', docs);
         });
   
       }

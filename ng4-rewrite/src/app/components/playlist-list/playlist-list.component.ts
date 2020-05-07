@@ -9,7 +9,6 @@ import { EventEmitter } from '@angular/core';
 })
 export class PlaylistListComponent implements OnInit {
 
-	caretClass: any;
 	listClass: any;
 	@Input() playlists: Playlist[];
 	@Input() title: string;
@@ -31,10 +30,6 @@ export class PlaylistListComponent implements OnInit {
 	}
 
 	setClasses() {
-		this.caretClass = {
-			'closed': !this.open
-		}
-		console.log(this.caretClass);
 		this.listClass = {
 			'hide': !this.open
 		}
