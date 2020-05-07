@@ -27,7 +27,7 @@ export class PlaylistSettingsComponent implements OnInit, OnDestroy {
       markPrevious: new FormControl(this.playlist.settings.markPreviousWatched)
     });
 
-    this.settingsForm.valueChanges.subscribe(this.handleFormChange.bind(this))
+    this.sub = this.settingsForm.valueChanges.subscribe(this.handleFormChange.bind(this))
   }
 
   ngOnDestroy() {

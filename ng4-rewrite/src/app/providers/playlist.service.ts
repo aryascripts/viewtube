@@ -1,6 +1,6 @@
 import { Injectable, Inject} from '@angular/core';
 import { Playlist } from '../models/Playlist';
-import { PlaylistType } from '../models/AppConfig';
+import { PlaylistType, ResumeBehavior } from '../models/AppConfig';
 import { ReplaySubject, BehaviorSubject } from 'rxjs';
 import { AppElectronService } from './electron.service';
 import { EventType } from '../models/Events';
@@ -284,10 +284,21 @@ export class PlaylistsService {
 				const videos = value.videos;
 				// Video does not exist in 'watched'
 				// or it is partially 'watched'
-				const index = videos.findIndex(v => {
-					return (!this.watchedVideos[v.id]) || 
-									this.watchedVideos[v.id] && !this.watchedVideos[v.id].watched;
-				});
+				
+				let index;
+
+				if (playlist.settings.resumeBehavior === ResumeBehavior.LAST_PLAYED && playlist.lastWatchedVideoId) {
+					index = videos.findIndex(v => playlist.lastWatchedVideoId === v.id);
+					if (index > -1 && this.watchedVideos[playlist.lastWatchedVideoId].watched) {
+						index++;
+					}
+				}
+				else {
+					index = videos.findIndex(v => {
+						return (!this.watchedVideos[v.id]) || 
+										this.watchedVideos[v.id] && !this.watchedVideos[v.id].watched;
+					});
+				}
 
 				if (index > -1) {
 					this.playVideo(videos[index], id);

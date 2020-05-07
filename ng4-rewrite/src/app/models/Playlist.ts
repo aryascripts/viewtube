@@ -27,6 +27,7 @@ export class Playlist extends DatabaseObject {
 		this.description = info.description || `${this.channelName} has not set a description for this playlist. Go bug them about it, not me!`
 		this.thumbnails = info.thumbnails
 		this.settings = {...defaultPlaylistSettings, ...info.settings};
+		this.lastWatchedVideoId = info.lastWatchedVideoId;
 	}
 	
 	static fromPlaylistsList(info: any) {
