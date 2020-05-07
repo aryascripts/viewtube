@@ -31,7 +31,6 @@ import { GoogleApiService } from './providers/googleapi.service';
 import { PlaylistsService } from './providers/playlist.service';
 import { UserService } from './providers/user.service';
 import { AppElectronService } from './providers/electron.service';
-import {VideoService} from './providers/video.service';
 
 import { PlaylistDetailComponent } from './components/playlist-detail/playlist-detail.component';
 import { SharedComponentsModule } from './modules/shared-components/shared-components.module';
@@ -43,6 +42,7 @@ import { PlaylistPreviewComponent } from './components/playlist-preview/playlist
 import { VideoListComponent } from './components/video-list/video-list.component';
 import { PlaylistSettingsComponent } from './components/playlist-settings/playlist-settings.component';
 import { CaretComponent } from './components/caret/caret.component';
+import { NotificationComponent } from './components/notification/notification.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -67,6 +67,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     VideoListComponent,
     PlaylistSettingsComponent,
     CaretComponent,
+    NotificationComponent,
   ],
   imports: [
     BrowserModule,

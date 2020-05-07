@@ -1,0 +1,21 @@
+<div
+	[ngStyle]="getBorderStyle()"
+	class="notification"
+>
+	<div class="title">
+		<span>
+			{{notificationService.notification.title}}
+		</span>
+		<span (click)="closeNotification()">
+			x
+		</span>
+	</div>
+	<div class="message">{{notificationService.notification.message}}</div>
+	<div class="button">
+		<span 
+			[ngStyle]="getButtonColor()"
+			(click)="handleAction()">
+			{{notificationService.notification.actionText}}
+		</span>
+	</div>
+</div>

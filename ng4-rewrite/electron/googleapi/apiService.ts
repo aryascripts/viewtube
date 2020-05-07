@@ -56,7 +56,7 @@ export class YoutubeApiService {
 		return new Promise((resolve, reject) => {
 			const request = {
 				part: 'snippet',
-				maxResults: 4,
+				maxResults: 25,
 				playlistId: params.playlistId,
 				pageToken: params.nextPage
 			};

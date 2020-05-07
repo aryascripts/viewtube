@@ -339,4 +339,12 @@ export class PlaylistsService {
 		markUnwatched.forEach(v => delete this.watchedVideos[v.videoId])
 	}
 
+	async deletePlaylist(playlist: Playlist) {
+		await this.database.removePlaylist(playlist);
+		const custom = this.customPlaylists.value;
+		const index = custom.findIndex(p => p.id === playlist.id);
+		custom.splice(index, 1);
+		this.customPlaylists.next(custom);
+	}
+
 }

@@ -34,9 +34,9 @@ To run the program follow the following:
 - [x] Store playlist in JSON form in neDB
 - [x] Store watched videos in NEDB (playlistId, videoId, watchedPercentage)
 - [x] Display watched percentages on the UI (playlist-view)
-- [ ] Sequential Playlists - load next video automatically
-	- [ ] Mark videos watched with for ones before (based on settings)
-	- [ ] Mark videos next as unwatched
+- [x] Sequential Playlists - load next video automatically
+	- [x] Mark videos watched with for ones before (based on settings)
+	- [x] Mark videos next as unwatched
 	- [x] Load next video at stopped time when Resumed
 	- [x] Load next page if next video is not available
 - [ ] Random Playlists - 

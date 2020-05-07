@@ -150,4 +150,13 @@ export class DataStoreService {
       });
     });
   }
+
+  removePlaylist(playlist: Playlist) {
+    return new Promise((resolve, reject) => {
+      this.database.remove({id: playlist.id}, {}, (err, docs) => {
+        if (err) reject(err);
+        resolve(docs);
+      });
+    });
+  }
 }
