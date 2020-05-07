@@ -138,4 +138,16 @@ export class DataStoreService {
       });
     })
   }
+
+  removeWatchedVideos(videos: VideoMetadata[]) {
+    const ids = videos.map(v => v.videoId);
+    return new Promise((resolve, reject) => {
+      this.database.remove({
+        videoId: {$in: ids}
+      }, {multi: true}, (err, docs) => {
+        if (err) reject(err)
+        resolve(docs);
+      });
+    });
+  }
 }

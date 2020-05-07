@@ -46,7 +46,6 @@ export class PlaylistSettingsComponent implements OnInit, OnDestroy {
       markNextUnwatched: value.markNext === 'true' || value.markNext === true,
       markPreviousWatched: value.markPrevious === 'true' || value.markPrevious === true
     };
-    console.log('inside form', JSON.stringify(value))
     this.playlistService.updatePlaylist(this.playlist);
   }
 

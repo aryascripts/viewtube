@@ -65,7 +65,7 @@ export class PlaylistViewComponent implements OnInit {
   }
 
   handlePlaylistSettings(video: Video) {
-    if (this.playlist.settings.markPreviousWatched) {
+    if (this.playlist.settings.markPreviousWatched || this.playlist.settings.markNextUnwatched) {
       this.playlistService.videosMap[this.playlist.id]
         .pipe(take(1))
         .subscribe(value => {
@@ -74,7 +74,12 @@ export class PlaylistViewComponent implements OnInit {
           for (let i = 0; i < index; i++) {
             videoIds.push(value.videos[i].id);
           }
-          this.playlistService.markVideosWatched(videoIds, this.playlist.id);
+          if (this.playlist.settings.markPreviousWatched) {
+            this.playlistService.markVideosWatched(videoIds, this.playlist.id);
+          }
+          if (this.playlist.settings.markNextUnwatched) {
+            this.playlistService.markUnwatchedExcept(videoIds, this.playlist.id);
+          }     
         });
     }
   }

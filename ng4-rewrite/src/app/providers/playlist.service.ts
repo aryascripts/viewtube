@@ -324,7 +324,19 @@ export class PlaylistsService {
 			}
 			this.database.saveWatchedVideo(this.watchedVideos[id]);
 		});
+	}
 
+	async markUnwatchedExcept(ids: string[], playlistId: string) {
+		const markUnwatched: VideoMetadata[] = Object.keys(this.watchedVideos)
+			.map(id => {
+				const video = this.watchedVideos[id];
+				if (video.playlistId === playlistId && !ids.includes(video.videoId)) {
+					return video;
+				}
+			})
+			.filter(v => v);
+		await this.database.removeWatchedVideos(markUnwatched)
+		markUnwatched.forEach(v => delete this.watchedVideos[v.videoId])
 	}
 
 }
