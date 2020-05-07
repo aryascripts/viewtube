@@ -4,8 +4,8 @@ import { PlaylistsService } from './../../providers/playlist.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { PagedVideos } from './../../models/PagedVideos';
 import {Video} from './../../models/Video';
-import { VideoService } from './../../providers/video.service';
 import { Subscription } from 'rxjs';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-playlist-view',
@@ -64,6 +64,21 @@ export class PlaylistViewComponent implements OnInit {
     this.playlistService.handlePlaylistResume(this.playlist);
   }
 
+  handlePlaylistSettings(video: Video) {
+    if (this.playlist.settings.markPreviousWatched) {
+      this.playlistService.videosMap[this.playlist.id]
+        .pipe(take(1))
+        .subscribe(value => {
+          const index = value.videos.findIndex(v => v.id === video.id);
+          const videoIds = [];
+          for (let i = 0; i < index; i++) {
+            videoIds.push(value.videos[i].id);
+          }
+          this.playlistService.markVideosWatched(videoIds, this.playlist.id);
+        });
+    }
+  }
+
   loadMore() {
     this.loading = true;
     this.playlistService.getVideosForPlaylist(this.playlist.id);
@@ -75,5 +90,6 @@ export class PlaylistViewComponent implements OnInit {
 
   playVideo(video: Video) {
     this.playlistService.playVideo(video, this.playlist.id);
+    this.handlePlaylistSettings(video);
   }
 }

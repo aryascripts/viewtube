@@ -4,7 +4,7 @@ import { PlaylistType, ResumeBehavior } from '../models/AppConfig';
 import { ReplaySubject, BehaviorSubject } from 'rxjs';
 import { AppElectronService } from './electron.service';
 import { EventType } from '../models/Events';
-import { DataStoreService } from './data-store.service';
+import { DataStoreService, DocumentType } from './data-store.service';
 import { Video } from '../models/Video';
 import { PagedVideos } from '../models/PagedVideos';
 import { VideoMetadata } from '../models/VideoMetadata';
@@ -85,6 +85,7 @@ export class PlaylistsService {
 		const index = current.findIndex(p => p.id === playlist.id);
 		current[index] = playlist;
 		this.customPlaylists.next(current);
+		console.log('inside update playlist', JSON.stringify(playlist.settings))
 		await this.database.savePlaylist(playlist);
 	}
 
@@ -308,6 +309,22 @@ export class PlaylistsService {
 					this.getVideosForPlaylist(playlist.id);
 				}
 			});
+	}
+
+	markVideosWatched(ids: string[], playlistId: string) {
+		ids.forEach(id => {
+			const total = this.watchedVideos[id] ? this.watchedVideos[id].totalSeconds : 0;
+			this.watchedVideos[id] = {
+				...this.watchedVideos[id],
+				watched: true,
+				videoId: id,
+				documentType: DocumentType.VIDEO,
+				seconds: total,
+				playlistId
+			}
+			this.database.saveWatchedVideo(this.watchedVideos[id]);
+		});
+
 	}
 
 }

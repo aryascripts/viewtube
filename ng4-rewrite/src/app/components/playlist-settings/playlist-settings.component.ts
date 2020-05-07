@@ -43,10 +43,10 @@ export class PlaylistSettingsComponent implements OnInit, OnDestroy {
       ...this.playlist.settings,
       resumeBehavior: value.resumeBehavior,
       order: value.playlistOrder,
-      markNextUnwatched: value.markNext === 'true',
-      markPreviousWatched: value.markPrevious === 'true'
+      markNextUnwatched: value.markNext === 'true' || value.markNext === true,
+      markPreviousWatched: value.markPrevious === 'true' || value.markPrevious === true
     };
-    console.log(this.playlist.settings.markNextUnwatched, value.markNext);
+    console.log('inside form', JSON.stringify(value))
     this.playlistService.updatePlaylist(this.playlist);
   }
 
