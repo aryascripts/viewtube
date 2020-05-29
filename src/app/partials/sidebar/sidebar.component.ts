@@ -12,7 +12,7 @@ import {EventType} from './../../models/Events';
 	styleUrls: ['sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-	sidebarHeader: string = 'Sign In With Google';
+	sidebarHeader: string = 'ViewTube';
 	playlists:Playlist[];
 	loading: { account: boolean, custom: boolean };
 	customPlaylists: Playlist[];
@@ -34,10 +34,6 @@ export class SidebarComponent implements OnInit {
 					this.loading.account = false;
 					this.playlists = value;
 			});
-
-		this.userService.name.subscribe(value => {
-			this.sidebarHeader = value;
-		});
 
 		this.playlistsService.customPlaylists.subscribe(value => {
 			console.log('value', value);

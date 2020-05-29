@@ -1,4 +1,6 @@
-<div class="playlist-detail">
+<div 
+	*ngIf="playlist"
+	class="playlist-detail">
 
 	<div class="thumbnail">
 			<img [src]="playlist.thumbnails.medium.url" alt="">

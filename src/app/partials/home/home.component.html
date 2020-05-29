@@ -1,3 +1,31 @@
-<h1>
-	home page
-</h1>
+<div class="home">
+	<div class="heading flex">
+		<h1 class="grow">
+			Welcome, {{userName()}}
+		</h1>
+		<div class="text-buttons flex">
+			<div class="text-button">
+				Settings
+			</div>
+			<div class="text-button">
+				Logout
+			</div>
+		</div>
+	</div>
+
+	<div class="content">
+		<div class="resume-playlist" *ngIf="playlistService.lastPlaylistPlayed.value">
+			<h2>Resume Playlist</h2>
+			<app-playlist-detail 
+				[playlist]="playlistService.lastPlaylistPlayed.value">
+			</app-playlist-detail>
+			<app-play-button class="play-button"
+				(click)="playlistService.handlePlaylistResume(playlistService.lastPlaylistPlayed.value)"
+				title="Resume">
+			</app-play-button>
+		</div>
+
+	</div>
+</div>
+
+

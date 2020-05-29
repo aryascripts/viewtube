@@ -19,6 +19,7 @@ export class PlaylistsService {
 	public customPlaylists: BehaviorSubject<Playlist[]>;
 	public myName: ReplaySubject<string>;
 	public lastPlaylistId: string;
+	public lastPlaylistPlayed: BehaviorSubject<Playlist> = new BehaviorSubject(undefined);
 
 	public videosMap: {[playlistid: string]: BehaviorSubject<PagedVideos> };
 	public watchedVideos: {[id: string]: VideoMetadata} = {};
@@ -125,6 +126,7 @@ export class PlaylistsService {
 		});
 
 		const playlist: Playlist = this.customPlaylists.value.find(p => p.id === playlistId);
+		this.lastPlaylistPlayed.next(playlist);
 		playlist.lastWatchedVideoId = video.id;
 		await this.updatePlaylist(playlist);
   }

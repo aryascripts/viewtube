@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, BehaviorSubject } from 'rxjs';
 import { AppElectronService } from './electron.service';
 import { EventType } from '../models/Events';
 
@@ -7,7 +7,7 @@ import { EventType } from '../models/Events';
 	providedIn: 'root'
 })
 export class UserService {
-	name: ReplaySubject<string> = new ReplaySubject(1);
+	name: BehaviorSubject<string> = new BehaviorSubject<string>('');
 	isLoggedIn: ReplaySubject<boolean> = new ReplaySubject(1);
 
 	constructor(
@@ -17,9 +17,11 @@ export class UserService {
 		}
 
 	setMyName(event: string, data: any) {
-		console.log('received users-name', data);
+		console.log('got name,', event, data);
 		this.name.next(data);
 	}
+
+
 
 	isLoggedOut() {
 		this.isLoggedIn.next(false);
