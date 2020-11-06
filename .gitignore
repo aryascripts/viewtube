@@ -1,0 +1,5 @@
+app-builds
+ng4-rewrite/node_modules/*
+**/dist/*
+node_modules
+.DS_Store
