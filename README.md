@@ -13,9 +13,9 @@ ViewTube is a YouTube playlist application to manage and watch playlists on YouT
 ## Installation
 Support for Windows, Mac OS, Linux. Currently a binary file is not made.
 To run the program follow the following:
-1. cd viewtube/ng4-rewrite/
-2. npm i
-3. npm start
+1. `yarn install`
+1. `yarn run electron:serve`
+1. `yarn run ng:serve`
 
 ## MVP List
 [x] Development mode IPC communication
@@ -54,6 +54,8 @@ To run the program follow the following:
 ## Nice to Have list
 [ ] Google Drive backup integration
 [ ] Cache youtube calls
+[x] Switch to Yarn
+[ ] Switch to React.js
 
 ## SETTINGS TO ADD - 
 [ ] Default playlist type (random, sequential)
