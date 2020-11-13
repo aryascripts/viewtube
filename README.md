@@ -30,6 +30,7 @@ To run the program follow the following:
 [x] Save files to 'Documents/viewtube'
 [x] Decode ID JTW token to get name and email
 [ ] Add logout option
+[x] Load playlist videos for "resume" on homepage (if not loaded)
 [x] Get account playlists
 [x] Store playlist in JSON form in neDB
 [ ] Store watched videos in NEDB (playlistId, videoId, watchedPercentage)
@@ -49,7 +50,7 @@ To run the program follow the following:
 		- Export data to file
 		- Import data from file
 		- Mark videos watched after x percentage
-		- Logout option
+
 
 ## Nice to Have list
 [ ] Google Drive backup integration

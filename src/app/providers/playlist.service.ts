@@ -174,7 +174,7 @@ export class PlaylistsService {
 	 */
 	getPlaylistVideosSubject(id: string): BehaviorSubject<PagedVideos> {
 		if (!this.videosMap[id]) {
-			this.videosMap[id] = new BehaviorSubject<PagedVideos>(new PagedVideos());;
+			this.videosMap[id] = new BehaviorSubject<PagedVideos>(new PagedVideos());
 		}
 		return this.videosMap[id];
 	}
@@ -282,15 +282,13 @@ export class PlaylistsService {
 	playNextSequential(playlist: Playlist) {
 		const id = playlist.id;
 		let played = false;
-		this.videosMap[id]
+		this.getPlaylistVideosSubject(id)
 			.pipe(
 				takeWhile((value) => {
 					const index = value.videos.findIndex(v => {
 						return (!this.watchedVideos[v.id]) ||
 							this.watchedVideos[v.id] && !this.watchedVideos[v.id].watched;
 					});
-
-					console.log(!played, index < 0);
 					return !played || index < 0;
 				}, false))
 			.subscribe((value: PagedVideos) => {
