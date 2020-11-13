@@ -33,18 +33,18 @@ To run the program follow the following:
 [x] Load playlist videos for "resume" on homepage (if not loaded)
 [x] Get account playlists
 [x] Store playlist in JSON form in neDB
-[ ] Store watched videos in NEDB (playlistId, videoId, watchedPercentage)
-[ ] Display watched percentages on the UI (playlist-view)
-[ ] Sequential Playlists - load next video automatically
-		- Handle the following: 
-		- Mark videos watched with for ones before
-		- Mark videos next as unwatched
-		- Load next video at stopped time when Resumed
-		- Load next page if next video is not available
+[x] Store watched videos in NEDB (playlistId, videoId, watchedPercentage)
+[x] Display watched percentages on the UI (playlist-view)
+[x] Sequential Playlists - load next video automatically
+	- Handle the following: 
+	- [x] Mark videos watched with for ones before
+	- [x] Mark videos next as unwatched
+	- [x] Load next video at stopped time when Resumed
+	- [x] Load next page if next video is not available
 [ ] Random Playlists - 
 		- Handle loading from current page
 		- After exhaustion, load from next page
-[ ] Playlist summary next to resume
+[x] Playlist summary next to resume
 [ ] Add settings page
 		- Default playlist type (sequential or random)
 		- Export data to file
