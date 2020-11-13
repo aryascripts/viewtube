@@ -92,7 +92,6 @@ export class PlaylistsService {
 		const index = current.findIndex(p => p.id === playlist.id);
 		current[index] = playlist;
 		this.customPlaylists.next(current);
-		console.log('inside update playlist', JSON.stringify(playlist.settings))
 		await this.database.savePlaylist(playlist);
 	}
 
