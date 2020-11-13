@@ -50,11 +50,10 @@ To run the program follow the following:
 		- Export data to file
 		- Import data from file
 		- Mark videos watched after x percentage
-
+[ ] Cache youtube calls
 
 ## Nice to Have list
 [ ] Google Drive backup integration
-[ ] Cache youtube calls
 [x] Switch to Yarn
 [ ] Switch to React.js
 
