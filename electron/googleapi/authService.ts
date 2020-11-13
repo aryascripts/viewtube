@@ -36,11 +36,11 @@ export default class AuthService {
 	}
 
 	static oAuth2Client:any = new OAuth2Client({
-		clientId: '554340134389-g7v56ull5nd1f2q6s4khj7du7gu4novr.apps.googleusercontent.com',
+		clientId: `${process.env.YOUTUBE_API_KEY}`,
 		redirectUri: 'urn:ietf:wg:oauth:2.0:oob'
 	});
 	
-	static authWin:BrowserWindow = null;
+	static authWin:BrowserWindow = null
 	
 	static getOAuthClient() {
 		if(this.authorized) {
