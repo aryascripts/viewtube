@@ -4,10 +4,10 @@
 			Welcome, {{userName()}}
 		</h1>
 		<div class="text-buttons flex">
-			<div class="text-button">
+			<div class="text-button" [routerLink]="['/settings']">
 				Settings
 			</div>
-			<div class="text-button">
+			<div class="text-button" (click)="logout()">
 				Logout
 			</div>
 		</div>
@@ -15,14 +15,21 @@
 
 	<div class="content">
 		<div class="resume-playlist" *ngIf="playlistService.lastPlaylistPlayed.value">
-			<h2>Resume Playlist</h2>
+			<app-play-button class="play-button"
+				(click)="playlistService.handlePlaylistResume(playlistService.lastPlaylistPlayed.value)"
+				title="Resume Playlist">
+			</app-play-button>
 			<app-playlist-detail 
 				[playlist]="playlistService.lastPlaylistPlayed.value">
 			</app-playlist-detail>
-			<app-play-button class="play-button"
-				(click)="playlistService.handlePlaylistResume(playlistService.lastPlaylistPlayed.value)"
-				title="Resume">
-			</app-play-button>
+		</div>
+
+		<div *ngIf="playlistService.customPlaylists.value.length" class="all-playlists">
+			<h1 class="all-playlists">All Playlists</h1>
+			<app-playlist-detail
+				*ngFor="let playlist of playlistService.customPlaylists.value"
+				[routerLink]="['/playlist', playlist.id]"
+				[playlist]="playlist"></app-playlist-detail>
 		</div>
 
 	</div>

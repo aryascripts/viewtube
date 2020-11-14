@@ -43,6 +43,7 @@ import { VideoListComponent } from './components/video-list/video-list.component
 import { PlaylistSettingsComponent } from './components/playlist-settings/playlist-settings.component';
 import { CaretComponent } from './components/caret/caret.component';
 import { NotificationComponent } from './components/notification/notification.component';
+import { SettingsComponent } from './partials/settings/settings.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -53,6 +54,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [
     AppComponent,
     HomeComponent,
+    SettingsComponent,
     SidebarComponent,
     WebviewDirective,
     ResizeDirective,

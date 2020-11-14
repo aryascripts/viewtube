@@ -8,7 +8,8 @@ import { AppConfig, defaultConfig } from '../models/AppConfig';
 export enum DocumentType {
   PLAYLIST = 'playlist',
   VIDEO = 'video-metadata',
-  APP_CONFIG = 'app-config'
+  APP_CONFIG = 'app-config',
+  LAST_PLAYED = 'last-played'
 };
 
 @Injectable({
@@ -43,8 +44,9 @@ export class DataStoreService {
         });
       }
     });
-
   }
+
+
 
   getCustomPlaylists(): Promise<any[]> {
     return new Promise((resolve, reject) => {
@@ -111,7 +113,7 @@ export class DataStoreService {
   }
 
 
-  insert(document) {
+  private insert(document) {
     return new Promise((resolve, reject) => {
       this.database.insert(document, (err, docs) => {
         if(err) reject(err);
@@ -158,5 +160,30 @@ export class DataStoreService {
         resolve(docs);
       });
     });
+  }
+
+  find(doc: any): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      this.database.find(doc, (err, docs) => {
+        if (err) reject(err);
+        resolve(docs);
+      })
+    });
+  }
+
+  update(newDoc: any, oldDoc: any) {
+    return new Promise((resolve, reject) => {
+      this.database.update(oldDoc, newDoc, (err, docsUpdated) => {
+        if(err) reject(err);
+        resolve(docsUpdated);
+      });
+    });
+  }
+
+  async saveLastPlayed(playlist: Playlist) {
+    const docs = await this.find({documentType: DocumentType.LAST_PLAYED});
+    const method = docs.length ? 'update' : 'insert';
+    const doc = {documentType: DocumentType.LAST_PLAYED, playlistId: playlist.id};
+    return await this[method](doc, docs[0]);
   }
 }

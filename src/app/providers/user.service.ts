@@ -21,8 +21,6 @@ export class UserService {
 		this.name.next(data);
 	}
 
-
-
 	isLoggedOut() {
 		this.isLoggedIn.next(false);
 	}

@@ -1,8 +1,12 @@
 @import './../../scss/vars';
 
 h1 {
-	margin: 0 0 0 0;
+	margin: 0 0 20px 0;
 	padding: 0 0 0 0;
+
+	&.all-playlists {
+		margin: 15px 0 20px 0;
+	}
 }
 
 .text-button {
@@ -19,5 +23,5 @@ h2 {
 }
 
 .play-button {
-	margin-top: 15px;
+	margin: 0 0 20px 0;
 }

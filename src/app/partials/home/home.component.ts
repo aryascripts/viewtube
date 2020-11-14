@@ -24,6 +24,10 @@ export class HomeComponent implements OnInit {
 		return this.userService.name.value + '!' || 'please login.';
 	}
 
+	logout() {
+
+	}
+
 	getPlaylist() {
 		return this.playlistService.lastPlaylist;
 	}

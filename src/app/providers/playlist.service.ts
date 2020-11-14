@@ -1,4 +1,4 @@
-import { Injectable, Inject} from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Playlist } from '../models/Playlist';
 import { PlaylistType, ResumeBehavior } from '../models/AppConfig';
 import { ReplaySubject, BehaviorSubject } from 'rxjs';
@@ -10,7 +10,7 @@ import { PagedVideos } from '../models/PagedVideos';
 import { VideoMetadata } from '../models/VideoMetadata';
 import { PlaylistOrder } from '../models/AppConfig';
 import { AppConfigService } from './app-config.service';
-import {takeWhile} from 'rxjs/operators';
+import { takeWhile } from 'rxjs/operators';
 
 @Injectable()
 export class PlaylistsService {
@@ -21,8 +21,8 @@ export class PlaylistsService {
 	public lastPlaylistId: string;
 	public lastPlaylistPlayed: BehaviorSubject<Playlist> = new BehaviorSubject(undefined);
 
-	public videosMap: {[playlistid: string]: BehaviorSubject<PagedVideos> };
-	public watchedVideos: {[id: string]: VideoMetadata} = {};
+	public videosMap: { [playlistid: string]: BehaviorSubject<PagedVideos> };
+	public watchedVideos: { [id: string]: VideoMetadata } = {};
 
 	private playNextVideoFor: string;
 
@@ -30,7 +30,7 @@ export class PlaylistsService {
 		private electronService: AppElectronService,
 		private database: DataStoreService,
 		private appConfig: AppConfigService
-		) {
+	) {
 		this.myPlaylists = new BehaviorSubject([]);
 		this.customPlaylists = new BehaviorSubject([]);
 		this.myName = new ReplaySubject(1);
@@ -46,18 +46,18 @@ export class PlaylistsService {
 
 	addAccountPlaylists(event: any, resp: any) {
 		//TODO: Check for nulls and error responses better in the future
-		if(resp.status != 200 || resp.data.pageInfo.resultsPerPage <= 0) {
+		if (resp.status != 200 || resp.data.pageInfo.resultsPerPage <= 0) {
 			console.error('Error. We were unable to receive data from YouTube.', resp);
 			return;
 		}
 
-		const lists:{} = resp['data']['items'];
+		const lists: {} = resp['data']['items'];
 		let plists: Playlist[] = [];
 		Object.entries(lists).forEach(
 			([key, info]) => {
 				plists.push(Playlist.fromPlaylistsList(info));
 			});
-			this.myPlaylists.next(plists);
+		this.myPlaylists.next(plists);
 	}
 
 	addCustomPlaylist(playlist: Playlist) {
@@ -77,8 +77,14 @@ export class PlaylistsService {
 
 	async loadFromDatabase() {
 		const playlists = (await this.database.getCustomPlaylists())
-												.map(item => new Playlist(item));
+			.map(item => new Playlist(item));
 		this.customPlaylists.next(playlists);
+		const lastPlayed = await this.database.find({documentType: DocumentType.LAST_PLAYED});
+		if (lastPlayed.length) {
+			console.log('LAST PLAYED', lastPlayed);
+			const playlist = playlists.find(p => p.id === lastPlayed[0].playlistId);
+			this.lastPlaylistPlayed.next(playlist);
+		}
 	}
 
 	async updatePlaylist(playlist: Playlist) {
@@ -86,7 +92,6 @@ export class PlaylistsService {
 		const index = current.findIndex(p => p.id === playlist.id);
 		current[index] = playlist;
 		this.customPlaylists.next(current);
-		console.log('inside update playlist', JSON.stringify(playlist.settings))
 		await this.database.savePlaylist(playlist);
 	}
 
@@ -107,29 +112,34 @@ export class PlaylistsService {
 	getCachedPlaylistById(id: string): Playlist {
 		this.lastPlaylistId = id;
 		return this.myPlaylists.value.find(p => p.id === id) ||
-					 this.customPlaylists.value.find(p => p.id === id);
+			this.customPlaylists.value.find(p => p.id === id);
 	}
 
 	get lastPlaylist() {
 		if (this.lastPlaylistId) {
 			return this.myPlaylists.value.find(p => p.id === this.lastPlaylistId) ||
-			this.customPlaylists.value.find(p => p.id === this.lastPlaylistId);
+				this.customPlaylists.value.find(p => p.id === this.lastPlaylistId);
 		}
 	}
 
-  async playVideo(video: Video, playlistId: string) {
-    const lastPlayTime = this.watchedVideos[video.id] 
-												 ? this.watchedVideos[video.id].seconds : 0;
-    this.electronService.send(EventType.PLAY_VIDEO, {
-      videoId:  video.id,
-      time: lastPlayTime
+	async playVideo(video: Video, playlistId: string) {
+		const lastPlayTime = this.watchedVideos[video.id]
+			? this.watchedVideos[video.id].seconds : 0;
+		this.electronService.send(EventType.PLAY_VIDEO, {
+			videoId: video.id,
+			time: lastPlayTime
 		});
 
 		const playlist: Playlist = this.customPlaylists.value.find(p => p.id === playlistId);
-		this.lastPlaylistPlayed.next(playlist);
+		this.saveLastPlayedPlaylist(playlist)
 		playlist.lastWatchedVideoId = video.id;
 		await this.updatePlaylist(playlist);
-  }
+	}
+
+	async saveLastPlayedPlaylist(plist: Playlist) {
+		await this.database.saveLastPlayed(plist);
+		this.lastPlaylistPlayed.next(plist);
+	}
 
 
 	getVideosForPlaylist(id: string) {
@@ -164,7 +174,7 @@ export class PlaylistsService {
 	 */
 	getPlaylistVideosSubject(id: string): BehaviorSubject<PagedVideos> {
 		if (!this.videosMap[id]) {
-			this.videosMap[id] = new BehaviorSubject<PagedVideos>(new PagedVideos());;
+			this.videosMap[id] = new BehaviorSubject<PagedVideos>(new PagedVideos());
 		}
 		return this.videosMap[id];
 	}
@@ -239,12 +249,12 @@ export class PlaylistsService {
 			totalSeconds: data.duration,
 			seconds: data.duration
 		};
-		if (!this.watchedVideos[id].playlistId) 
+		if (!this.watchedVideos[id].playlistId)
 			this.watchedVideos[id].playlistId = this.getPlaylistIdFromVideoId(id);
 
 		const videoPages = this.videosMap[this.watchedVideos[id].playlistId].value;
 		const index = videoPages.videos.findIndex(v => v.id === id);
-		
+
 		// load more pages if this is the last one in the page
 		if (index >= videoPages.videos.length - 1) {
 			this.playNextVideoFor = this.watchedVideos[id].playlistId;
@@ -259,35 +269,33 @@ export class PlaylistsService {
 	}
 
 	handlePlaylistResume(playlist: Playlist) {
-		switch(playlist.settings.order) {
+		switch (playlist.settings.order) {
 			case PlaylistOrder.SEQUENTIAL:
 				this.playNextSequential(playlist)
-			break;
-			case PlaylistOrder.RANDOM: 
-				console.log('random is not built')
-			break;
+				break;
+			case PlaylistOrder.RANDOM:
+				this.playNextRandom(playlist);
+				break;
 		}
 	}
 
 	playNextSequential(playlist: Playlist) {
 		const id = playlist.id;
 		let played = false;
-		this.videosMap[id]
+		this.getPlaylistVideosSubject(id)
 			.pipe(
 				takeWhile((value) => {
 					const index = value.videos.findIndex(v => {
-						return (!this.watchedVideos[v.id]) || 
-										this.watchedVideos[v.id] && !this.watchedVideos[v.id].watched;
+						return (!this.watchedVideos[v.id]) ||
+							this.watchedVideos[v.id] && !this.watchedVideos[v.id].watched;
 					});
-
-					console.log(!played, index < 0);
 					return !played || index < 0;
-			}, false))
+				}, false))
 			.subscribe((value: PagedVideos) => {
 				const videos = value.videos;
 				// Video does not exist in 'watched'
 				// or it is partially 'watched'
-				
+
 				let index;
 
 				if (playlist.settings.resumeBehavior === ResumeBehavior.LAST_PLAYED && playlist.lastWatchedVideoId) {
@@ -298,8 +306,8 @@ export class PlaylistsService {
 				}
 				else {
 					index = videos.findIndex(v => {
-						return (!this.watchedVideos[v.id]) || 
-										this.watchedVideos[v.id] && !this.watchedVideos[v.id].watched;
+						return (!this.watchedVideos[v.id]) ||
+							this.watchedVideos[v.id] && !this.watchedVideos[v.id].watched;
 					});
 				}
 
@@ -309,6 +317,54 @@ export class PlaylistsService {
 				}
 				else {
 					this.getVideosForPlaylist(playlist.id);
+				}
+			});
+	}
+
+	playNextRandom(playlist: Playlist) {
+		console.log('playNextRandom')
+		const id = playlist.id;
+		let played = false;
+		this.getPlaylistVideosSubject(id)
+			.pipe(
+				takeWhile((value) => {
+					const index = value.videos.findIndex(v => {
+						return (!this.watchedVideos[v.id]) ||
+							this.watchedVideos[v.id] && !this.watchedVideos[v.id].watched;
+					});
+					return !played || index < 0;
+				}, false))
+			.subscribe((value: PagedVideos) => {
+				// Video does not exist in 'watched'
+				// or it is partially 'watched'
+				const videos = value.videos;
+				let index;
+
+				if (playlist.settings.resumeBehavior === ResumeBehavior.LAST_PLAYED && playlist.lastWatchedVideoId) {
+					// play the last partially watched video
+					index = videos.findIndex(v => playlist.lastWatchedVideoId === v.id);
+					if (index > -1 && this.watchedVideos[playlist.lastWatchedVideoId].watched) {
+						index++;
+					}
+					this.playVideo(videos[index], playlist.id);
+				}
+				else {
+					// Find a new random video
+
+					// 1. find number of videos unwatched
+					const unwatched = videos.filter(video => {
+						const isUnwatched = !this.watchedVideos[video.id];
+						return isUnwatched;
+					});
+
+					if (unwatched.length) {
+						const random = Math.floor(Math.random() * (unwatched.length - 1));
+						this.playVideo(unwatched[random], playlist.id);
+						played = true;
+					}
+					else {
+						this.getVideosForPlaylist(playlist.id);
+					}
 				}
 			});
 	}

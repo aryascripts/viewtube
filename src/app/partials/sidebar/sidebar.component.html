@@ -11,16 +11,7 @@
       [title]="'Playlists'"
       [additive]="true">
     </app-playlist-list>
-
-    <app-playlist-list
-      #myPlaylists
-			(openChanged)="handleOpenChanged($event)"
-			[loading]="loading.account"
-      [playlists]="playlists"
-      [open]="false"
-      [title]="'My Playlists'"
-    >
-    </app-playlist-list>
+    
   </div>
 
   <div
