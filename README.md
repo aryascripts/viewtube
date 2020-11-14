@@ -41,24 +41,20 @@ To run the program follow the following:
 	- [x] Mark videos next as unwatched
 	- [x] Load next video at stopped time when Resumed
 	- [x] Load next page if next video is not available
-- [ ] Random Playlists - 
-		- Handle loading from current page
-		- After exhaustion, load from next page
+- [x] Random Playlists - 
+		- [x] Handle loading from current page
+		- [x] After exhaustion, load from next page
 [x] Playlist summary next to resume
 - [ ] Add settings page
 		- [ ] Default playlist type (sequential or random)
 		- [ ] Export data to file
 		- [ ] Import data from file
 		- [ ] Mark videos watched after x percentage
+		- [ ] Default playlist type (random, sequential)
+		- [ ] auto-play videos
 - [ ] Cache youtube calls
 
 ## Nice to Have list
-[ ] Google Drive backup integration
-[x] Switch to Yarn
-[ ] Switch to React.js
-
-## SETTINGS TO ADD - 
-[ ] Default playlist type (random, sequential)
-[ ] auto-play videos
-[ ] Backup data to file
-[ ] restore data from file
+- [ ] Google Drive backup integration
+- [x] Switch to Yarn
+- [ ] Switch to React.js
