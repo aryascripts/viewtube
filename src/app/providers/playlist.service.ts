@@ -274,7 +274,7 @@ export class PlaylistsService {
 				this.playNextSequential(playlist)
 				break;
 			case PlaylistOrder.RANDOM:
-				console.log('random is not built')
+				this.playNextRandom(playlist);
 				break;
 		}
 	}
@@ -317,6 +317,54 @@ export class PlaylistsService {
 				}
 				else {
 					this.getVideosForPlaylist(playlist.id);
+				}
+			});
+	}
+
+	playNextRandom(playlist: Playlist) {
+		console.log('playNextRandom')
+		const id = playlist.id;
+		let played = false;
+		this.getPlaylistVideosSubject(id)
+			.pipe(
+				takeWhile((value) => {
+					const index = value.videos.findIndex(v => {
+						return (!this.watchedVideos[v.id]) ||
+							this.watchedVideos[v.id] && !this.watchedVideos[v.id].watched;
+					});
+					return !played || index < 0;
+				}, false))
+			.subscribe((value: PagedVideos) => {
+				// Video does not exist in 'watched'
+				// or it is partially 'watched'
+				const videos = value.videos;
+				let index;
+
+				if (playlist.settings.resumeBehavior === ResumeBehavior.LAST_PLAYED && playlist.lastWatchedVideoId) {
+					// play the last partially watched video
+					index = videos.findIndex(v => playlist.lastWatchedVideoId === v.id);
+					if (index > -1 && this.watchedVideos[playlist.lastWatchedVideoId].watched) {
+						index++;
+					}
+					this.playVideo(videos[index], playlist.id);
+				}
+				else {
+					// Find a new random video
+
+					// 1. find number of videos unwatched
+					const unwatched = videos.filter(video => {
+						const isUnwatched = !this.watchedVideos[video.id];
+						return isUnwatched;
+					});
+
+					if (unwatched.length) {
+						const random = Math.floor(Math.random() * (unwatched.length - 1));
+						this.playVideo(unwatched[random], playlist.id);
+						played = true;
+					}
+					else {
+						this.getVideosForPlaylist(playlist.id);
+					}
 				}
 			});
 	}

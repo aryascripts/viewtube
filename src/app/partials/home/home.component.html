@@ -28,8 +28,8 @@
 			<h1 class="all-playlists">All Playlists</h1>
 			<app-playlist-detail
 				*ngFor="let playlist of playlistService.customPlaylists.value"
-				[playlist]="playlist">
-			</app-playlist-detail>
+				[routerLink]="['/playlist', playlist.id]"
+				[playlist]="playlist"></app-playlist-detail>
 		</div>
 
 	</div>
