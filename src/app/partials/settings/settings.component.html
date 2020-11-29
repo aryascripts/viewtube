@@ -1,3 +1,40 @@
 <div class="settings-component">
-    Settings
+    <h1>Settings</h1>
+
+    <div class="item">
+        <h3>Default Playlist Type</h3>
+        {{getConfigJson()}}
+        <select 
+            (change)="saveConfig()"
+            [(ngModel)]="config.defaultType">
+            <option 
+                *ngFor="let opt of playlistTypeOptions"
+                [value]="opt.value">
+            {{ opt.display }}
+        </option>
+        </select>
+    </div>
+
+    <div class="item">
+        <h3>Auto Play Videos</h3>
+        <select 
+            (change)="saveConfig()"
+            [(ngModel)]="config.autoplay">
+            <option 
+                *ngFor="let opt of autoPlayOptions"
+                [value]="opt.value">
+            {{ opt.display }}
+        </option>
+        </select>
+    </div>
+
+    <div class="item">
+        <h3>Mark Watched After ( {{getWatchedAfter()}}% )</h3>
+        <input
+            (change)="setWatchedAfter($event)"
+            [value]="getWatchedAfter()"
+            type="range" 
+            min="60"
+            max="100" />
+    </div>
 </div>

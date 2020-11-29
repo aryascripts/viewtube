@@ -141,6 +141,12 @@ export class DataStoreService {
     })
   }
 
+  async saveAppConfig(appConfig: AppConfig) {
+    const old = await this.find({documentType: DocumentType.APP_CONFIG});
+    console.log(old);
+    return this.update(appConfig, old[0]);
+  }
+
   removeWatchedVideos(videos: VideoMetadata[]) {
     const ids = videos.map(v => v.videoId);
     return new Promise((resolve, reject) => {

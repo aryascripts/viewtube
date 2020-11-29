@@ -1,16 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
-@import 'app/scss/vars';
-@import 'app/scss/base.scss';
+@import "app/scss/vars";
+@import "app/scss/base.scss";
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
   box-sizing: border-box;
-  font-family: 'Helvetica', 'Tahoma', 'Arial', sans-serif;
+  font-family: "Helvetica", "Tahoma", "Arial", sans-serif;
   background: white;
 }
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
@@ -27,10 +30,16 @@ h2 {
   font-size: 20px;
 }
 
+h3 {
+  @extend h1;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
 input {
   width: 100%;
   padding: 5px;
-  border:none;
+  border: none;
   border-bottom: 2px solid lighten($yt-red, 20%);
   font-size: 20px;
   font-weight: 100;
@@ -41,4 +50,15 @@ input {
     border-bottom: 3px solid $yt-red;
     outline: none;
   }
+}
+
+select {
+  max-width: 200px;
+  width: 100%;
+  border-radius: 0;
+  background-color: white;
+  font-size: 16px;
+  border: 1px solid gray;
+  /* color: black; */
+  height: 35px;
 }

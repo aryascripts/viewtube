@@ -9,6 +9,7 @@ export interface AppConfig extends DatabaseObject{
 	autoplay: boolean;
 	defaultType: PlaylistOrder;
 	watchedAfter: number;
+	_id?: string;
 }
 
 export const defaultConfig: AppConfig = {
@@ -21,8 +22,6 @@ export enum PlaylistType {
 	CUSTOM = 'custom',
 	ACCOUNT = 'account'
 }
-
-
 
 /**
  * SETTINGS PER PLAYLIST

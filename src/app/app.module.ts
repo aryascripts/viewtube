@@ -86,7 +86,11 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [AppElectronService, GoogleApiService, UserService, PlaylistsService, DataStoreService],
+  providers: [AppElectronService, 
+    GoogleApiService, 
+    UserService, 
+    PlaylistsService, 
+    DataStoreService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
