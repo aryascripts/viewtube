@@ -51,9 +51,9 @@ To run the program follow the following:
 - [ ] Add settings page
   - [ ] Export data to file
   - [ ] Import data from file
-  - [ ] Mark videos watched after x percentage
-  - [ ] Default playlist type (random, sequential)
-  - [ ] auto-play videos
+  - [x] Mark videos watched after x percentage
+  - [x] Default playlist type (random, sequential)
+  - [x] auto-play videos
 - [ ] Cache youtube calls
 
 ## Nice to Have list
