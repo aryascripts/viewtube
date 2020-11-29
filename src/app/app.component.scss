@@ -1,14 +1,14 @@
-.grid	{
-	display: grid;
-	grid-template-columns: auto 1fr;
+.grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
 }
 
 .router-outlet {
-	padding: 20px;
-	height: calc(100vh - 40px);
+  padding: 60px 20px 20px 20px;
+  height: calc(100vh - 40px);
 }
 
 .router {
-	height: calc(100vh - 40px);
-	overflow-y: scroll;
+  height: calc(100vh - 40px);
+  overflow-y: scroll;
 }

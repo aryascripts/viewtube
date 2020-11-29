@@ -1,27 +1,29 @@
-@import './../../scss/vars';
+@import "./../../scss/vars";
 .nav-container {
-	display: flex;
-	flex-wrap: nowrap;
-	height: $header-height;
-	margin: 0;
-	background-color: $yt-red;
-	width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  height: $header-height;
+  margin: 0;
+  background-color: $yt-red;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 11;
 
-	.item {
-		padding: 0 20px;
-		@extend %header-text;
-		text-transform: uppercase;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+  .item {
+    padding: 0 20px;
+    @extend %header-text;
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     overflow: hidden;
-		word-break: break-word;
-		min-width: 112px;
-		text-align: center;
+    word-break: break-word;
+    min-width: 112px;
+    text-align: center;
 
-		&.grow {
-			flex-grow: 1;
-			text-align: left;
-		}
-	}
-	
+    &.grow {
+      flex-grow: 1;
+      text-align: left;
+    }
+  }
 }
